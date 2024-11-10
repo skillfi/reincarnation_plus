@@ -1,0 +1,9 @@
+{
+  "parent": "reincarnation_plus:custom/gemstage2",
+  "textures": {
+    "all": "reincarnation_plus:blocks/gem_stage2",
+    "particle": "reincarnation_plus:blocks/gem_stage2",
+    "0": "reincarnation_plus:blocks/gem_stage2"
+  },
+  "render_type": "cutout"
+}

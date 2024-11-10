@@ -1,0 +1,30 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": {
+      "item": "reincarnation_plus:gem_stone"
+    },
+    "title": {
+      "translate": "advancements.isekai.title"
+    },
+    "description": {
+      "translate": "advancements.isekai.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "isekai": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "item": {
+          "items": [
+            "reincarnation_plus:gem_block"
+          ]
+        }
+      }
+    }
+  }
+}

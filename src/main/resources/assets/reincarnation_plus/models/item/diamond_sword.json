@@ -1,0 +1,6 @@
+{
+  "parent": "reincarnation_plus:custom/diamondsword",
+  "textures": {
+    "particle": "reincarnation_plus:items/diamond_sword"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mappings": {
+    "default": {
+      "map": {
+        "0": "gem_stage4"
+      },
+      "name": "default"
+    }
+  }
+}
