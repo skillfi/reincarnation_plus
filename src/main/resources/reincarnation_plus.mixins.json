@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.github.skillfi.reincarnation_plus.core",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "reincarnation_plus.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ],
+  "minVersion": "0.8",
+  "client": [
+  ]
+}
