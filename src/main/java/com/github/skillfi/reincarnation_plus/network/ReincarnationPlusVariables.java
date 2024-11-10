@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.network;
 
+import com.github.skillfi.isekaicore.capability.classes.InternalClassStorage;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -24,13 +25,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.client.Minecraft;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.function.Supplier;
 
-import com.github.skillfi.reincarnation_plus.ReincarnationPlus;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ReincarnationPlusModVariables {
+public class ReincarnationPlusVariables {
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent event) {
 
@@ -73,6 +73,8 @@ public class ReincarnationPlusModVariables {
 	}
 
 	public static final Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = CapabilityManager.get(new CapabilityToken<PlayerVariables>() {
+	});
+	public static final Capability<InternalClassStorage> CAP = CapabilityManager.get(new CapabilityToken<>() {
 	});
 
 	@Mod.EventBusSubscriber
