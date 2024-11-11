@@ -4,10 +4,10 @@ license="Academic Free License v3.0"
 
 [[mods]]
 modId="reincarnation_plus"
-version="0.0.2"
-displayName="Isekai: Quartet"
-credits="Created using mod maker MCreator - https://mcreator.net/about"
-displayURL="https://mcreator.net"
+version="0.0.6"
+displayName="Reincarnation +"
+credits=""
+displayURL=""
 authors="skillfi"
 
 [[dependencies.reincarnation_plus]]
@@ -16,9 +16,6 @@ authors="skillfi"
     versionRange="[1.19.2]"
     ordering="NONE"
     side="BOTH"
-
-
-
 [[dependencies.reincarnation_plus]]
     modId="ManasCore"
     mandatory=false

@@ -77,7 +77,7 @@ public abstract class OgreArmorItem extends ArmorItem {
                 @Override
                 @OnlyIn(Dist.CLIENT)
                 public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-                    HumanoidModel armorModel = new ModelOgre(new ModelPart(Collections.emptyList(), Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).body, "left_arm",
+                    HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).body, "left_arm",
                             new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).left_arm, "right_arm", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).right_arm,
                             "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
@@ -106,7 +106,7 @@ public abstract class OgreArmorItem extends ArmorItem {
 				@Override
                 @OnlyIn(Dist.CLIENT)
                 public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-                    HumanoidModel armorModel = new ModelOgre(new ModelPart(Collections.emptyList(),
+                    HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
                             Map.of("left_leg", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).left_leg, "right_leg",
                                     new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).right_leg, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat",
                                     new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
