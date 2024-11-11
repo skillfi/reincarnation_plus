@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 import java.util.List;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusItems;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 
 @Mod.EventBusSubscriber
 public class TooltipsProcedure {
@@ -32,7 +32,7 @@ public class TooltipsProcedure {
 	private static void execute(@Nullable Event event, ItemStack itemstack, List<Component> tooltip) {
 		if (tooltip == null)
 			return;
-		if (itemstack.getItem() == ReincarnationPlusItems.GEM_STONE.get()) {
+		if (itemstack.getItem() == ReincarnationPlusModItems.GEM_STONE.get()) {
 			if (Screen.hasShiftDown()) {
 				tooltip.add(Component.literal(("Test: " + itemstack.getOrCreateTag().getDouble("Test"))));
 			}

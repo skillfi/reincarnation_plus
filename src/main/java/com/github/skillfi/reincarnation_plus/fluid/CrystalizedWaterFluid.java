@@ -1,6 +1,9 @@
 
 package com.github.skillfi.reincarnation_plus.fluid;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluidTypes;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluids;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import net.minecraft.world.level.material.FluidState;
@@ -8,15 +11,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.LiquidBlock;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusItems;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusFluids;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusFluidTypes;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusBlocks;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 
 public abstract class CrystalizedWaterFluid extends ForgeFlowingFluid {
-	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(() -> ReincarnationPlusFluidTypes.CRYSTALIZED_WATER_TYPE.get(), () -> ReincarnationPlusFluids.CRYSTALIZED_WATER.get(),
-			() -> ReincarnationPlusFluids.FLOWING_CRYSTALIZED_WATER.get()).explosionResistance(100f).bucket(() -> ReincarnationPlusItems.CRYSTALIZED_WATER_BUCKET.get())
-			.block(() -> (LiquidBlock) ReincarnationPlusBlocks.CRYSTALIZED_WATER.get());
+	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(() -> ReincarnationPlusModFluidTypes.CRYSTALIZED_WATER_TYPE.get(), () -> ReincarnationPlusModFluids.CRYSTALIZED_WATER.get(),
+			() -> ReincarnationPlusModFluids.FLOWING_CRYSTALIZED_WATER.get()).explosionResistance(100f).bucket(() -> ReincarnationPlusModItems.CRYSTALIZED_WATER_BUCKET.get())
+			.block(() -> (LiquidBlock) ReincarnationPlusModBlocks.CRYSTALIZED_WATER.get());
 
 	private CrystalizedWaterFluid() {
 		super(PROPERTIES);

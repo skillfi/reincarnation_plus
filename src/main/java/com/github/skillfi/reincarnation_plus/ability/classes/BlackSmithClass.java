@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.ability.classes;
 
 import com.github.skillfi.isekaicore.api.classes.ClassesAPI;
-import com.github.skillfi.reincarnation_plus.ReincarnationPlus;
+import com.github.skillfi.reincarnation_plus.ReincarnationPlusMod;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -25,7 +25,7 @@ public class BlackSmithClass extends  IClass{
         if (e.getEntity() instanceof ServerPlayer player) {
             if (e.getItem().is(Items.APPLE)) {
                 if (ClassesAPI.getClassesFrom(player).learnClass(this)) {
-                    ReincarnationPlus.LOGGER.debug("Unlocked Blacksmith class for player {}", player.getName().getString());
+                    ReincarnationPlusMod.LOGGER.debug("Unlocked Blacksmith class for player {}", player.getName().getString());
                 }
             }
         }

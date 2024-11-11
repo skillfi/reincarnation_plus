@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.block.entity;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlockEntities;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.common.util.LazyOptional;
@@ -25,14 +26,12 @@ import javax.annotation.Nullable;
 
 import java.util.stream.IntStream;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusBlockEntities;
-
 public class GemBlockBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(0, ItemStack.EMPTY);
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
 	public GemBlockBlockEntity(BlockPos position, BlockState state) {
-		super(ReincarnationPlusBlockEntities.GEM_BLOCK.get(), position, state);
+		super(ReincarnationPlusModBlockEntities.GEM_BLOCK.get(), position, state);
 	}
 
 	@Override

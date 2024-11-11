@@ -14,21 +14,21 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(ReincarnationPlus.MODID)
-public class ReincarnationPlus {
+@Mod(ReincarnationPlusMod.MODID)
+public class ReincarnationPlusMod {
     public static final String MODID = "reincarnation_plus";
-    public static final Logger LOGGER = LogManager.getLogger(ReincarnationPlus.MODID);
+    public static final Logger LOGGER = LogManager.getLogger(ReincarnationPlusMod.MODID);
 
-    public ReincarnationPlus() {
+    public ReincarnationPlusMod() {
     	MinecraftForge.EVENT_BUS.register(this);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ReincarnationPlusItems.REGISTRY.register(modEventBus);
-        ReincarnationPlusMenus.REGISTRY.register(modEventBus);
-        ReincarnationPlusBlockEntities.REGISTRY.register(modEventBus);
-        ReincarnationPlusBlocks.REGISTRY.register(modEventBus);
-        ReincarnationPlusFluids.REGISTRY.register(modEventBus);
-        ReincarnationPlusFluidTypes.REGISTRY.register(modEventBus);
-        ReincarnationPlusTabs.load();
+        ReincarnationPlusModItems.REGISTRY.register(modEventBus);
+        ReincarnationPlusModMenus.REGISTRY.register(modEventBus);
+        ReincarnationPlusModBlockEntities.REGISTRY.register(modEventBus);
+        ReincarnationPlusModBlocks.REGISTRY.register(modEventBus);
+        ReincarnationPlusModFluids.REGISTRY.register(modEventBus);
+        ReincarnationPlusModFluidTypes.REGISTRY.register(modEventBus);
+        ReincarnationPlusModTabs.load();
         RPRegistry.register(modEventBus);
         modEventBus.addListener(this::generateData);
         modEventBus.addListener(this::setup);

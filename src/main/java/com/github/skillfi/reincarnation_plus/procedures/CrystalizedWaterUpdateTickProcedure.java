@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,8 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.core.BlockPos;
 
 import java.util.Map;
-
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusBlocks;
 
 public class CrystalizedWaterUpdateTickProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, BlockState blockstate) {
@@ -37,7 +36,7 @@ public class CrystalizedWaterUpdateTickProcedure {
 			if (Math.random() == 0.1) {
 				{
 					BlockPos _bp = new BlockPos(x, y, z);
-					BlockState _bs = ReincarnationPlusBlocks.GEM_BLOCK.get().defaultBlockState();
+					BlockState _bs = ReincarnationPlusModBlocks.GEM_BLOCK.get().defaultBlockState();
 					BlockState _bso = world.getBlockState(_bp);
 					for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
 						Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());

@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -15,8 +16,6 @@ import net.minecraft.core.BlockPos;
 
 import java.util.Map;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusBlocks;
-
 public class GemBlockUpdateTickProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z) {
 		String timerName = "";
@@ -26,7 +25,7 @@ public class GemBlockUpdateTickProcedure {
 		if (!world.isClientSide()) {
 			timerName = "GrowthTimer";
 			randomNumber = 600;
-			stage0 = ReincarnationPlusBlocks.GEM_STAGE_0.get().defaultBlockState();
+			stage0 = ReincarnationPlusModBlocks.GEM_STAGE_0.get().defaultBlockState();
 		}
 		if (!world.isClientSide()) {
 			if (new Object() {

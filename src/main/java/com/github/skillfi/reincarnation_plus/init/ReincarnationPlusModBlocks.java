@@ -4,13 +4,6 @@
  */
 package com.github.skillfi.reincarnation_plus.init;
 
-import com.github.skillfi.reincarnation_plus.ReincarnationPlus;
-import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.DeferredRegister;
-
-import net.minecraft.world.level.block.Block;
-
 import com.github.skillfi.reincarnation_plus.block.GemStoneBlockBlock;
 import com.github.skillfi.reincarnation_plus.block.GemStage4Block;
 import com.github.skillfi.reincarnation_plus.block.GemStage3Block;
@@ -19,9 +12,14 @@ import com.github.skillfi.reincarnation_plus.block.GemStage1Block;
 import com.github.skillfi.reincarnation_plus.block.GemStage0Block;
 import com.github.skillfi.reincarnation_plus.block.GemBlockBlock;
 import com.github.skillfi.reincarnation_plus.block.CrystalizedWaterBlock;
+import com.github.skillfi.reincarnation_plus.ReincarnationPlusMod;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-public class ReincarnationPlusBlocks {
-	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ReincarnationPlus.MODID);
+public class ReincarnationPlusModBlocks {
+	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ReincarnationPlusMod.MODID);
 	public static final RegistryObject<Block> GEM_BLOCK = REGISTRY.register("gem_block", () -> new GemBlockBlock());
 	public static final RegistryObject<Block> GEM_STAGE_0 = REGISTRY.register("gem_stage_0", () -> new GemStage0Block());
 	public static final RegistryObject<Block> GEM_STAGE_1 = REGISTRY.register("gem_stage_1", () -> new GemStage1Block());

@@ -1,0 +1,10 @@
+{
+  "mappings": {
+    "default": {
+      "map": {
+        "0": "ogre_armor_layer_2"
+      },
+      "name": "default"
+    }
+  }
+}

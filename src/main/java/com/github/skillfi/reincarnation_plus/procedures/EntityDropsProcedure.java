@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 
 import javax.annotation.Nullable;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusItems;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 
 @Mod.EventBusSubscriber
 public class EntityDropsProcedure {
@@ -25,7 +25,7 @@ public class EntityDropsProcedure {
 	}
 
 	private static void execute(@Nullable Event event, ItemStack itemstack) {
-		if (itemstack.getItem() == ReincarnationPlusItems.GEM_STONE.get()) {
+		if (itemstack.getItem() == ReincarnationPlusModItems.GEM_STONE.get()) {
 			itemstack.getOrCreateTag().putDouble("Test", (Mth.nextDouble(RandomSource.create(), 1, 5)));
 		}
 	}

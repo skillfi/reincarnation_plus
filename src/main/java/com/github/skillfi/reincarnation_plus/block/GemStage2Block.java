@@ -32,7 +32,7 @@ import net.minecraft.core.BlockPos;
 import java.util.List;
 import java.util.Collections;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusItems;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 import com.github.skillfi.reincarnation_plus.block.entity.GemStage2BlockEntity;
 
 public class GemStage2Block extends Block implements EntityBlock {
@@ -90,7 +90,7 @@ public class GemStage2Block extends Block implements EntityBlock {
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return new ItemStack(ReincarnationPlusItems.GEM_STONE.get());
+		return new ItemStack(ReincarnationPlusModItems.GEM_STONE.get());
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class GemStage2Block extends Block implements EntityBlock {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 		if (!dropsOriginal.isEmpty())
 			return dropsOriginal;
-		return Collections.singletonList(new ItemStack(ReincarnationPlusItems.GEM_STONE.get()));
+		return Collections.singletonList(new ItemStack(ReincarnationPlusModItems.GEM_STONE.get()));
 	}
 
 	@Override

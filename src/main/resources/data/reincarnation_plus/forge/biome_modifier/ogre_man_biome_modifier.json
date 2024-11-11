@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "savanna",
+  "spawners": {
+    "type": "reincarnation_plus:ogre_man",
+    "weight": 20,
+    "minCount": 4,
+    "maxCount": 4
+  }
+}

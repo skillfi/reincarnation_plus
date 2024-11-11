@@ -25,12 +25,11 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.client.Minecraft;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ReincarnationPlusVariables {
+public class ReincarnationPlusModVariables {
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent event) {
 

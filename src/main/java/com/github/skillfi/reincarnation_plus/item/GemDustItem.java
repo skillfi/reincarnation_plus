@@ -1,17 +1,17 @@
 
 package com.github.skillfi.reincarnation_plus.item;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModTabs;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.entity.player.Player;
 
 import com.github.skillfi.reincarnation_plus.procedures.GemDustItemIsDroppedByPlayerProcedure;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusTabs;
 
 public class GemDustItem extends Item {
 	public GemDustItem() {
-		super(new Item.Properties().tab(ReincarnationPlusTabs.TAB_REINCARNATION_PLUS).stacksTo(64).rarity(Rarity.COMMON));
+		super(new Item.Properties().tab(ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS).stacksTo(64).rarity(Rarity.COMMON));
 	}
 
 	@Override

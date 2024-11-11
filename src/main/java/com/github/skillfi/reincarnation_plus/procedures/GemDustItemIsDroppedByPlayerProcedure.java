@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
-import com.github.skillfi.reincarnation_plus.network.ReincarnationPlusVariables;
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
+import com.github.skillfi.reincarnation_plus.network.ReincarnationPlusModVariables;
 import com.github.skillfi.reincarnation_plus.registry.RPClasses;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -19,8 +20,6 @@ import net.minecraft.advancements.Advancement;
 import java.util.Map;
 import java.util.Iterator;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusBlocks;
-
 public class GemDustItemIsDroppedByPlayerProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
 		if (entity == null)
@@ -29,7 +28,7 @@ public class GemDustItemIsDroppedByPlayerProcedure {
 			world.scheduleTick(new BlockPos(x, y, z + 1), world.getBlockState(new BlockPos(x, y, z + 1)).getBlock(), 66);
 			{
 				BlockPos _bp = new BlockPos(x, y, z + 1);
-				BlockState _bs = ReincarnationPlusBlocks.CRYSTALIZED_WATER.get().defaultBlockState();
+				BlockState _bs = ReincarnationPlusModBlocks.CRYSTALIZED_WATER.get().defaultBlockState();
 				BlockState _bso = world.getBlockState(_bp);
 				for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
 					Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
@@ -49,7 +48,7 @@ public class GemDustItemIsDroppedByPlayerProcedure {
 					while (_iterator.hasNext())
 						_player.getAdvancements().award(_adv, (String) _iterator.next());
 				}
-				_player.getCapability(ReincarnationPlusVariables.CAP).ifPresent(cap -> {
+				_player.getCapability(ReincarnationPlusModVariables.CAP).ifPresent(cap -> {
 					cap.learnClass(RPClasses.BLACK_SMITH_CLASS.get());
 					cap.syncPlayer(_player);
 				});

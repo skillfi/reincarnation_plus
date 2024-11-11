@@ -1,6 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.world.inventory;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModMenus;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -25,7 +26,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.github.skillfi.reincarnation_plus.procedures.BlacksmithGemsONGUIOpenedProcedure;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusMenus;
 
 public class BlacksmithGemsMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
 	public final static HashMap<String, Object> guistate = new HashMap<>();
@@ -37,7 +37,7 @@ public class BlacksmithGemsMenu extends AbstractContainerMenu implements Supplie
 	private boolean bound = false;
 
 	public BlacksmithGemsMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-		super(ReincarnationPlusMenus.BLACKSMITH_GEMS.get(), id);
+		super(ReincarnationPlusModMenus.BLACKSMITH_GEMS.get(), id);
 		this.entity = inv.player;
 		this.world = inv.player.level;
 		this.internal = new ItemStackHandler(3);

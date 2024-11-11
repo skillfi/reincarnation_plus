@@ -1,6 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -11,11 +12,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.BlockPos;
 
 import com.github.skillfi.reincarnation_plus.procedures.CrystalizedWaterUpdateTickProcedure;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusFluids;
 
 public class CrystalizedWaterBlock extends LiquidBlock {
 	public CrystalizedWaterBlock() {
-		super(() -> ReincarnationPlusFluids.CRYSTALIZED_WATER.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f).noCollission().noLootTable());
+		super(() -> ReincarnationPlusModFluids.CRYSTALIZED_WATER.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f).noCollission().noLootTable());
 	}
 
 	@Override
