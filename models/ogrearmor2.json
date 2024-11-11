@@ -8,9 +8,9 @@
 	"elements": [
 		{
 			"name": "waist",
-			"from": [3.9, 11.9, 5.9],
-			"to": [14.1, 19.1, 11.1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [9, 15.5, 8.5]},
+			"from": [3.9, 9.9, 5.9],
+			"to": [13.9, 17.9, 9.9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 13.5, 8.5]},
 			"faces": {
 				"north": {"uv": [5.25, 12.5, 7.75, 16], "texture": "#0"},
 				"east": {"uv": [4, 12.5, 5.25, 16], "texture": "#0"},

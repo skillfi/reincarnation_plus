@@ -1,6 +1,11 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
 import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class OgreManOnInitialEntitySpawnProcedure {
 	public static void execute(Entity entity) {

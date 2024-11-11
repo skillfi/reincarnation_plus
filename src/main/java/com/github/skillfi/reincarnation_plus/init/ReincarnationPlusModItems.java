@@ -4,7 +4,7 @@
  */
 package com.github.skillfi.reincarnation_plus.init;
 
-import com.github.skillfi.reincarnation_plus.item.OgreArmor1Item;
+import com.github.skillfi.reincarnation_plus.item.OgreArmorItem;
 import com.github.skillfi.reincarnation_plus.item.GemStoneItem;
 import com.github.skillfi.reincarnation_plus.item.GemDustItem;
 import com.github.skillfi.reincarnation_plus.item.DiamondSwordItem;
@@ -32,8 +32,8 @@ public class ReincarnationPlusModItems {
 	public static final RegistryObject<Item> GEM_STONE_BLOCK = block(ReincarnationPlusModBlocks.GEM_STONE_BLOCK, ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS);
 	public static final RegistryObject<Item> GEM_DUST = REGISTRY.register("gem_dust", () -> new GemDustItem());
 	public static final RegistryObject<Item> CRYSTALIZED_WATER_BUCKET = REGISTRY.register("crystalized_water_bucket", () -> new CrystalizedWaterItem());
-	public static final RegistryObject<Item> OGRE_ARMOR_1_CHESTPLATE = REGISTRY.register("ogre_armor_1_chestplate", () -> new OgreArmor1Item.Chestplate());
-	public static final RegistryObject<Item> OGRE_ARMOR_1_LEGGINGS = REGISTRY.register("ogre_armor_1_leggings", () -> new OgreArmor1Item.Leggings());
+	public static final RegistryObject<Item> OGRE_ARMOR_1_CHESTPLATE = REGISTRY.register("ogre_armor_1_chestplate", () -> new OgreArmorItem.Chestplate());
+	public static final RegistryObject<Item> OGRE_ARMOR_1_LEGGINGS = REGISTRY.register("ogre_armor_1_leggings", () -> new OgreArmorItem.Leggings());
 	public static final RegistryObject<Item> OGRE_MAN_SPAWN_EGG = REGISTRY.register("ogre_man_spawn_egg", () -> new ForgeSpawnEggItem(ReincarnationPlusModEntities.OGRE_MAN, -52378, -1, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {

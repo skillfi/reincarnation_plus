@@ -2,7 +2,7 @@
   "mappings": {
     "default": {
       "map": {
-        "0": "ogre_armor_layer_1"
+        "1": "ogre_armor_layer_1"
       },
       "name": "default"
     }
