@@ -1,5 +1,5 @@
 {
-  "parent": "reincarnation_plus:custom/ogrearmor",
+  "parent": "reincarnation_plus:custom/ogrearmorp1",
   "textures": {
     "0": "reincarnation_plus:blocks/ogre_armor_layer_1",
     "particle": "reincarnation_plus:items/ogre_chestplate"

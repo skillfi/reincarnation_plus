@@ -8,20 +8,28 @@ public class ModelOgre<T extends Entity> extends EntityModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
 			new ResourceLocation("modid", "ogre"), "main");
 	private final ModelPart Body;
+	private final ModelPart Armor;
+	private final ModelPart waist;
 	private final ModelPart LegRight;
 	private final ModelPart LegLeft;
 	private final ModelPart ArmRight;
+	private final ModelPart right_arm;
 	private final ModelPart ArmLeft;
+	private final ModelPart left_arm;
 	private final ModelPart Head;
 	private final ModelPart HornRight;
 	private final ModelPart HornLeft;
 
 	public ModelOgre(ModelPart root) {
 		this.Body = root.getChild("Body");
+		this.Armor = this.Body.getChild("Armor");
+		this.waist = this.Body.getChild("waist");
 		this.LegRight = root.getChild("LegRight");
 		this.LegLeft = root.getChild("LegLeft");
 		this.ArmRight = root.getChild("ArmRight");
+		this.right_arm = this.ArmRight.getChild("right_arm");
 		this.ArmLeft = root.getChild("ArmLeft");
+		this.left_arm = this.ArmLeft.getChild("left_arm");
 		this.Head = root.getChild("Head");
 		this.HornRight = this.Head.getChild("HornRight");
 		this.HornLeft = this.Head.getChild("HornLeft");
@@ -31,9 +39,14 @@ public class ModelOgre<T extends Entity> extends EntityModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition Body = partdefinition.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0)
-				.addBox(-5.0F, -13.0F, -1.0F, 10.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)),
-				PartPose.offset(0.0F, 11.0F, 0.0F));
+		PartDefinition Body = partdefinition.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(
+				-5.0F, -7.0F, -2.0F, 10.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 5.0F, 1.0F));
+
+		PartDefinition Armor = Body.addOrReplaceChild("Armor", CubeListBuilder.create().texOffs(0, 40).addBox(-5.0F,
+				-7.0F, -2.75F, 10.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		PartDefinition waist = Body.addOrReplaceChild("waist", CubeListBuilder.create().texOffs(26, 32).addBox(-5.0F,
+				1.5F, -2.5F, 10.0F, 7.0F, 5.0F, new CubeDeformation(0.1F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition LegRight = partdefinition.addOrReplaceChild("LegRight", CubeListBuilder.create().texOffs(0, 32)
 				.addBox(-3.75F, 4.0F, -2.25F, 5.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(28, 18).mirror()
@@ -47,13 +60,21 @@ public class ModelOgre<T extends Entity> extends EntityModel<T> {
 				PartPose.offset(1.25F, 18.0F, 0.0F));
 
 		PartDefinition ArmRight = partdefinition.addOrReplaceChild("ArmRight", CubeListBuilder.create().texOffs(28, 0)
-				.addBox(-4.0F, -6.0F, -2.0F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)),
-				PartPose.offset(-5.0F, 4.0F, 1.0F));
+				.addBox(-2.0F, -1.0F, -2.0F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(-7.0F, -1.0F, 1.0F));
+
+		PartDefinition right_arm = ArmRight.addOrReplaceChild("right_arm",
+				CubeListBuilder.create().texOffs(31, 32).mirror()
+						.addBox(-2.0F, -1.0F, -2.5F, 4.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition ArmLeft = partdefinition.addOrReplaceChild("ArmLeft",
 				CubeListBuilder.create().texOffs(28, 0).mirror()
 						.addBox(0.0F, -6.0F, -2.0F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false),
 				PartPose.offset(5.0F, 4.0F, 1.0F));
+
+		PartDefinition left_arm = ArmLeft.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(31, 32).addBox(
+				-2.0F, -1.0F, -2.5F, 4.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -5.0F, 0.0F));
 
 		PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 18).addBox(
 				-4.0F, -8.0F, -1.75F, 8.0F, 8.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, 0.0F));
@@ -106,6 +127,6 @@ public class ModelOgre<T extends Entity> extends EntityModel<T> {
 		this.Head.xRot = headPitch / (180F / (float) Math.PI);
 		this.LegLeft.xRot = Mth.cos(limbSwing * 1.0F) * -1.0F * limbSwingAmount;
 		this.ArmRight.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * limbSwingAmount;
-		this.LegRight.xRot = Mth.cos(limbSwing * 1.0F) * 1.0F * limbSwingAmount;
+		this.LegRight.yRot = Mth.cos(limbSwing * 1.0F) * 1.0F * limbSwingAmount;
 	}
 }
