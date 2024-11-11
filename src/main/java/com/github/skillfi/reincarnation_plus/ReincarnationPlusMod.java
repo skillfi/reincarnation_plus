@@ -28,6 +28,7 @@ public class ReincarnationPlusMod {
         ReincarnationPlusModBlocks.REGISTRY.register(modEventBus);
         ReincarnationPlusModFluids.REGISTRY.register(modEventBus);
         ReincarnationPlusModFluidTypes.REGISTRY.register(modEventBus);
+        ReincarnationPlusModEntities.REGISTRY.register(modEventBus);
         ReincarnationPlusModTabs.load();
         RPRegistry.register(modEventBus);
         modEventBus.addListener(this::generateData);
