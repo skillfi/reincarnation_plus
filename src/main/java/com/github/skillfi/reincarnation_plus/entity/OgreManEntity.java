@@ -31,8 +31,8 @@ public class OgreManEntity extends PathfinderMob {
 		maxUpStep = 0.6f;
 		xpReward = 0;
 		setNoAi(false);
-		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ReincarnationPlusModItems.OGRE_ARMOR_1_CHESTPLATE.get()));
-		this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ReincarnationPlusModItems.OGRE_ARMOR_1_LEGGINGS.get()));
+		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ReincarnationPlusModItems.OGRE_ARMOR_CHESTPLATE.get()));
+		this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ReincarnationPlusModItems.OGRE_ARMOR_LEGGINGS.get()));
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.github.skillfi.reincarnation_plus.item;
 import com.github.skillfi.reincarnation_plus.client.model.ModelOgre;
 import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModTabs;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -73,9 +74,10 @@ public abstract class OgreArmorItem extends ArmorItem {
         @Override
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new IClientItemExtensions() {
+                @Override
                 @OnlyIn(Dist.CLIENT)
-                public ModelOgre getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, ModelOgre defaultModel) {
-                    ModelOgre armorModel = new ModelOgre(new ModelPart(Collections.emptyList(), Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).body, "left_arm",
+                public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+                    HumanoidModel armorModel = new ModelOgre(new ModelPart(Collections.emptyList(), Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).body, "left_arm",
                             new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).left_arm, "right_arm", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).right_arm,
                             "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
@@ -89,22 +91,22 @@ public abstract class OgreArmorItem extends ArmorItem {
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "reincarnation_plus:textures/models/armor/ogre_armor__layer_1.png";
+            return "reincarnation_plus:textures/entities/ogre_armor_layer_1.png";
         }
     }
 
     public static class Leggings extends OgreArmorItem {
         public Leggings() {
-            super(EquipmentSlot.LEGS, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.LEGS, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS));
         }
 
         @Override
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new IClientItemExtensions() {
-
+				@Override
                 @OnlyIn(Dist.CLIENT)
-                public ModelOgre getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, ModelOgre defaultModel) {
-                    ModelOgre armorModel = new ModelOgre(new ModelPart(Collections.emptyList(),
+                public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+                    HumanoidModel armorModel = new ModelOgre(new ModelPart(Collections.emptyList(),
                             Map.of("left_leg", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).left_leg, "right_leg",
                                     new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).right_leg, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat",
                                     new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -119,7 +121,7 @@ public abstract class OgreArmorItem extends ArmorItem {
 
         @Override
         public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-            return "reincarnation_plus:textures/models/armor/ogre_armor__layer_2.png";
+            return "reincarnation_plus:textures/entities/ogre_armor_layer_2.png";
         }
     }
 }
