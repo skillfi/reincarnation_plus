@@ -1,12 +1,25 @@
 
 package com.github.skillfi.reincarnation_plus.entity;
 
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.sounds.SoundEvent;
 
 import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModEntities;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class OgreManEntity extends PathfinderMob {
 	public OgreManEntity(PlayMessages.SpawnEntity packet, Level world) {

@@ -1,6 +1,10 @@
 
 package com.github.skillfi.reincarnation_plus.item;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 import java.util.function.Consumer;
@@ -9,6 +13,18 @@ import java.util.Collections;
 
 import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModTabs;
 import com.github.skillfi.reincarnation_plus.client.model.ModelOgre;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class OgreArmor1Item extends ArmorItem {
 	public OgreArmor1Item(EquipmentSlot slot, Item.Properties properties) {
@@ -57,7 +73,7 @@ public abstract class OgreArmor1Item extends ArmorItem {
 
 	public static class Chestplate extends OgreArmor1Item {
 		public Chestplate() {
-			super(EquipmentSlot.CHEST, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_ISEKAI_QUARTET));
+			super(EquipmentSlot.CHEST, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS));
 		}
 
 		@Override
@@ -86,7 +102,7 @@ public abstract class OgreArmor1Item extends ArmorItem {
 
 	public static class Leggings extends OgreArmor1Item {
 		public Leggings() {
-			super(EquipmentSlot.LEGS, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_ISEKAI_QUARTET));
+			super(EquipmentSlot.LEGS, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS));
 		}
 
 		@Override
