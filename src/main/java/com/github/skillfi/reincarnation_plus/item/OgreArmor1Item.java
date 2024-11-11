@@ -1,6 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.item;
 
+import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModTabs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -78,11 +79,10 @@ public abstract class OgreArmor1Item extends ArmorItem {
 				@Override
 				@OnlyIn(Dist.CLIENT)
 				public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
-							Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body, "left_arm",
-									new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body, "right_arm", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body,
-									"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg",
-									new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("body", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body, "left_arm",
+							new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).ArmLeft, "right_arm", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).ArmRight,
+							"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
 					armorModel.young = living.isBaby();
@@ -99,7 +99,7 @@ public abstract class OgreArmor1Item extends ArmorItem {
 
 	public static class Leggings extends OgreArmor1Item {
 		public Leggings() {
-			super(EquipmentSlot.LEGS, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
+			super(EquipmentSlot.LEGS, new Item.Properties().tab(ReincarnationPlusModTabs.TAB_REINCARNATION_PLUS));
 		}
 
 		@Override
@@ -109,8 +109,8 @@ public abstract class OgreArmor1Item extends ArmorItem {
 				@OnlyIn(Dist.CLIENT)
 				public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
-							Map.of("left_leg", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body, "right_leg",
-									new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).Body, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat",
+							Map.of("left_leg", new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).LegLeft, "right_leg",
+									new ModelOgre(Minecraft.getInstance().getEntityModels().bakeLayer(ModelOgre.LAYER_LOCATION)).LegRight, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat",
 									new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 									"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
 					armorModel.crouching = living.isShiftKeyDown();
