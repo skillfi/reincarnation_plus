@@ -32,3 +32,5 @@ lib
 run
 .settings
 .idea
+.classpath
+.project
