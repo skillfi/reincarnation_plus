@@ -16,7 +16,7 @@ public class ForgeHooksClient {
     }
 
     public static <T extends LivingEntity> void copyModelProperties(ModelOgre<T> original, ModelOgre<?> replacement) {
-        original.copyPropertiesTo((EntityModel<T>) replacement);
+        original.copyPropertiesTo((ModelOgre<T>) replacement);
         replacement.Head.visible = original.Head.visible;
         replacement.Body.visible = original.Body.visible;
         replacement.ArmRight.visible = original.ArmRight.visible;

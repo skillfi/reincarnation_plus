@@ -139,6 +139,7 @@ dependencies {
 
     //IsekaiCore
     implementation fg.deobf("blank:${isekaiCoreModId}:${isekaiCoreVersion}")
+//    implementation fg.deobf("blank:TTIGRAAS:1.19-1.0")
 }
 
 mixin {
