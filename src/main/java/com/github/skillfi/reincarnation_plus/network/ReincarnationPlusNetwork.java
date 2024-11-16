@@ -18,6 +18,6 @@ public class ReincarnationPlusNetwork {
     public static void  register(){
         int i = 0;
 
-        INSTANCE.registerMessage(++i, ReincarnationPlusModVariables.PlayerVariablesSyncMessage.class, ReincarnationPlusModVariables.PlayerVariablesSyncMessage::buffer, ReincarnationPlusModVariables.PlayerVariablesSyncMessage::new, ReincarnationPlusModVariables.PlayerVariablesSyncMessage::handler);
+        INSTANCE.registerMessage(++i, RPlusVariables.PlayerVariablesSyncMessage.class, RPlusVariables.PlayerVariablesSyncMessage::buffer, RPlusVariables.PlayerVariablesSyncMessage::new, RPlusVariables.PlayerVariablesSyncMessage::handler);
     }
 }

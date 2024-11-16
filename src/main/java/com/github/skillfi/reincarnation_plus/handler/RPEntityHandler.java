@@ -6,7 +6,6 @@ import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.entity.OgreEntity;
 import com.github.skillfi.reincarnation_plus.init.RPEntities;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;

@@ -15,6 +15,7 @@ import com.github.manasmods.tensura.registry.skill.CommonSkills;
 import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.registry.sound.TensuraSoundEvents;
+import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.entity.variant.OgreVariant;
 import com.github.skillfi.reincarnation_plus.entity.variant.OgreVariant.Gender;
 import com.github.skillfi.reincarnation_plus.init.RPEntities;
@@ -47,6 +48,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
+import org.stringtemplate.v4.ST;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -72,11 +74,13 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     private static final EntityDataAccessor<Integer> OGRE_VARIANT = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> EVOLUTION_STATE;
     private static final EntityDataAccessor<Integer> GENDER;
+    private static final EntityDataAccessor<Integer> STYLE;
     private static final EntityDataAccessor<Integer> EVOLVE_STATE = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
 
     static {
         EVOLUTION_STATE = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
         GENDER = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
+        STYLE = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
         MISC_ANIMATION = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
     }
 
@@ -162,6 +166,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.entityData.define(EVOLVE_STATE, 0);
         this.entityData.define(OGRE_VARIANT, 0);
         this.entityData.define(GENDER, 0);
+        this.entityData.define(STYLE, 0);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -169,6 +174,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.setCurrentEvolutionState(compound.getInt("EvoState"));
         this.entityData.set(MISC_ANIMATION, compound.getInt("MiscAnimation"));
         this.entityData.set(GENDER, compound.getInt("Gender"));
+        this.entityData.set(STYLE, compound.getInt("Style"));
         this.entityData.set(EVOLVE_STATE, compound.getInt("Evolution"));
     }
 
@@ -179,6 +185,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         compoundTag.put("Inventory", this.ogreInventory.createTag());
         compoundTag.putInt("EvoState", this.getCurrentEvolutionState());
         compoundTag.putInt("Gender", this.entityData.get(GENDER));
+        compoundTag.putInt("Style", this.entityData.get(STYLE));
         compoundTag.putInt("Evolution", this.getEvolutionState().getId());
     }
 
@@ -287,9 +294,9 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 switch (pSlot) {
                     case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
                     case CHEST ->
-                            var10000 = pChance == 2 ? RPItems.LEATHER_CHESTPLATE.get() : (pChance == 4 ? Items.CHAINMAIL_CHESTPLATE : null);
+                            var10000 = RPItems.LEATHER_CHESTPLATE.get();
                     case LEGS ->
-                            var10000 = pChance == 2 ? RPItems.LEATHER_LEGGINGS.get() : (pChance == 4 ? Items.CHAINMAIL_LEGGINGS : null);
+                            var10000 = RPItems.LEATHER_LEGGINGS.get();
                     case FEET ->
                             var10000 = pChance == 2 ? Items.LEATHER_BOOTS : (pChance == 4 ? Items.CHAINMAIL_BOOTS : null);
                     default -> var10000 = null;
@@ -299,11 +306,11 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 switch (pSlot) {
                     case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
                     case CHEST ->
-                            var10000 = pChance == 2 ? RPItems.JACKET_ARMOR.get() : (pChance == 4 ? Items.CHAINMAIL_CHESTPLATE : null);
+                            var10000 = RPItems.JACKET_ARMOR.get();
                     case LEGS ->
-                            var10000 = pChance == 2 ? RPItems.LEATHER_WOMAN_LEGGINGS.get() : (pChance == 4 ? Items.CHAINMAIL_LEGGINGS : null);
+                            var10000 = RPItems.LEATHER_WOMAN_LEGGINGS.get();
                     case FEET ->
-                            var10000 = pChance == 2 ? RPItems.SANDALS.get() : (pChance == 4 ? Items.CHAINMAIL_BOOTS : null);
+                            var10000 = RPItems.SANDALS.get();
                     default -> var10000 = null;
                 }
             }
@@ -311,11 +318,11 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 switch (pSlot) {
                     case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
                     case CHEST ->
-                            var10000 = pChance == 2 ? RPItems.KIMONO.get() : (pChance == 4 ? Items.CHAINMAIL_CHESTPLATE : null);
+                            var10000 = RPItems.KIMONO.get();
                     case LEGS ->
-                            var10000 = pChance == 2 ? RPItems.YUKATA.get() : (pChance == 4 ? Items.CHAINMAIL_LEGGINGS : null);
+                            var10000 = RPItems.YUKATA.get();
                     case FEET ->
-                            var10000 = pChance == 2 ? RPItems.SANDALS.get() : (pChance == 4 ? Items.CHAINMAIL_BOOTS : null);
+                            var10000 = RPItems.SANDALS.get();
                     default -> var10000 = null;
                 }
             }
@@ -392,7 +399,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                     this.gainAttackDamage(this, WICKED_ONI.getATTACK_DAMAGE());
                 }
                 case 5: {
-                    storage.learnSkill((ManasSkill) CommonSkills.SELF_REGENERATION.get());
+                    storage.learnSkill((ManasSkill) ExtraSkills.ULTRASPEED_REGENERATION.get());
                     storage.learnSkill((ManasSkill) UniqueSkills.MARTIAL_MASTER.get());
                     this.gainMovementSpeed(this, divineFighter.getMovementSpeed());
                     this.gainSwimSpeed(this, 15.0F);
@@ -467,8 +474,16 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return Gender.byId(this.entityData.get(GENDER));
     }
 
+    public OgreVariant.Style getStyle(){
+        return OgreVariant.Style.byId(this.entityData.get(STYLE));
+    }
+
     public void setGender(int gender) {
         this.entityData.set(GENDER, gender);
+    }
+
+    public void setStyle(int style) {
+        this.entityData.set(STYLE, style);
     }
 
     protected void hurtCurrentlyUsedShield(float damage) {
@@ -494,11 +509,13 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.populateDefaultEquipmentSlots(this.random, pDifficulty);
         this.randomTexture();
+        RPMod.LOGGER.debug("Ogre spawned at " + this.blockPosition().getX() + ", " + this.blockPosition().getY() + ", " + this.blockPosition().getZ());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     private void randomTexture() {
         this.setGender(this.random.nextInt(3));
+        this.setStyle(this.random.nextInt(3));
     }
 
     public float getScale() {
@@ -578,13 +595,5 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    public static class EntitySpawnData implements SpawnGroupData {
-        public final int variantData;
-
-        public EntitySpawnData(int type) {
-            this.variantData = type;
-        }
     }
 }

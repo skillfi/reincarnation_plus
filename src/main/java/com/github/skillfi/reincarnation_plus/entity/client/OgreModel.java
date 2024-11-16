@@ -10,7 +10,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class OgreModel<T extends OgreEntity> extends AnimatedGeoModel<T> {
     @Override
     public ResourceLocation getModelResource(T enity) {
-        return (ResourceLocation) OgreVariant.Gender.LOCATION_BY_VARIANT.get(enity.getGender());
+        return (ResourceLocation) OgreVariant.Gender.getModelLocation(enity);
     }
 
     @Override

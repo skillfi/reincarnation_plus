@@ -25,11 +25,6 @@ public class OgreVariant {
         private static final Gender[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Gender::getId)).toArray((x$0) -> new Gender[x$0]);
         private final int id;
         private final String location;
-        public static final Map<Gender, ResourceLocation> LOCATION_BY_VARIANT = Util.make(Maps.newEnumMap(Gender.class), (variant) -> {
-            variant.put(MALE, new ResourceLocation(RPMod.MODID, "geo/ogre_male.geo.json"));
-            variant.put(FEMALE, new ResourceLocation(RPMod.MODID, "geo/ogre_female.geo.json"));
-            variant.put(SMALL_FEMALE, new ResourceLocation(RPMod.MODID, "geo/ogre_small_female.geo.json"));
-        });
 
         Gender(int id, String location) {
             this.id = id;
@@ -46,6 +41,42 @@ public class OgreVariant {
 
         public String getLocation() {
             return this.location;
+        }
+
+        public static ResourceLocation getModelLocation(OgreEntity entity) {
+            String gender = entity.getGender().getLocation();
+            String evolution = entity.getEvolutionState().getLocation();
+            String modified_evolution = evolution.substring(0, evolution.length() -1);
+
+            return new ResourceLocation(RPMod.MODID, "geo/entity/" + evolution + "/" + gender + "/" + modified_evolution + "_" + gender + ".geo.json");
+        }
+    }
+
+    public enum Style{
+
+        DEFAULT(0, "default"),
+        WHITE(1, "white"),
+        BLUE(2, "blue");
+
+        private static final Style[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Style::getId)).toArray((x$0) -> new Style[x$0]);
+
+        private final int id;
+        private final String location;
+        Style(int id, String name) {
+            this.id = id;
+            this.location = name;
+        }
+
+        public int getId() {
+            return this.id;
+        }
+
+        public String getLocation() {
+            return this.location;
+        }
+
+        public static Style byId(int id) {
+            return BY_ID[id % BY_ID.length];
         }
     }
 
@@ -68,7 +99,8 @@ public class OgreVariant {
             String gender = entity.getGender().getLocation();
             String evolution = entity.getEvolutionState().getLocation();
             String modified_evolution = evolution.substring(0, evolution.length() -1);
-            return new ResourceLocation(RPMod.MODID, "textures/entity/" + evolution + "/" + gender + "/" + modified_evolution + "_" + gender + ".png");
+            String style = entity.getStyle().getLocation();
+            return new ResourceLocation(RPMod.MODID, "textures/entity/" + evolution + "/" + gender + "/" + modified_evolution + "_" + gender + "_" +style + ".png");
         }
 
         public static Skin byId(int id) {

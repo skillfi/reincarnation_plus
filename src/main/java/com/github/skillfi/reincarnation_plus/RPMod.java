@@ -1,5 +1,7 @@
 package com.github.skillfi.reincarnation_plus;
 
+
+import com.github.skillfi.reincarnation_plus.config.SpawnRateConfig;
 import com.github.skillfi.reincarnation_plus.data.gen.RPEntityEPProvider;
 import com.github.skillfi.reincarnation_plus.data.gen.RPEntityTypeTagProvider;
 import com.github.skillfi.reincarnation_plus.data.gen.RPGearEpProvider;
@@ -38,6 +40,7 @@ public class RPMod {
     public RPMod() {
         FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(CONFIG_DIR), CONFIG_DIR);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RPConfig.COMMON_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SpawnRateConfig.SPEC, this.getConfigFileName("spawnrate-common"));
     	MinecraftForge.EVENT_BUS.register(this);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         RPItems.ITEMS.register(modEventBus);
@@ -76,5 +79,9 @@ public class RPMod {
 
             EntityRenderers.register(RPEntities.OGRE.get(), OgreRenderer::new);
         }
+    }
+
+    private String getConfigFileName(String name) {
+        return String.format("%s/%s.toml", "reincarnation-plus", name);
     }
 }

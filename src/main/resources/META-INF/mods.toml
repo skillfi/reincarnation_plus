@@ -4,11 +4,10 @@ license="Academic Free License v3.0"
 
 [[mods]]
 modId="reincarnation_plus"
-version="1.0.0.1"
-displayName="Reincarnation +"
-credits=""
-description = "Added Ogres with his evolution"
-displayURL=""
+version="0.0.2"
+displayName="Isekai: Quartet"
+credits="Created using mod maker MCreator - https://mcreator.net/about"
+displayURL="https://mcreator.net"
 authors="skillfi"
 
 [[dependencies.reincarnation_plus]]
@@ -17,10 +16,19 @@ authors="skillfi"
     versionRange="[1.19.2]"
     ordering="NONE"
     side="BOTH"
+
+
+
 [[dependencies.reincarnation_plus]]
-    modId="manascore"
-    mandatory=true
-    versionRange="[2.0.15.0,)"
+    modId="ManasCore"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.reincarnation_plus]]
+    modId="IsekaiCore"
+    mandatory=false
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.reincarnation_plus]]
