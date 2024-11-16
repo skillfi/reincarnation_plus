@@ -1,6 +1,5 @@
 package com.github.skillfi.reincarnation_plus.network;
 
-import com.github.skillfi.isekaicore.capability.classes.InternalClassStorage;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -72,8 +71,6 @@ public class ReincarnationPlusModVariables {
 	}
 
 	public static final Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = CapabilityManager.get(new CapabilityToken<PlayerVariables>() {
-	});
-	public static final Capability<InternalClassStorage> CAP = CapabilityManager.get(new CapabilityToken<>() {
 	});
 
 	@Mod.EventBusSubscriber

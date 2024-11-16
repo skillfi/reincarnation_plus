@@ -1,15 +1,11 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
-import com.github.skillfi.reincarnation_plus.network.ReincarnationPlusModVariables;
-import com.github.skillfi.reincarnation_plus.registry.RPClasses;
+import com.github.skillfi.reincarnation_plus.init.RPBlocks;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
@@ -17,56 +13,57 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.Advancement;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
 
 public class GemDustItemIsDroppedByPlayerProcedure {
-	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+
+	public static List<BlockPos> getPositionsInRadius(BlockPos center, int radius) {
+		List<BlockPos> positions = new ArrayList<>();
+
+		for (int x = -radius; x <= radius; x++) {
+			for (int y = -radius; y <= radius; y++) {
+				for (int z = -radius; z <= radius; z++) {
+					BlockPos pos = center.offset(x, y, z);
+					positions.add(pos);
+				}
+			}
+		}
+		return positions;
+	}
+
+	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack stack) {
 		if (entity == null)
 			return;
-		if ((world.getBlockState(new BlockPos(x, y, z + 1))).getBlock() instanceof LiquidBlock) {
-			world.scheduleTick(new BlockPos(x, y, z + 1), world.getBlockState(new BlockPos(x, y, z + 1)).getBlock(), 66);
-			{
-				BlockPos _bp = new BlockPos(x, y, z + 1);
-				BlockState _bs = ReincarnationPlusModBlocks.CRYSTALIZED_WATER.get().defaultBlockState();
-				BlockState _bso = world.getBlockState(_bp);
-				for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
-					Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
-					if (_property != null && _bs.getValue(_property) != null)
-						try {
-							_bs = _bs.setValue(_property, (Comparable) entry.getValue());
-						} catch (Exception e) {
-						}
+		BlockPos blockPos = new BlockPos(x, y, z);
+		List<BlockPos> positions = getPositionsInRadius(blockPos, 3);
+		for (BlockPos pos : positions) {
+			if ((world.getBlockState(pos)).getBlock() instanceof LiquidBlock water){
+				world.scheduleTick(pos, world.getBlockState(pos).getBlock(), 66);
+				{
+					BlockState _bs = RPBlocks.CRYSTALIZED_WATER.get().defaultBlockState();
+					BlockState _bso = world.getBlockState(pos);
+					for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
+						Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
+						if (_property != null && _bs.getValue(_property) != null)
+							try {
+								_bs = _bs.setValue(_property, (Comparable) entry.getValue());
+							}catch (Exception e) {
+							}
+					}
+					world.setBlock(pos, _bs, 3);
 				}
-				world.setBlock(_bp, _bs, 3);
-			}
-			if (entity instanceof ServerPlayer _player) {
-				Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("reincarnation_plus:black_smith"));
-				AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
-				if (!_ap.isDone()) {
-					Iterator _iterator = _ap.getRemainingCriteria().iterator();
-					while (_iterator.hasNext())
-						_player.getAdvancements().award(_adv, (String) _iterator.next());
+				if (entity instanceof ServerPlayer _player) {
+					Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("reincarnation_plus:black_smith"));
+					AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+					if (!_ap.isDone()) {
+						Iterator _iterator = _ap.getRemainingCriteria().iterator();
+						while (_iterator.hasNext())
+							_player.getAdvancements().award(_adv, (String) _iterator.next());
+					}
 				}
-				_player.getCapability(ReincarnationPlusModVariables.CAP).ifPresent(cap -> {
-					cap.learnClass(RPClasses.BLACK_SMITH_CLASS.get());
-					cap.syncPlayer(_player);
-				});
-			}
-			if (!world.isClientSide()) {
-				BlockPos _bp = new BlockPos(x, y, z + 1);
-				BlockEntity _blockEntity = world.getBlockEntity(_bp);
-				BlockState _bs = world.getBlockState(_bp);
-				if (_blockEntity != null)
-					_blockEntity.getPersistentData().putDouble("Tick", 0);
-				if (world instanceof Level _level)
-					_level.sendBlockUpdated(_bp, _bs, _bs, 3);
-			}
-			{
-				BlockPos _pos = new BlockPos(x, y, z + 1);
-				BlockState _bs = world.getBlockState(_pos);
-				if (_bs.getBlock().getStateDefinition().getProperty("Crystalization") instanceof BooleanProperty _booleanProp)
-					world.setBlock(_pos, _bs.setValue(_booleanProp, true), 3);
 			}
 		}
 	}

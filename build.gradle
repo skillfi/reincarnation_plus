@@ -127,19 +127,15 @@ dependencies {
     }
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinExtrasVersion}"))
     implementation("io.github.llamalad7:mixinextras-forge:${mixinExtrasVersion}")
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.38')
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Tensura
-//    implementation fg.deobf("com.github.manasmods:TensuraMod:${minecraftVersion}-${tensuraVersion}")
+    implementation fg.deobf("blank:tensura:${minecraftVersion}-${tensuraVersion}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraftVersion}-${terraBlenderVersion}")
-
-    //IsekaiCore
-    implementation fg.deobf("blank:${isekaiCoreModId}:${isekaiCoreVersion}")
-//    implementation fg.deobf("blank:TTIGRAAS:1.19-1.0")
 }
 
 mixin {

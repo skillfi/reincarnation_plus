@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "reincarnation_plus:items/woman_skirt"
+  }
+}

@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
+import com.github.skillfi.reincarnation_plus.init.RPBlocks;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,21 +33,21 @@ public class CrystalizedWaterUpdateTickProcedure {
 				if (world instanceof Level _level)
 					_level.sendBlockUpdated(_bp, _bs, _bs, 3);
 			}
-			if (Math.random() == 0.1) {
-				{
-					BlockPos _bp = new BlockPos(x, y, z);
-					BlockState _bs = ReincarnationPlusModBlocks.GEM_BLOCK.get().defaultBlockState();
-					BlockState _bso = world.getBlockState(_bp);
-					for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
-						Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
-						if (_property != null && _bs.getValue(_property) != null)
-							try {
-								_bs = _bs.setValue(_property, (Comparable) entry.getValue());
-							} catch (Exception e) {
-							}
-					}
-					world.setBlock(_bp, _bs, 3);
+
+			// Шанс 1% на перетворення кристальної води в блок дорогоцінного каміння
+			if (Math.random() < 0.01) { // 1% шанс
+				BlockPos _bp = new BlockPos(x, y, z);
+				BlockState _bs = RPBlocks.GEMS_BLOCK.get().defaultBlockState();
+				BlockState _bso = world.getBlockState(_bp);
+				for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
+					Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
+					if (_property != null && _bs.getValue(_property) != null)
+						try {
+							_bs = _bs.setValue(_property, (Comparable) entry.getValue());
+						} catch (Exception e) {
+						}
 				}
+				world.setBlock(_bp, _bs, 3);
 			}
 		}
 	}

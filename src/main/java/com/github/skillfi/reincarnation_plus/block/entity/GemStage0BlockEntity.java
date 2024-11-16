@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.block.entity;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlockEntities;
+import com.github.skillfi.reincarnation_plus.init.RPBlockEntities;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.common.util.LazyOptional;
@@ -31,7 +31,7 @@ public class GemStage0BlockEntity extends RandomizableContainerBlockEntity imple
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
 	public GemStage0BlockEntity(BlockPos position, BlockState state) {
-		super(ReincarnationPlusModBlockEntities.GEM_STAGE_0.get(), position, state);
+		super(RPBlockEntities.GEM_STAGE_0.get(), position, state);
 	}
 
 	@Override

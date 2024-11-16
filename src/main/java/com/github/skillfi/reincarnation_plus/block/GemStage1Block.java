@@ -1,6 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
+import com.github.skillfi.reincarnation_plus.init.RPItems;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -32,7 +33,6 @@ import net.minecraft.core.BlockPos;
 import java.util.List;
 import java.util.Collections;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 import com.github.skillfi.reincarnation_plus.block.entity.GemStage1BlockEntity;
 
 public class GemStage1Block extends Block implements EntityBlock {
@@ -90,7 +90,7 @@ public class GemStage1Block extends Block implements EntityBlock {
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return new ItemStack(ReincarnationPlusModItems.GEM_STONE.get());
+		return new ItemStack(RPItems.GEM_STONE.get());
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class GemStage1Block extends Block implements EntityBlock {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 		if (!dropsOriginal.isEmpty())
 			return dropsOriginal;
-		return Collections.singletonList(new ItemStack(ReincarnationPlusModItems.GEM_STONE.get()));
+		return Collections.singletonList(new ItemStack(RPItems.GEM_STONE.get()));
 	}
 
 	@Override

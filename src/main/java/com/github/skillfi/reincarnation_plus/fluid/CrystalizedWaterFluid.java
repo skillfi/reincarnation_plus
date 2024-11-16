@@ -1,9 +1,9 @@
 
 package com.github.skillfi.reincarnation_plus.fluid;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluidTypes;
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluids;
+import com.github.skillfi.reincarnation_plus.init.RPBlocks;
+import com.github.skillfi.reincarnation_plus.init.RPFluids;
+import com.github.skillfi.reincarnation_plus.init.RPFluidTypes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import net.minecraft.world.level.material.FluidState;
@@ -11,12 +11,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.LiquidBlock;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
+import com.github.skillfi.reincarnation_plus.init.RPItems;
 
 public abstract class CrystalizedWaterFluid extends ForgeFlowingFluid {
-	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(() -> ReincarnationPlusModFluidTypes.CRYSTALIZED_WATER_TYPE.get(), () -> ReincarnationPlusModFluids.CRYSTALIZED_WATER.get(),
-			() -> ReincarnationPlusModFluids.FLOWING_CRYSTALIZED_WATER.get()).explosionResistance(100f).bucket(() -> ReincarnationPlusModItems.CRYSTALIZED_WATER_BUCKET.get())
-			.block(() -> (LiquidBlock) ReincarnationPlusModBlocks.CRYSTALIZED_WATER.get());
+	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(() -> RPFluidTypes.CRYSTALIZED_WATER_TYPE.get(), () -> RPFluids.CRYSTALIZED_WATER.get(),
+			() -> RPFluids.FLOWING_CRYSTALIZED_WATER.get()).explosionResistance(100f).bucket(() -> RPItems.CRYSTALIZED_WATER_BUCKET.get())
+			.block(() -> (LiquidBlock) RPBlocks.CRYSTALIZED_WATER.get());
 
 	private CrystalizedWaterFluid() {
 		super(PROPERTIES);

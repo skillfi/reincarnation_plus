@@ -1,7 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModFluids;
+import com.github.skillfi.reincarnation_plus.init.RPFluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -15,7 +15,7 @@ import com.github.skillfi.reincarnation_plus.procedures.CrystalizedWaterUpdateTi
 
 public class CrystalizedWaterBlock extends LiquidBlock {
 	public CrystalizedWaterBlock() {
-		super(() -> ReincarnationPlusModFluids.CRYSTALIZED_WATER.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f).noCollission().noLootTable());
+		super(() -> RPFluids.CRYSTALIZED_WATER.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f).noCollission().noLootTable());
 	}
 
 	@Override

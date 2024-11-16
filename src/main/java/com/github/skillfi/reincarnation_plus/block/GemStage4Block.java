@@ -1,6 +1,13 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
+import com.github.skillfi.reincarnation_plus.api.gem.GemType;
+import com.github.skillfi.reincarnation_plus.api.gem.PolishingType;
+import com.github.skillfi.reincarnation_plus.block.entity.GemStoneEntity;
+import com.github.skillfi.reincarnation_plus.init.RPItems;
+import com.github.skillfi.reincarnation_plus.item.GemStoneItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -30,16 +37,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 import java.util.List;
-import java.util.Collections;
-
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
-import com.github.skillfi.reincarnation_plus.block.entity.GemStage4BlockEntity;
 
 public class GemStage4Block extends Block implements EntityBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-	public GemStage4Block() {
+	public PolishingType polishing;
+	public GemType type;
+
+	public GemStage4Block(GemType type, PolishingType polishing) {
 		super(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.EMERALD).sound(SoundType.GLASS).strength(0.5f, 10f).requiresCorrectToolForDrops().noCollission().friction(0.9f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
+		this.type = type;
+		this.polishing = polishing;
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
@@ -78,7 +86,7 @@ public class GemStage4Block extends Block implements EntityBlock {
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return new ItemStack(ReincarnationPlusModItems.GEM_STONE.get());
+		return new ItemStack(RPItems.GEM_STONE.get());
 	}
 
 	@Override
@@ -90,10 +98,21 @@ public class GemStage4Block extends Block implements EntityBlock {
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-		if (!dropsOriginal.isEmpty())
-			return dropsOriginal;
-		return Collections.singletonList(new ItemStack(ReincarnationPlusModItems.GEM_STONE.get()));
+		List<ItemStack> items = super.getDrops(state, builder);
+		BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (blockEntity instanceof GemStoneEntity gemStoneEntity) {
+			for (ItemStack stack : items) {
+				if (stack.getItem() instanceof GemStoneItem) {
+					CompoundTag tag = gemStoneEntity.getGemItem().copy().getOrCreateTag();
+					if (tag.equals(new CompoundTag())){
+						tag.putBoolean("randomStats", true);
+					}
+					stack.setTag(tag);
+					gemStoneEntity.saveAdditional(tag);
+				}
+			}
+		}
+		return items;
 	}
 
 	@Override
@@ -104,7 +123,7 @@ public class GemStage4Block extends Block implements EntityBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new GemStage4BlockEntity(pos, state);
+		return new GemStoneEntity(pos, state);
 	}
 
 	@Override

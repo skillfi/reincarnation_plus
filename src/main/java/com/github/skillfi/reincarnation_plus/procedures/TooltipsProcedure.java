@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
+import com.github.skillfi.reincarnation_plus.init.RPItems;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -14,8 +15,6 @@ import net.minecraft.client.gui.screens.Screen;
 import javax.annotation.Nullable;
 
 import java.util.List;
-
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModItems;
 
 @Mod.EventBusSubscriber
 public class TooltipsProcedure {
@@ -32,7 +31,7 @@ public class TooltipsProcedure {
 	private static void execute(@Nullable Event event, ItemStack itemstack, List<Component> tooltip) {
 		if (tooltip == null)
 			return;
-		if (itemstack.getItem() == ReincarnationPlusModItems.GEM_STONE.get()) {
+		if (itemstack.getItem() == RPItems.GEM_STONE.get()) {
 			if (Screen.hasShiftDown()) {
 				tooltip.add(Component.literal(("Test: " + itemstack.getOrCreateTag().getDouble("Test"))));
 			}

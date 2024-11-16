@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.procedures;
 
-import com.github.skillfi.reincarnation_plus.init.ReincarnationPlusModBlocks;
+import com.github.skillfi.reincarnation_plus.init.RPBlocks;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,11 +29,11 @@ public class GemStage0UpdateTickProcedure {
 			timeName = "GrowthTimeer";
 			growthTime = 600;
 			randowmChance = 66;
-			stage0 = ReincarnationPlusModBlocks.GEM_STAGE_0.get().defaultBlockState();
-			stage1 = ReincarnationPlusModBlocks.GEM_STAGE_1.get().defaultBlockState();
-			stage2 = ReincarnationPlusModBlocks.GEM_STAGE_2.get().defaultBlockState();
-			stage3 = ReincarnationPlusModBlocks.GEM_STAGE_3.get().defaultBlockState();
-			stage4 = ReincarnationPlusModBlocks.GEM_STAGE_4.get().defaultBlockState();
+			stage0 = RPBlocks.GEM_STAGE_0.get().defaultBlockState();
+			stage1 = RPBlocks.GEM_STAGE_1.get().defaultBlockState();
+			stage2 = RPBlocks.GEM_STAGE_2.get().defaultBlockState();
+			stage3 = RPBlocks.GEM_STAGE_3.get().defaultBlockState();
+			stage4 = RPBlocks.GEM_STAGE_4.get().defaultBlockState();
 		}
 		if (!world.isClientSide()) {
 			if (!world.isClientSide()) {
