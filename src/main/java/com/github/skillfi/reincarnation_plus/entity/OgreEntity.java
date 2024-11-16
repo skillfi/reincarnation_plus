@@ -11,7 +11,6 @@ import com.github.manasmods.tensura.api.entity.navigator.StraightFlightNavigator
 import com.github.manasmods.tensura.api.entity.subclass.IRanking;
 import com.github.manasmods.tensura.entity.template.HumanoidNPCEntity;
 import com.github.manasmods.tensura.entity.template.TensuraTamableEntity;
-import com.github.manasmods.tensura.registry.skill.CommonSkills;
 import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.registry.sound.TensuraSoundEvents;
@@ -48,7 +47,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
-import org.stringtemplate.v4.ST;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
