@@ -2,7 +2,7 @@ package com.github.skillfi.reincarnation_plus.block.entity;
 
 import com.github.skillfi.reincarnation_plus.api.gem.GemStat;
 import com.github.skillfi.reincarnation_plus.api.gem.GemType;
-import com.github.skillfi.reincarnation_plus.init.RPBlockEntities;
+import com.github.skillfi.reincarnation_plus.handler.RPBlockEntities;
 import com.github.skillfi.reincarnation_plus.item.GemStoneItem;
 import com.github.skillfi.reincarnation_plus.registry.RPGems;
 import net.minecraft.core.BlockPos;

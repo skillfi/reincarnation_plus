@@ -1,0 +1,16 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:taiga",
+    "tensura:sakura_forest"
+  ],
+  "spawners": {
+    "type": "reincarnation_plus:ogre",
+    "weight": 100,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

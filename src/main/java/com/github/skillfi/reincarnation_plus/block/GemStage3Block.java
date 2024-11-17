@@ -32,7 +32,7 @@ import net.minecraft.core.BlockPos;
 import java.util.List;
 import java.util.Collections;
 
-import com.github.skillfi.reincarnation_plus.init.RPItems;
+import com.github.skillfi.reincarnation_plus.handler.RPItems;
 import com.github.skillfi.reincarnation_plus.block.entity.GemStage3BlockEntity;
 
 public class GemStage3Block extends Block implements EntityBlock {

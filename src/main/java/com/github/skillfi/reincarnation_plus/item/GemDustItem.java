@@ -1,7 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.item;
 
-import com.github.skillfi.reincarnation_plus.init.RPTabs;
+import com.github.skillfi.reincarnation_plus.handler.RPTabs;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;

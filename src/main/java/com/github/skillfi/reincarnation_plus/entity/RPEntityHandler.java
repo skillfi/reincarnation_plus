@@ -1,10 +1,8 @@
-package com.github.skillfi.reincarnation_plus.handler;
+package com.github.skillfi.reincarnation_plus.entity;
 
 
 import com.github.manasmods.tensura.entity.template.TensuraTamableEntity;
 import com.github.skillfi.reincarnation_plus.RPMod;
-import com.github.skillfi.reincarnation_plus.entity.OgreEntity;
-import com.github.skillfi.reincarnation_plus.init.RPEntities;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.level.levelgen.Heightmap;

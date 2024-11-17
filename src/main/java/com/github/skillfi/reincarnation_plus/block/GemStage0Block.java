@@ -1,7 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
-import com.github.skillfi.reincarnation_plus.init.RPItems;
+import com.github.skillfi.reincarnation_plus.handler.RPItems;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;

@@ -3,7 +3,7 @@ import com.github.manasmods.manascore.api.data.gen.CustomDataProvider;
 import com.github.manasmods.tensura.data.pack.EntityEPCount;
 import com.github.manasmods.tensura.registry.skill.*;
 import com.github.skillfi.reincarnation_plus.entity.RPEntitiesStats;
-import com.github.skillfi.reincarnation_plus.init.RPEntities;
+import com.github.skillfi.reincarnation_plus.entity.RPEntities;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;

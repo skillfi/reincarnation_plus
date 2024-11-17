@@ -1,9 +1,11 @@
 package com.github.skillfi.reincarnation_plus.event;
 
 import com.github.skillfi.reincarnation_plus.RPMod;
+import com.github.skillfi.reincarnation_plus.client.armor.KimonoWomanArmorRenderer;
 import com.github.skillfi.reincarnation_plus.client.armor.LeatherArmorRenderer;
 import com.github.skillfi.reincarnation_plus.client.armor.JacketWomanArmorRenderer;
 import com.github.skillfi.reincarnation_plus.item.custom.JacketWomanArmorItem;
+import com.github.skillfi.reincarnation_plus.item.custom.KimonoWomanArmorItem;
 import com.github.skillfi.reincarnation_plus.item.custom.LeatherArmorItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -17,5 +19,6 @@ public class ModEventClientBusEvents {
     public static void registerArmorRenderers(final EntityRenderersEvent.AddLayers event) {
         LeatherArmorRenderer.registerArmorRenderer(LeatherArmorItem.class, LeatherArmorRenderer::new);
         JacketWomanArmorRenderer.registerArmorRenderer(JacketWomanArmorItem.class, JacketWomanArmorRenderer::new);
+        KimonoWomanArmorRenderer.registerArmorRenderer(KimonoWomanArmorItem.class, KimonoWomanArmorRenderer::new);
     }
 }

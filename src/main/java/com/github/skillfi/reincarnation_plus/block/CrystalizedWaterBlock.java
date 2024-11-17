@@ -1,7 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.block;
 
-import com.github.skillfi.reincarnation_plus.init.RPFluids;
+import com.github.skillfi.reincarnation_plus.handler.RPFluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;

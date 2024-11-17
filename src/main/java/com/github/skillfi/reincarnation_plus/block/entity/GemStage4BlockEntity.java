@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.block.entity;
 
-import com.github.skillfi.reincarnation_plus.init.RPBlockEntities;
+import com.github.skillfi.reincarnation_plus.handler.RPBlockEntities;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.common.util.LazyOptional;

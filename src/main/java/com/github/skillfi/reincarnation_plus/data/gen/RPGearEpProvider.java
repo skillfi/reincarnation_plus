@@ -3,7 +3,7 @@ package com.github.skillfi.reincarnation_plus.data.gen;
 
 import com.github.manasmods.manascore.api.data.gen.CustomDataProvider;
 import com.github.manasmods.tensura.data.pack.GearEPCount;
-import com.github.skillfi.reincarnation_plus.init.RPItems;
+import com.github.skillfi.reincarnation_plus.handler.RPItems;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;

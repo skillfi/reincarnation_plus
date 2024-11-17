@@ -17,8 +17,8 @@ import com.github.manasmods.tensura.registry.sound.TensuraSoundEvents;
 import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.entity.variant.OgreVariant;
 import com.github.skillfi.reincarnation_plus.entity.variant.OgreVariant.Gender;
-import com.github.skillfi.reincarnation_plus.init.RPEntities;
-import com.github.skillfi.reincarnation_plus.init.RPItems;
+import com.github.skillfi.reincarnation_plus.handler.RPItems;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -82,6 +82,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         MISC_ANIMATION = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
     }
 
+    @Getter
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public boolean prevSwim = false;
 
@@ -90,7 +91,6 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     public OgreEntity(EntityType<? extends OgreEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.xpReward = 5;
-        this.maxUpStep = 1.0F;
         this.switchNavigator(false);
     }
 
@@ -108,7 +108,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 this.moveControl = new FlightMoveController(this, 0.7F, true);
                 this.navigation = new StraightFlightNavigator(this, this.level);
             } else {
-//                this.moveControl = new TensuraTamableEntity.SleepMoveControl(this);
+                this.moveControl = new TensuraTamableEntity.SleepMoveControl();
                 this.navigation = new GroundPathNavigation(this, this.level);
             }
 
@@ -142,7 +142,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 }
             }
         });
-//        this.goalSelector.addGoal(3, new HumanoidNPCEntity.NPCMeleeAttackGoal(this, this, (double)2.0F, true));
+        this.goalSelector.addGoal(3, new HumanoidNPCEntity.NPCMeleeAttackGoal(this, 2.0F, true));
         this.goalSelector.addGoal(4, new WanderingFollowOwnerGoal(this, 1.5F, 10.0F, 5.0F, false));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.2, OgreEntity.class));
         this.goalSelector.addGoal(6, new TamableFollowParentGoal(this, 1.5F));
@@ -239,25 +239,12 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         }
     }
 
-    public boolean shouldFollow() {
-        return !this.isOrderedToSit() && !this.isWandering() && (this.getTarget() == null || !this.getTarget().isAlive());
-    }
-
     public boolean canSleep() {
         return true;
     }
 
-    public void followEntity(TamableAnimal animal, LivingEntity owner, double followSpeed) {
-        if (this.distanceTo(owner) > 5.0F) {
-            this.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + (double) owner.getBbHeight(), owner.getZ(), followSpeed);
-        } else {
-            this.getNavigation().moveTo(owner, followSpeed);
-        }
-
-    }
-
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        OgreEntity baby = (OgreEntity) ((EntityType) RPEntities.OGRE.get()).create(pLevel);
+        OgreEntity baby = (OgreEntity) ((EntityType<?>) RPEntities.OGRE.get()).create(pLevel);
         if (baby == null) {
             return null;
         } else {
@@ -286,49 +273,49 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
     @Nullable
     public Item getEquipmentForArmorSlot(EquipmentSlot pSlot, int pChance) {
-        Item var10000;
+        Item item;
         switch (this.getGender().getId()) {
             case 0: {
                 switch (pSlot) {
-                    case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
+                    case HEAD -> item = Items.LEATHER_HELMET;
                     case CHEST ->
-                            var10000 = RPItems.LEATHER_CHESTPLATE.get();
+                            item = RPItems.LEATHER_CHESTPLATE.get();
                     case LEGS ->
-                            var10000 = RPItems.LEATHER_LEGGINGS.get();
+                            item = RPItems.LEATHER_LEGGINGS.get();
                     case FEET ->
-                            var10000 = pChance == 2 ? Items.LEATHER_BOOTS : (pChance == 4 ? Items.CHAINMAIL_BOOTS : null);
-                    default -> var10000 = null;
+                            item = pChance == 2 ? Items.LEATHER_BOOTS : (pChance == 4 ? Items.CHAINMAIL_BOOTS : null);
+                    default -> item = null;
                 }
             }
             case 1: {
                 switch (pSlot) {
-                    case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
+                    case HEAD -> item = Items.LEATHER_HELMET;
                     case CHEST ->
-                            var10000 = RPItems.JACKET_ARMOR.get();
+                            item = RPItems.JACKET_ARMOR.get();
                     case LEGS ->
-                            var10000 = RPItems.LEATHER_WOMAN_LEGGINGS.get();
+                            item = RPItems.LEATHER_WOMAN_LEGGINGS.get();
                     case FEET ->
-                            var10000 = RPItems.SANDALS.get();
-                    default -> var10000 = null;
+                            item = RPItems.SANDALS.get();
+                    default -> item = null;
                 }
             }
             case 2: {
                 switch (pSlot) {
-                    case HEAD -> var10000 = pChance == 2 ? Items.LEATHER_HELMET : null;
+                    case HEAD -> item = Items.LEATHER_HELMET;
                     case CHEST ->
-                            var10000 = RPItems.KIMONO.get();
+                            item = RPItems.KIMONO.get();
                     case LEGS ->
-                            var10000 = RPItems.YUKATA.get();
+                            item = RPItems.YUKATA.get();
                     case FEET ->
-                            var10000 = RPItems.SANDALS.get();
-                    default -> var10000 = null;
+                            item = RPItems.SANDALS.get();
+                    default -> item = null;
                 }
             }
             default:
-                var10000 = null;
+                item = null;
         }
 
-        return var10000;
+        return item;
     }
 
     public void gainAttackDamage(LivingEntity entity, double amount) {
@@ -507,7 +494,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.populateDefaultEquipmentSlots(this.random, pDifficulty);
         this.randomTexture();
-        RPMod.LOGGER.debug("Ogre spawned at " + this.blockPosition().getX() + ", " + this.blockPosition().getY() + ", " + this.blockPosition().getZ());
+        RPMod.LOGGER.info("Ogre spawned at " + this.blockPosition().getX() + ", " + this.blockPosition().getY() + ", " + this.blockPosition().getZ());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
@@ -586,12 +573,9 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
 
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 0.0F, this::predicate));
-        animationData.addAnimationController(new AnimationController(this, "miscController", 0.0F, this::miscPredicate));
+        animationData.addAnimationController(new AnimationController<>(this, "controller", 0.0F, this::predicate));
+        animationData.addAnimationController(new AnimationController<>(this, "miscController", 0.0F, this::miscPredicate));
 
     }
 
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
 }

@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.block.entity;
 
-import com.github.skillfi.reincarnation_plus.init.RPBlockEntities;
+import com.github.skillfi.reincarnation_plus.handler.RPBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

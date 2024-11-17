@@ -2,7 +2,7 @@
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-package com.github.skillfi.reincarnation_plus.init;
+package com.github.skillfi.reincarnation_plus.handler;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

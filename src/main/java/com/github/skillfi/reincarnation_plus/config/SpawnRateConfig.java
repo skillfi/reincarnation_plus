@@ -8,15 +8,15 @@ import org.apache.commons.lang3.tuple.Pair;
 public class SpawnRateConfig {
     public static final SpawnRateConfig INSTANCE;
     public static final ForgeConfigSpec SPEC;
-    public final ForgeConfigSpec.IntValue ogreSpawnrate;
+    public static ForgeConfigSpec.IntValue ogreSpawnrate;
 
     public SpawnRateConfig(ForgeConfigSpec.Builder builder) {
         builder.push("ogre");
-        this.ogreSpawnrate = this.spawnrate(builder, 50);
+        this.ogreSpawnrate = this.spawnrate(builder, 25);
         builder.pop();
     }
 
-    private ForgeConfigSpec.IntValue spawnrate(ForgeConfigSpec.Builder builder, int defaultValue) {
+    private ForgeConfigSpec.IntValue spawnrate(ForgeConfigSpec.Builder builder, int defaultValue ) {
         return builder.comment("How many times will the entity attempt to spawn before failing\n0 = disabled, 1 = guaranteed, higher = lower chance\ndefault = " + defaultValue).defineInRange("spawnAttempts", defaultValue, 0, 50);
     }
 

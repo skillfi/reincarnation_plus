@@ -2,7 +2,7 @@ package com.github.skillfi.reincarnation_plus.data.gen;
 
 import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.skillfi.reincarnation_plus.RPMod;
-import com.github.skillfi.reincarnation_plus.init.RPEntities;
+import com.github.skillfi.reincarnation_plus.entity.RPEntities;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

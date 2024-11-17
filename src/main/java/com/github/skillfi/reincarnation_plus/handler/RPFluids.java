@@ -2,7 +2,7 @@
 /*
  * MCreator note: This file will be REGENERATED on each build.
  */
-package com.github.skillfi.reincarnation_plus.init;
+package com.github.skillfi.reincarnation_plus.handler;
 
 import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.fluid.CrystalizedWaterFluid;
