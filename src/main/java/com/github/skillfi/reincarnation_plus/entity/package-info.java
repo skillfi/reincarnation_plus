@@ -1,8 +1,8 @@
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 
 package com.github.skillfi.reincarnation_plus.entity;
 
-import com.github.manasmods.manascore.api.util.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

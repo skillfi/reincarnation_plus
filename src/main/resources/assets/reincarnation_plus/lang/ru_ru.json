@@ -1,27 +1,41 @@
 {
-  "item.reincarnation_plus.crystalized_water_bucket": "Crystalized Water Bucket",
-  "item.reincarnation_plus.ogre_man_spawn_egg": "Ogre Man Spawn Egg",
-  "entity.reincarnation_plus.ogre_man": "Ogre Man",
-  "block.reincarnation_plus.gem_stage_4": "Gem Stage 0",
-  "fluid.reincarnation_plus.crystalized_water": "Crystalized Water",
-  "item.reincarnation_plus.gem_stone": "Gem Stone",
-  "block.reincarnation_plus.gem_stage_1": "Gem Stage 0",
-  "block.reincarnation_plus.gem_stage_0": "Gem Stage 0",
-  "block.reincarnation_plus.gem_stage_3": "Gem Stage 0",
-  "block.reincarnation_plus.gem_stage_2": "Gem Stage 0",
-  "item.reincarnation_plus.ogre_armor_chestplate": "Ogre Armor Chestplate",
-  "item.reincarnation_plus.diamond_sword": "Diamond Sword",
-  "block.reincarnation_plus.gem_stone_block": "Gem Stone Block",
-  "itemGroup.tab_reincarnation_plus": "Isekai Quartet",
-  "block.reincarnation_plus.crystalized_water": "Crystalized Water",
-  "item.isekai_quartet.gem_stone": "Gem Stone",
-  "block.reincarnation_plus.gem_block": "Gem Block",
-  "item.reincarnation_plus.ogre_armor_leggings": "Ogre Armor Leggings",
-  "entity.reincarnation_plus.test": "Test",
-  "advancements.black_smith.descr": "Its time to smithing!",
-  "advancements.isekai.descr": "You Isekaed",
-  "advancements.isekai.title": "Isekai",
-  "item.reincarnation_plus.test_spawn_egg": "Test Spawn Egg",
-  "advancements.black_smith.title": "Black Smith",
-  "item.reincarnation_plus.gem_dust": "Gem Dust"
+  "_comment": "Сущности",
+  "entity.reincarnation_plus.ogre": "Огр",
+  "entity.reincarnation_plus.kijin": "Киджин",
+
+
+  "_comment1": "Предметы",
+  "item.reincarnation_plus.crystalized_water_bucket": "Ведро кристаллизованной воды",
+  "item.reincarnation_plus.ogre_man_spawn_egg": "Яйцо призыва Огра",
+  "item.reincarnation_plus.gem_stone": "Драгоценный камень",
+  "item.reincarnation_plus.gem_dust": "Драгоценная пыль",
+
+
+  "_comment1.1": "Броня",
+  "item.reincarnation_plus.leather_chestplate": "Хакама-нагрудник",
+  "item.reincarnation_plus.leather_leggings": "Хакама-поножи",
+  "item.reincarnation_plus.shoes": "Обувь",
+  "item.reincarnation_plus.woman_jacket": "Женская куртка",
+  "item.reincarnation_plus.sandals": "Сандалии",
+  "item.reincarnation_plus.woman_kimono": "Женское кимоно",
+  "item.reincarnation_plus.woman_skirt": "Юката",
+
+
+  "_comment2": "Блоковые сущности",
+  "block.reincarnation_plus.gem_stage_4": "Кристалл: Стадия 4",
+  "block.reincarnation_plus.gem_stage_1": "Кристалл: Стадия 1",
+  "block.reincarnation_plus.gem_stage_0": "Кристалл: Стадия 0",
+  "block.reincarnation_plus.gem_stage_3": "Кристалл: Стадия 3",
+  "block.reincarnation_plus.gem_stage_2": "Кристалл: Стадия 2",
+
+
+  "_comment3": "Жидкости",
+  "fluid.reincarnation_plus.crystalized_water": "Кристаллизованная вода",
+
+
+
+  "_comment2.1": "Блоки",
+  "block.reincarnation_plus.gem_stone_block": "Блок драгоценного камня",
+  "block.reincarnation_plus.crystalized_water": "Кристаллизованная вода",
+  "block.reincarnation_plus.gems_block": "Блок драгоценностей"
 }

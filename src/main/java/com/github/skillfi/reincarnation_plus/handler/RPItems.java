@@ -56,29 +56,6 @@ public class RPItems {
 			() -> new KimonoWomanArmorItem(RPArmorMaterials.OGRE1, EquipmentSlot.LEGS,
 					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
 
-
-	public static final RegistryObject<Item> KIJIN_LEATHER_CHESTPLATE = ITEMS.register("kijin_leather_chestplate",
-			() -> new LeatherArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.CHEST,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_LEATHER_LEGGINGS = ITEMS.register("kijin_leather_leggings",
-			() -> new LeatherArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.LEGS,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_LEATHER_WOMAN_LEGGINGS = ITEMS.register("kijin_shoes",
-			() -> new JacketWomanArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.LEGS,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_JACKET_ARMOR = ITEMS.register("kijin_woman_jacket",
-			() -> new JacketWomanArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.CHEST,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_SANDALS = ITEMS.register("kijin_sandals",
-			() -> new JacketWomanArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.FEET,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_KIMONO = ITEMS.register("kijin_woman_kimono",
-			() -> new KimonoWomanArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.CHEST,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-	public static final RegistryObject<Item> KIJIN_YUKATA = ITEMS.register("kijin_woman_skirt",
-			() -> new KimonoWomanArmorItem(RPArmorMaterials.KIJIN, EquipmentSlot.LEGS,
-					new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
-
 	public static final RegistryObject<Item> OGRE_SPAWN_EGG = ITEMS.register("ogre_spawn_egg", () -> new ForgeSpawnEggItem(RPEntities.OGRE, -52378, -1, new Item.Properties().tab(RPTabs.TAB_REINCARNATION_PLUS)));
 
 

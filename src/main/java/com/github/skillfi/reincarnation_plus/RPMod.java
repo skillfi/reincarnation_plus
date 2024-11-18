@@ -5,6 +5,7 @@ import com.github.skillfi.reincarnation_plus.config.SpawnRateConfig;
 import com.github.skillfi.reincarnation_plus.data.gen.*;
 import com.github.skillfi.reincarnation_plus.entity.RPEntities;
 import com.github.skillfi.reincarnation_plus.entity.RPEntityHandler;
+import com.github.skillfi.reincarnation_plus.entity.client.KijinRenderer;
 import com.github.skillfi.reincarnation_plus.entity.client.OgreRenderer;
 import com.github.skillfi.reincarnation_plus.handler.*;
 import com.github.skillfi.reincarnation_plus.network.ReincarnationPlusNetwork;
@@ -112,5 +113,6 @@ public class RPMod {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(RPEntities.OGRE.get(), OgreRenderer::new);
+        EntityRenderers.register(RPEntities.KIJIN.get(), KijinRenderer::new);
     }
 }

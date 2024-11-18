@@ -1,12 +1,12 @@
 modLoader="javafml"
 loaderVersion="[43,)"
-license="Academic Free License v3.0"
+license="All Rights Reserved"
 
 [[mods]]
 modId="reincarnation_plus"
-version="1.0.0.2"
+version="1.0.0.0"
 displayName="Reincarnation +"
-credits="Created using mod maker MCreator - https://mcreator.net/about"
+credits=""
 displayURL="https://mcreator.net"
 authors="skillfi"
 
@@ -16,17 +16,26 @@ authors="skillfi"
     versionRange="[1.19.2]"
     ordering="NONE"
     side="BOTH"
-
 [[dependencies.reincarnation_plus]]
     modId="forge"
     mandatory=true
-    versionRange="[43.3.5]"
+    versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
-
-
 [[dependencies.reincarnation_plus]]
     modId="geckolib"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.reincarnation_plus]]
+    modId="tensura"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.reincarnation_plus]]
+    modId="manascore"
     mandatory=false
     versionRange="[0,)"
     ordering="NONE"

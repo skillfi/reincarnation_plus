@@ -18,7 +18,7 @@ public class RPEntityTypeTagProvider extends EntityTypeTagsProvider {
     }
 
     public void addTags() {
-        tag(TensuraTags.EntityTypes.DROP_CRYSTAL).add(RPEntities.OGRE.get());
+        tag(TensuraTags.EntityTypes.DROP_CRYSTAL).add(RPEntities.OGRE.get(), RPEntities.KIJIN.get());
         tag(TensuraTags.EntityTypes.NAMEABLE).add(RPEntities.OGRE.get());
 
     }

@@ -20,6 +20,7 @@ public class RPEntityHandler {
 
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         event.put((EntityType) RPEntities.OGRE.get(), OgreEntity.setAttributes());
+        event.put((EntityType) RPEntities.KIJIN.get(), KijinEntity.setAttributes());
     }
 
     public static void registerEntityPlacements(SpawnPlacementRegisterEvent e) {

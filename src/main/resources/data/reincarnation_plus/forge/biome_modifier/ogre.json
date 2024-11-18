@@ -9,8 +9,8 @@
   ],
   "spawners": {
     "type": "reincarnation_plus:ogre",
-    "weight": 100,
+    "weight": 25,
     "minCount": 2,
-    "maxCount": 4
+    "maxCount": 5
   }
 }

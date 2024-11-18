@@ -8,11 +8,11 @@ import org.apache.commons.lang3.tuple.Pair;
 public class SpawnRateConfig {
     public static final SpawnRateConfig INSTANCE;
     public static final ForgeConfigSpec SPEC;
-    public static ForgeConfigSpec.IntValue ogreSpawnrate;
+    public static ForgeConfigSpec.IntValue ogreSpawnRate;
 
     public SpawnRateConfig(ForgeConfigSpec.Builder builder) {
         builder.push("ogre");
-        this.ogreSpawnrate = this.spawnrate(builder, 25);
+        this.ogreSpawnRate = this.spawnrate(builder, 25);
         builder.pop();
     }
 

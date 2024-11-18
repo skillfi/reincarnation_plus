@@ -30,6 +30,10 @@ public class RPEntityEPProvider extends CustomDataProvider{
                 RPEntitiesStats.Ogre.getMinEP(),
                 RPEntitiesStats.Ogre.getMaxEP(),
                 RPEntitiesStats.Ogre.getList()).buildJson(biConsumer);
+        EntityEPCount.of(EntityType.getKey(RPEntities.KIJIN.get()),
+                RPEntitiesStats.Kijin.getMinEP(),
+                RPEntitiesStats.Kijin.getMaxEP(),
+                RPEntitiesStats.Kijin.getList()).buildJson(biConsumer);
 
     }
 

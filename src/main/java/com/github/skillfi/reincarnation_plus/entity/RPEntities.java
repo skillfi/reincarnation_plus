@@ -29,6 +29,12 @@ public class RPEntities {
                     .sized(0.45f, 1.35f)
                     .build(new ResourceLocation(RPMod.MODID, "ogre").toString())
     );
+    public static final RegistryObject<EntityType<KijinEntity>> KIJIN = ENTITY_REGISTRY.register("kijin",
+            () -> EntityType.Builder.of(KijinEntity::new, MobCategory.MONSTER)
+                    .canSpawnFarFromPlayer()
+                    .sized(0.45f, 1.35f)
+                    .build(new ResourceLocation(RPMod.MODID, "kijin").toString())
+    );
 
     public static final Map<String, Boolean> LOADED_ENTITIES = new ConcurrentHashMap<>();
 
@@ -40,14 +46,6 @@ public class RPEntities {
         ENTITY_REGISTRY.register(modEventBus);
     }
 
-    public static void addSpawners(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        builder.getMobSpawnSettings()
-                .getSpawner(MobCategory.CREATURE)
-                .add(new MobSpawnSettings.SpawnerData(OGRE.get(), 80, 5, 5));
-
-        LOADED_ENTITIES.put("OGRE", true);
-        RPMod.LOGGER.info("Added spawner for OGRE in biome: " + biome.unwrapKey().map(Object::toString).orElse("unknown"));
-    }
 
     public static Map<String, Boolean> getLoadedEntities() {
         return LOADED_ENTITIES;
