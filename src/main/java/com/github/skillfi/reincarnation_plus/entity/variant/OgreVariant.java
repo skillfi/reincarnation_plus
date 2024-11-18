@@ -2,13 +2,10 @@ package com.github.skillfi.reincarnation_plus.entity.variant;
 
 import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.entity.OgreEntity;
-import com.google.common.collect.Maps;
-import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
 
 public class OgreVariant {
 
@@ -48,7 +45,7 @@ public class OgreVariant {
             String evolution = entity.getEvolutionState().getLocation();
             String modified_evolution = evolution.substring(0, evolution.length() -1);
 
-            return new ResourceLocation(RPMod.MODID, "geo/entity/" + evolution + "/" + gender + "/" + modified_evolution + "_" + gender + ".geo.json");
+            return new ResourceLocation(RPMod.MODID, "geo/entity/" + modified_evolution + "_" + gender + ".geo.json");
         }
     }
 
@@ -100,7 +97,10 @@ public class OgreVariant {
             String evolution = entity.getEvolutionState().getLocation();
             String modified_evolution = evolution.substring(0, evolution.length() -1);
             String style = entity.getStyle().getLocation();
-            return new ResourceLocation(RPMod.MODID, "textures/entity/" + evolution + "/" + gender + "/" + modified_evolution + "_" + gender + "_" +style + ".png");
+            if (gender.equals("small_female")){
+                return new ResourceLocation(RPMod.MODID, "textures/entity/" + modified_evolution + "_" + gender + ".png");
+            }
+            return new ResourceLocation(RPMod.MODID, "textures/entity/" + modified_evolution + "_" + gender + "_" +style + ".png");
         }
 
         public static Skin byId(int id) {

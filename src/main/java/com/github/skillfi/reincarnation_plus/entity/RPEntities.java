@@ -26,13 +26,13 @@ public class RPEntities {
     public static final RegistryObject<EntityType<OgreEntity>> OGRE = ENTITY_REGISTRY.register("ogre",
             () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)
                     .canSpawnFarFromPlayer()
-                    .sized(0.45f, 1.35f)
+                    .sized(1.2F, 2.5F)
                     .build(new ResourceLocation(RPMod.MODID, "ogre").toString())
     );
     public static final RegistryObject<EntityType<KijinEntity>> KIJIN = ENTITY_REGISTRY.register("kijin",
             () -> EntityType.Builder.of(KijinEntity::new, MobCategory.MONSTER)
                     .canSpawnFarFromPlayer()
-                    .sized(0.45f, 1.35f)
+                    .sized(1.2F, 2.5F)
                     .build(new ResourceLocation(RPMod.MODID, "kijin").toString())
     );
 

@@ -1,10 +1,13 @@
 package com.github.skillfi.reincarnation_plus.entity.client;
 
 import com.github.manasmods.tensura.item.custom.TempestScaleShieldItem;
+import com.github.skillfi.reincarnation_plus.entity.KijinEntity;
 import com.github.skillfi.reincarnation_plus.entity.OgreEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -36,7 +39,7 @@ public class OgreRenderer extends ExtendedGeoEntityRenderer<OgreEntity> {
         return false;
     }
 
-    protected @Nullable ItemStack getArmorForBone(String boneName, OgreEntity animatable) {
+    protected ItemStack getArmorForBone(String boneName, OgreEntity animatable) {
         ItemStack var10000;
         switch (boneName) {
             case "LeftBootArmor":
@@ -145,5 +148,66 @@ public class OgreRenderer extends ExtendedGeoEntityRenderer<OgreEntity> {
             poseStack.scale(scale, scale, scale);
         }
 
+    }
+
+    @Override
+    protected ModelPart getArmorPartForBone(String name, HumanoidModel<?> armorModel) {
+        ModelPart var10000;
+        switch (name) {
+            case "LeftBootArmor":
+            case "LeftLegArmor":
+                var10000 = armorModel.leftLeg;
+                break;
+            case "RightBootArmor":
+            case "RightLegArmor":
+                var10000 = armorModel.rightLeg;
+                break;
+            case "RightArmArmor":
+                var10000 = armorModel.rightArm;
+                break;
+            case "LeftArmArmor":
+                var10000 = armorModel.leftArm;
+                break;
+            case "ChestArmor":
+                var10000 = armorModel.body;
+                break;
+            case "HeadArmor":
+                var10000 = armorModel.head;
+                break;
+            default:
+                var10000 = null;
+        }
+
+        return var10000;
+    }
+
+    protected EquipmentSlot getEquipmentSlotForArmorBone(String boneName, OgreEntity currentEntity) {
+        EquipmentSlot var10000;
+        switch (boneName) {
+            case "LeftBootArmor":
+            case "RightBootArmor":
+                var10000 = EquipmentSlot.FEET;
+                break;
+            case "LeftLegArmor":
+            case "RightLegArmor":
+                var10000 = EquipmentSlot.LEGS;
+                break;
+            case "LeftArmArmor":
+                var10000 = !currentEntity.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                break;
+            case "RightArmArmor":
+                var10000 = currentEntity.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                break;
+            case "ChestArmor":
+                var10000 = EquipmentSlot.CHEST;
+                break;
+            case "HeadArmor":
+                var10000 = EquipmentSlot.HEAD;
+                break;
+            default:
+                var10000 = null;
+        }
+
+        return var10000;
     }
 }
