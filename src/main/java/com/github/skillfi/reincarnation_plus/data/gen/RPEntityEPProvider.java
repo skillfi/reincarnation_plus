@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.data.event.GatherDataEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -24,7 +25,7 @@ public class RPEntityEPProvider extends CustomDataProvider{
         RPEntitiesStats.Ogre.addToList(IntrinsicSkills.OGRE_BERSERKER.getId());
     }
 
-    protected void run(BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
+    protected void run(@NotNull BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
         RPEntityEPProvider.add();
         EntityEPCount.of(EntityType.getKey(RPEntities.OGRE.get()),
                 RPEntitiesStats.Ogre.getMinEP(),
@@ -32,12 +33,23 @@ public class RPEntityEPProvider extends CustomDataProvider{
                 RPEntitiesStats.Ogre.getList()).buildJson(biConsumer);
         EntityEPCount.of(EntityType.getKey(RPEntities.KIJIN.get()),
                 RPEntitiesStats.Kijin.getMinEP(),
-                RPEntitiesStats.Kijin.getMaxEP(),
-                RPEntitiesStats.Kijin.getList()).buildJson(biConsumer);
+                RPEntitiesStats.Kijin.getMaxEP()).buildJson(biConsumer);
+        EntityEPCount.of(EntityType.getKey(RPEntities.ONI.get()),
+                RPEntitiesStats.Oni.getMinEP(),
+                RPEntitiesStats.Oni.getMaxEP()).buildJson(biConsumer);
+        EntityEPCount.of(EntityType.getKey(RPEntities.DIVINE_ONI.get()),
+                RPEntitiesStats.DivineOni.getMinEP(),
+                RPEntitiesStats.DivineOni.getMaxEP()).buildJson(biConsumer);
+        EntityEPCount.of(EntityType.getKey(RPEntities.WICKED_ONI.get()),
+                RPEntitiesStats.WickedOni.getMinEP(),
+                RPEntitiesStats.WickedOni.getMaxEP()).buildJson(biConsumer);
+        EntityEPCount.of(EntityType.getKey(RPEntities.DIVINE_FIGHTER.get()),
+                RPEntitiesStats.DivineFighter.getMinEP(),
+                RPEntitiesStats.DivineFighter.getMaxEP()).buildJson(biConsumer);
 
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return "Reincarnation Plus Entity EP";
     }
 }

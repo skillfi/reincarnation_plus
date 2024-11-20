@@ -4,10 +4,10 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="reincarnation_plus"
-version="1.0.0.0"
+version="1.0.0.3"
 displayName="Reincarnation +"
 credits=""
-displayURL="https://mcreator.net"
+displayURL=""
 authors="skillfi"
 
 [[dependencies.reincarnation_plus]]

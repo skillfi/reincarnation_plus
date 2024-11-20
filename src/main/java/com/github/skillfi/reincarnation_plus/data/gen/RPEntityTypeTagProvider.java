@@ -18,8 +18,12 @@ public class RPEntityTypeTagProvider extends EntityTypeTagsProvider {
     }
 
     public void addTags() {
-        tag(TensuraTags.EntityTypes.DROP_CRYSTAL).add(RPEntities.OGRE.get(), RPEntities.KIJIN.get());
-        tag(TensuraTags.EntityTypes.NAMEABLE).add(RPEntities.OGRE.get());
+        tag(TensuraTags.EntityTypes.DROP_CRYSTAL).add(RPEntities.OGRE.get(),
+                RPEntities.KIJIN.get(), RPEntities.ONI.get(),
+                RPEntities.WICKED_ONI.get(), RPEntities.DIVINE_ONI.get(), RPEntities.DIVINE_FIGHTER.get());
+        tag(TensuraTags.EntityTypes.NAMEABLE).add(RPEntities.OGRE.get(),
+                RPEntities.KIJIN.get(), RPEntities.ONI.get(),
+                RPEntities.DIVINE_ONI.get(), RPEntities.WICKED_ONI.get(), RPEntities.DIVINE_FIGHTER.get());
 
     }
 }

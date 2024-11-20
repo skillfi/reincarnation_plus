@@ -1,12 +1,12 @@
 package com.github.skillfi.reincarnation_plus;
 
 import com.github.skillfi.reincarnation_plus.client.ClientProxy;
+import com.github.skillfi.reincarnation_plus.config.EntityConfig;
 import com.github.skillfi.reincarnation_plus.config.SpawnRateConfig;
 import com.github.skillfi.reincarnation_plus.data.gen.*;
 import com.github.skillfi.reincarnation_plus.entity.RPEntities;
 import com.github.skillfi.reincarnation_plus.entity.RPEntityHandler;
-import com.github.skillfi.reincarnation_plus.entity.client.KijinRenderer;
-import com.github.skillfi.reincarnation_plus.entity.client.OgreRenderer;
+import com.github.skillfi.reincarnation_plus.entity.client.*;
 import com.github.skillfi.reincarnation_plus.handler.*;
 import com.github.skillfi.reincarnation_plus.network.ReincarnationPlusNetwork;
 import com.github.skillfi.reincarnation_plus.registry.RPRegistry;
@@ -63,6 +63,7 @@ public class RPMod {
         FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(MODID), MODID);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RPConfig.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SpawnRateConfig.SPEC, getConfigFileName("spawnrate-common"));
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EntityConfig.SPEC, getConfigFileName("entity-common"));
     }
 
     private void registerComponents(IEventBus modEventBus) {
@@ -114,5 +115,9 @@ public class RPMod {
     public static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(RPEntities.OGRE.get(), OgreRenderer::new);
         EntityRenderers.register(RPEntities.KIJIN.get(), KijinRenderer::new);
+        EntityRenderers.register(RPEntities.ONI.get(), OniRenderer::new);
+        EntityRenderers.register(RPEntities.DIVINE_ONI.get(), DivineOniRenderer::new);
+        EntityRenderers.register(RPEntities.WICKED_ONI.get(), WickedOniRenderer::new);
+        EntityRenderers.register(RPEntities.DIVINE_FIGHTER.get(), DivineFighterRenderer::new);
     }
 }

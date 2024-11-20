@@ -2,7 +2,8 @@ package com.github.skillfi.reincarnation_plus.entity.client;
 
 import com.github.manasmods.tensura.item.custom.TempestScaleShieldItem;
 import com.github.skillfi.reincarnation_plus.RPMod;
-import com.github.skillfi.reincarnation_plus.entity.KijinEntity;
+import com.github.skillfi.reincarnation_plus.entity.DivineOniEntity;
+import com.github.skillfi.reincarnation_plus.entity.DivineOniEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -21,7 +22,7 @@ import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
-public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
+public class DivineOniRenderer extends ExtendedGeoEntityRenderer<DivineOniEntity> {
 
     protected ItemStack mainHandItem;
     protected ItemStack offHandItem;
@@ -30,7 +31,7 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
     protected ItemStack leggingsItem;
     protected ItemStack bootsItem;
 
-    public KijinRenderer(EntityRendererProvider.Context renderManager) {
+    public DivineOniRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OgreModel<>());
         this.shadowRadius = 0.2F;
     }
@@ -39,7 +40,7 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
         return bone.getName().endsWith("Armor");
     }
 
-    protected ItemStack getArmorForBone(String boneName, KijinEntity kijinEntity) {
+    protected ItemStack getArmorForBone(String boneName, DivineOniEntity kijinEntity) {
         ItemStack var10000;
         switch (boneName) {
             case "LeftBootArmor":
@@ -65,12 +66,15 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
         return var10000;
     }
 
-    protected @Nullable ResourceLocation getTextureForBone(String boneName, KijinEntity kijinEntity) {
+    protected @Nullable ResourceLocation getTextureForBone(String boneName, DivineOniEntity kijinEntity) {
+        if (boneName.equals("ChestArmor")) {
+            return new ResourceLocation(RPMod.MODID, "textures/models/armor/jacket_woman_armor_texture.png");
+        }
         // додаткова логіка для інших частин обладунку
         return null;
     }
 
-    protected @Nullable ItemStack getHeldItemForBone(String boneName, KijinEntity currentEntity) {
+    protected @Nullable ItemStack getHeldItemForBone(String boneName, DivineOniEntity currentEntity) {
         ItemStack var10000;
         switch (boneName) {
             case "leftHand" -> var10000 = currentEntity.isLeftHanded() ? this.mainHandItem : this.offHandItem;
@@ -126,12 +130,12 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
     }
 
 
-    protected @Nullable BlockState getHeldBlockForBone(String s, KijinEntity kijinEntity) {
+    protected @Nullable BlockState getHeldBlockForBone(String s, DivineOniEntity kijinEntity) {
         return null;
     }
 
 
-    protected void preRenderItem(PoseStack stack, ItemStack item, String s, KijinEntity kijinEntity, IBone iBone) {
+    protected void preRenderItem(PoseStack stack, ItemStack item, String s, DivineOniEntity kijinEntity, IBone iBone) {
         if (item == this.mainHandItem) {
             stack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
             if (item.getItem() instanceof ShieldItem || item.getItem() instanceof TempestScaleShieldItem) {
@@ -147,21 +151,21 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
     }
 
 
-    protected void preRenderBlock(PoseStack poseStack, BlockState blockState, String s, KijinEntity ogreEntity) {
+    protected void preRenderBlock(PoseStack poseStack, BlockState blockState, String s, DivineOniEntity ogreEntity) {
 
     }
 
 
-    protected void postRenderItem(PoseStack poseStack, ItemStack itemStack, String s, KijinEntity ogreEntity, IBone iBone) {
+    protected void postRenderItem(PoseStack poseStack, ItemStack itemStack, String s, DivineOniEntity ogreEntity, IBone iBone) {
 
     }
 
 
-    protected void postRenderBlock(PoseStack poseStack, BlockState blockState, String s, KijinEntity ogreEntity) {
+    protected void postRenderBlock(PoseStack poseStack, BlockState blockState, String s, DivineOniEntity ogreEntity) {
 
     }
 
-    public void renderEarly(KijinEntity kijin, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
+    public void renderEarly(DivineOniEntity kijin, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
         super.renderEarly(kijin, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, partialTicks);
         this.mainHandItem = kijin.getItemBySlot(EquipmentSlot.MAINHAND);
         this.offHandItem = kijin.getItemBySlot(EquipmentSlot.OFFHAND);
@@ -181,7 +185,7 @@ public class KijinRenderer extends ExtendedGeoEntityRenderer<KijinEntity> {
 
     }
 
-    protected EquipmentSlot getEquipmentSlotForArmorBone(String boneName, KijinEntity currentEntity) {
+    protected EquipmentSlot getEquipmentSlotForArmorBone(String boneName, DivineOniEntity currentEntity) {
         EquipmentSlot var10000;
         switch (boneName) {
             case "LeftBootArmor":

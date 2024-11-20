@@ -3,6 +3,6 @@
 
 package com.github.skillfi.reincarnation_plus.entity;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import com.github.manasmods.manascore.api.util.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

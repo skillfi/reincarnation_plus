@@ -7,6 +7,7 @@ import com.github.skillfi.reincarnation_plus.handler.RPItems;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -17,11 +18,11 @@ public class RPGearEpProvider extends CustomDataProvider {
         super("gear/ep", event.getGenerator());
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return "Reincarnation Plus Gear EP";
     }
 
-    protected void run(BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
+    protected void run(@NotNull BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
         GearEPCount.of(RPItems.JACKET_ARMOR.getId(), 1000, 5000, 0.01);
         GearEPCount.of(RPItems.LEATHER_CHESTPLATE.getId(), 1000, 5000, 0.01);
         GearEPCount.of(RPItems.LEATHER_LEGGINGS.getId(), 1000, 5000, 0.01);

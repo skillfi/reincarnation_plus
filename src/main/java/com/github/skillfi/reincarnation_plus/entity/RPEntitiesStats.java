@@ -1,18 +1,17 @@
 package com.github.skillfi.reincarnation_plus.entity;
-//import com.github.manasmods.tensura.registry.skill.CommonSkills;
-//import com.github.manasmods.tensura.registry.skill.ExtraSkills;
-//import com.github.manasmods.tensura.registry.skill.IntrinsicSkills;
-//import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 
+import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class RPEntitiesStats {
 
     public static RPEntitiesStats Ogre = new RPEntitiesStats(72, 26, 6000,
-            7000, 10, 0.3, 3, new ArrayList<>(), new ResourceLocation(""));
+            10000, 10, 0.3, 3, new ArrayList<>(), new ResourceLocation(""));
     public static RPEntitiesStats Kijin = new RPEntitiesStats(82, 30, 10000,
             100000, 15, Ogre.getMovementSpeed()*2, Ogre.ATTACK_DAMAGE*2, new ArrayList<>(),
             new ResourceLocation(""));
@@ -33,13 +32,13 @@ public class RPEntitiesStats {
 
 
     private final static String[] Ranks = {"Special S","S","Special A","A", "B", "C", "D", "E"};
-    private final int SHP;
-    private final int HP;
-    private final int MinEP;
-    private final int MaxEP;
-    private final int Armor;
-    private final double MovementSpeed;
-    private final int ATTACK_DAMAGE;
+    private int SHP;
+    private int HP;
+    private int MinEP;
+    private int MaxEP;
+    private int Armor;
+    private double MovementSpeed;
+    private int ATTACK_DAMAGE;
     public List<ResourceLocation> list;
     private ResourceLocation evo;
 
@@ -56,42 +55,12 @@ public class RPEntitiesStats {
         this.evo = evo;
     }
 
-    public int getSHP() {
-        return SHP;
-    }
-
-    public int getHP() {
-        return HP;
-    }
-
-    public int getMinEP() {
-        return MinEP;
-    }
-
-    public int getMaxEP() {
-        return MaxEP;
-    }
-
-    public int getArmor() {
-        return Armor;
-    }
-
-    public double getMovementSpeed() {
-        return MovementSpeed;
-    }
-
-    public int getATTACK_DAMAGE(){
-        return ATTACK_DAMAGE;
-    }
-
-    public List<ResourceLocation> getList() {
-        return list;
-    }
-
     public void addToList(ResourceLocation loc) {
         list.add(loc);
     }
-    public ResourceLocation getEvo() {
-        return evo;
+
+    public void evolve(RPEntitiesStats rpEntitiesStats){
+        this.SHP = this.SHP * 2;
+        this.SHP = this.SHP * 2;
     }
 }

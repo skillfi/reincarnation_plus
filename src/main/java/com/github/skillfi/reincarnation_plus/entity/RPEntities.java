@@ -1,13 +1,9 @@
 package com.github.skillfi.reincarnation_plus.entity;
 
 import com.github.skillfi.reincarnation_plus.RPMod;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -35,6 +31,30 @@ public class RPEntities {
                     .sized(1.2F, 2.5F)
                     .build(new ResourceLocation(RPMod.MODID, "kijin").toString())
     );
+    public static final RegistryObject<EntityType<OniEntity>> ONI = ENTITY_REGISTRY.register("oni",
+            () -> EntityType.Builder.of(OniEntity::new, MobCategory.MONSTER)
+                    .canSpawnFarFromPlayer()
+                    .sized(1.2F, 2.5F)
+                    .build(new ResourceLocation(RPMod.MODID, "oni").toString())
+    );
+    public static final RegistryObject<EntityType<DivineOniEntity>> DIVINE_ONI = ENTITY_REGISTRY.register("divine_oni",
+            () -> EntityType.Builder.of(DivineOniEntity::new, MobCategory.MONSTER)
+                    .canSpawnFarFromPlayer()
+                    .sized(1.2F, 2.5F)
+                    .build(new ResourceLocation(RPMod.MODID, "divine_oni").toString())
+    );
+    public static final RegistryObject<EntityType<WickedOniEntity>> WICKED_ONI = ENTITY_REGISTRY.register("wicked_oni",
+            () -> EntityType.Builder.of(WickedOniEntity::new, MobCategory.MONSTER)
+                    .canSpawnFarFromPlayer()
+                    .sized(1.2F, 2.5F)
+                    .build(new ResourceLocation(RPMod.MODID, "wicked_oni").toString())
+    );
+    public static final RegistryObject<EntityType<DivineFighterEntity>> DIVINE_FIGHTER = ENTITY_REGISTRY.register("divine_fighter",
+            () -> EntityType.Builder.of(DivineFighterEntity::new, MobCategory.MONSTER)
+                    .canSpawnFarFromPlayer()
+                    .sized(1.2F, 2.5F)
+                    .build(new ResourceLocation(RPMod.MODID, "divine_fighter").toString())
+    );
 
     public static final Map<String, Boolean> LOADED_ENTITIES = new ConcurrentHashMap<>();
 
@@ -46,8 +66,4 @@ public class RPEntities {
         ENTITY_REGISTRY.register(modEventBus);
     }
 
-
-    public static Map<String, Boolean> getLoadedEntities() {
-        return LOADED_ENTITIES;
-    }
 }
