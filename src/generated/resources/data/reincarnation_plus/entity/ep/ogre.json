@@ -1,7 +1,7 @@
 {
   "entity": "reincarnation_plus:ogre",
   "evolution": "tensura:none",
-  "maxEP": 7000,
+  "maxEP": 10000,
   "minEP": 6000,
   "skills": [
     "tensura:strength",

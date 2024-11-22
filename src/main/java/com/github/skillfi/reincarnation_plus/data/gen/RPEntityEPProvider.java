@@ -40,9 +40,6 @@ public class RPEntityEPProvider extends CustomDataProvider{
         EntityEPCount.of(EntityType.getKey(RPEntities.DIVINE_ONI.get()),
                 RPEntitiesStats.DivineOni.getMinEP(),
                 RPEntitiesStats.DivineOni.getMaxEP()).buildJson(biConsumer);
-        EntityEPCount.of(EntityType.getKey(RPEntities.WICKED_ONI.get()),
-                RPEntitiesStats.WickedOni.getMinEP(),
-                RPEntitiesStats.WickedOni.getMaxEP()).buildJson(biConsumer);
         EntityEPCount.of(EntityType.getKey(RPEntities.DIVINE_FIGHTER.get()),
                 RPEntitiesStats.DivineFighter.getMinEP(),
                 RPEntitiesStats.DivineFighter.getMaxEP()).buildJson(biConsumer);

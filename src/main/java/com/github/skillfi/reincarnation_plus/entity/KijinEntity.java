@@ -11,6 +11,7 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.config.SpawnRateConfig;
 import com.github.manasmods.tensura.entity.OrcEntity;
+import com.github.manasmods.tensura.entity.template.HumanoidNPCEntity;
 import com.github.manasmods.tensura.race.RaceHelper;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
@@ -19,7 +20,6 @@ import com.github.skillfi.reincarnation_plus.entity.variant.OgreVariant;
 import lombok.Getter;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -46,7 +46,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.common.ForgeMod;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -61,15 +60,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class KijinEntity extends OgreEntity implements IAnimatable {
 
     private static final EntityDataAccessor<Integer> MISC_ANIMATION;
     private static final EntityDataAccessor<Integer> EVOLVING;
     private static final EntityDataAccessor<Integer> EVOLVE_STATE;
-    private static ArrayList<ManasSkill> skills= new ArrayList<>();
-    private static ArrayList<ManasSkill> instances= new ArrayList<>();
+    private static ArrayList<ManasSkill> skills= new ArrayList<ManasSkill>();
+    private static ArrayList<ManasSkill> instances= new ArrayList<ManasSkill>();
     private static final EntityDataAccessor<Boolean> CAN_EVOLVE;
 
     static {
@@ -82,7 +83,6 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
     @Getter
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int miscAnimationTicks = 0;
-    public boolean prevSwim = false;
 
     public KijinEntity(EntityType<? extends KijinEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -93,7 +93,7 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.3F).
                 add(Attributes.MAX_HEALTH, (KIJIN.getHP())).
                 add(Attributes.ARMOR, KIJIN.getArmor()).
-                add(Attributes.ATTACK_DAMAGE, 3).
+                add(Attributes.ATTACK_DAMAGE, KIJIN.getATTACK_DAMAGE()).
                 add(Attributes.ARMOR, KIJIN.getArmor()).
                 add(Attributes.FOLLOW_RANGE, 16).
                 add(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get(), KIJIN.getSHP()).
@@ -119,7 +119,7 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
                 }
             }
         });
-        this.goalSelector.addGoal(3, new NPCMeleeAttackGoal(this, 2.0, true));
+        this.goalSelector.addGoal(3, new KijinAttackGoal());
         this.goalSelector.addGoal(4, new WanderingFollowOwnerGoal(this, 1.5, 10.0F, 5.0F, false));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.2, OrcEntity.class));
         this.goalSelector.addGoal(6, new TamableFollowParentGoal(this, 1.5));
@@ -163,8 +163,7 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
      * Max Evolving {@link OgreVariant.Evolving#DIVINE_FIGHTER} = 1
      * <p>
      * {@link OgreVariant.Evolving#DIVINE_ONI} = 2
-     * <p>
-     * {@link OgreVariant.Evolving#WICKED_ONI} = 2
+     *
      * <p>
      * {@link OgreVariant.Evolving#ONI} = 3
      * <p>
@@ -186,8 +185,6 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
      * Max Evolving {@link OgreVariant.Evolving#DIVINE_FIGHTER} = 1
      * <p>
      * {@link OgreVariant.Evolving#DIVINE_ONI} = 2
-     * <p>
-     * {@link OgreVariant.Evolving#WICKED_ONI} = 2
      * <p>
      * {@link OgreVariant.Evolving#ONI} = 3
      * <p>
@@ -255,7 +252,7 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
     }
 
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        OniEntity baby = (OniEntity) ((EntityType<?>) RPEntities.KIJIN.get()).create(pLevel);
+        KijinEntity baby = (KijinEntity) ((EntityType<?>) RPEntities.KIJIN.get()).create(pLevel);
         if (baby == null) {
             return null;
         } else {
@@ -263,30 +260,49 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
             if (uuid != null) {
                 baby.setOwnerUUID(uuid);
                 baby.setTame(true);
-
+                baby.setCanEvolve(true);
             }
 
             baby.randomTexture();
             if (this.isOni() && ((KijinEntity) pOtherParent).isOni()) {
-                ArrayList<ManasSkill> pOtherSkills = ((KijinEntity) pOtherParent).getSkills();
-                ArrayList<ManasSkill> pOtherInstances = ((KijinEntity) pOtherParent).getInstances();
-                ArrayList<ManasSkill> thisSkills = this.getSkills();
-                ArrayList<ManasSkill> thisInstances = this.getInstances();
-                int i = this.random.nextInt(pOtherSkills.size());
-                int j = this.random.nextInt(thisSkills.size());
-                for (ManasSkill instance : pOtherInstances){
-                    baby.activateInstance(instance);
-                }
-                for (ManasSkill instance: thisInstances){
-                    baby.activateInstance(instance);
-                }
-                baby.learnSkill(pOtherSkills.get(i));
-                baby.learnSkill(thisSkills.get(j));
+                getGeneFromParents(baby,pOtherParent);
             }
 
             return baby;
         }
     }
+
+    private void getGeneFromParents(KijinEntity baby, AgeableMob pOtherParent) {
+        // Каст батьків до KijinEntity
+        KijinEntity parentOther = (KijinEntity) pOtherParent;
+
+        // Активуємо всі інстанси обох батьків
+        Stream.concat(this.getInstances().stream(), parentOther.getInstances().stream())
+                .forEach(baby::activateInstance);
+
+        // Випадкові навички від обох батьків
+        baby.learnSkill(this.getRandomSkill(this.getSkills()));
+        baby.learnSkill(this.getRandomSkill(parentOther.getSkills()));
+
+        // Випадкова навичка героя
+        List<List<ManasSkill>> parentHeroes = List.of(this.getHeroSkills(), parentOther.getHeroSkills());
+        baby.learnSkill(this.getRandomSkill(this.getRandomList(parentHeroes)));
+
+        // Випадковий інстанс героя
+        List<List<ManasSkill>> parentHeroInstances = List.of(this.getHeroInstances(), parentOther.getHeroInstances());
+        baby.activateInstance(this.getRandomSkill(this.getRandomList(parentHeroInstances)));
+    }
+
+    // Допоміжний метод для отримання випадкового елемента списку
+    private <T> T getRandomSkill(List<T> list) {
+        return list.get(this.random.nextInt(list.size()));
+    }
+
+    // Допоміжний метод для отримання випадкового списку зі списку списків
+    private <T> List<T> getRandomList(List<List<T>> lists) {
+        return lists.get(this.random.nextInt(lists.size()));
+    }
+
 
     public boolean isInvulnerableTo(DamageSource source) {
         return source == DamageSource.CACTUS || super.isInvulnerableTo(source);
@@ -411,12 +427,9 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
 
 
     public void evolving() {
-        // Отримання сховища скілів та героя
-        SkillStorage storage = SkillAPI.getSkillsFrom(this);
-
         // Серіалізація та створення нового персонажа
         Level level = this.getLevel();
-        RaceHelper.applyBaseAttribute(KijinEntity.setAttributes(), this, true);
+        RaceHelper.applyBaseAttribute(OniEntity.setAttributes(), this, true);
         RaceHelper.updateSpiritualHP(this);
         RaceHelper.updateEntityEPCount(this);
         this.setHealth(this.getMaxHealth());
@@ -535,5 +548,109 @@ public class KijinEntity extends OgreEntity implements IAnimatable {
 
     public int getMiscAnimation() {
         return this.entityData.get(MISC_ANIMATION);
+    }
+
+    class KijinAttackGoal extends HumanoidNPCEntity.NPCMeleeAttackGoal {
+        private final KijinEntity kijin = KijinEntity.this;
+
+        public KijinAttackGoal() {
+            super(KijinEntity.this, (double)2.5F, true);
+        }
+
+        public boolean canUse() {
+            return this.kijin.isOrderedToSit() ? false : super.canUse();
+        }
+
+        public boolean canContinueToUse() {
+            return this.kijin.isOrderedToSit() ? false : super.canContinueToUse();
+        }
+
+        public void tick() {
+            if (this.kijin.getMiscAnimation() == 0) {
+                super.tick();
+            }
+
+        }
+
+        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+            double distance = this.getAttackReachSqr(pEnemy);
+            if (this.kijin.getMiscAnimation() == 0) {
+                int randomAttack = this.randomAttack(pDistToEnemySqr, pEnemy);
+                double var10000;
+                switch (randomAttack) {
+                    case 2:
+                        this.kijin.getNavigation().stop();
+                        var10000 = (double)225.0F;
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        this.kijin.getNavigation().stop();
+                        var10000 = (double)3600.0F;
+                        break;
+                    default:
+                        var10000 = distance;
+                }
+
+                double attackRange = var10000;
+                if (pDistToEnemySqr <= attackRange && this.isTimeToAttack()) {
+                    this.resetAttackCooldown();
+                    this.kijin.setMiscAnimation(randomAttack);
+                    if (randomAttack == 2) {
+                        this.kijin.doHurtTarget(pEnemy);
+                    } else if (randomAttack == 5) {
+                        this.kijin.stopRiding();
+                        this.kijin.moveTo(pEnemy.position());
+                        TensuraParticleHelper.addServerParticlesAroundSelf(this.kijin, ParticleTypes.SQUID_INK);
+                        this.kijin.hurtMarked = true;
+                    }
+                }
+            }
+
+        }
+
+        protected int randomAttack(double distance, LivingEntity entity) {
+            if (this.kijin.isBaby()) {
+                return 2;
+            } else {
+                if (this.kijin.random.nextInt(10) == 1) {
+                    if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getShadowMotion() != null) {
+                        return 10;
+                    }
+                    if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getSteelStrenght() != null) {
+                        return 9;
+                    }
+                    if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getDemonLordHaki() != null) {
+                        return 8;
+                    }
+                    if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getStrengthenBody() != null) {
+                        return 7;
+                    }if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getMultiLayerBarrier() != null) {
+                        return 6;
+                    }if (entity.isOnGround() && this.kijin.isOnGround() && distance >= (double)200.0F && this.kijin.random.nextInt(10) == 1 && this.kijin.getBlackFlame() != null) {
+                        return 5;
+                    }
+
+                    if ((distance >= (double)200.0F || this.kijin.random.nextInt(15) == 1) && this.kijin.getBodyDouble() != null) {
+                        return 3;
+                    }
+
+                    if (distance >= (double)36.0F || this.kijin.random.nextInt(20) == 1) {
+                        return 2;
+                    }
+                }
+
+                return 1;
+            }
+        }
+
+        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
+            return (double)(this.mob.getBbWidth() * this.mob.getBbWidth() * 3.0F + pAttackTarget.getBbWidth());
+        }
     }
 }

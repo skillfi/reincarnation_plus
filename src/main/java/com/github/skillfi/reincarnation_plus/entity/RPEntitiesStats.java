@@ -2,7 +2,6 @@ package com.github.skillfi.reincarnation_plus.entity;
 
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +20,23 @@ public class RPEntitiesStats {
     public static RPEntitiesStats DivineOni = new RPEntitiesStats(36000, 6500, 1000000,
             10000000, 100, Oni.getMovementSpeed()*2, Oni.ATTACK_DAMAGE*2, new ArrayList<>(),
             new ResourceLocation(""));
-    public static RPEntitiesStats WickedOni = new RPEntitiesStats(36000, 6500, 400000,
-            1000000, 100, Oni.getMovementSpeed()*2, Oni.ATTACK_DAMAGE*2, new ArrayList<>(),
-            new ResourceLocation(""));
     public static RPEntitiesStats DivineFighter = new RPEntitiesStats(36000, 6500, 400000,
             1000000, 100, Oni.getMovementSpeed()*2, Oni.ATTACK_DAMAGE*2, new ArrayList<>(),
             new ResourceLocation(""));
 
-    public static RPEntitiesStats[] Entities = {Ogre, Kijin, Oni, DivineOni, WickedOni, DivineFighter};
+    public static RPEntitiesStats[] Entities = {Ogre, Kijin, Oni, DivineOni, DivineFighter};
 
 
     private final static String[] Ranks = {"Special S","S","Special A","A", "B", "C", "D", "E"};
-    private int SHP;
-    private int HP;
-    private int MinEP;
-    private int MaxEP;
-    private int Armor;
-    private double MovementSpeed;
-    private int ATTACK_DAMAGE;
+    private final int SHP;
+    private final int HP;
+    private final int MinEP;
+    private final int MaxEP;
+    private final int Armor;
+    private final double MovementSpeed;
+    private final int ATTACK_DAMAGE;
     public List<ResourceLocation> list;
-    private ResourceLocation evo;
+    private final ResourceLocation evo;
 
     RPEntitiesStats(int SHP, int HP, int MinEP, int MaxEP, int Armor, double MovementSpeed, int ATTACK_DAMAGE, List<ResourceLocation> list,
                     ResourceLocation evo) {
@@ -57,10 +53,5 @@ public class RPEntitiesStats {
 
     public void addToList(ResourceLocation loc) {
         list.add(loc);
-    }
-
-    public void evolve(RPEntitiesStats rpEntitiesStats){
-        this.SHP = this.SHP * 2;
-        this.SHP = this.SHP * 2;
     }
 }

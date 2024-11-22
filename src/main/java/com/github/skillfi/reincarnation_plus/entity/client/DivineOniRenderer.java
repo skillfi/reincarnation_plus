@@ -3,7 +3,6 @@ package com.github.skillfi.reincarnation_plus.entity.client;
 import com.github.manasmods.tensura.item.custom.TempestScaleShieldItem;
 import com.github.skillfi.reincarnation_plus.RPMod;
 import com.github.skillfi.reincarnation_plus.entity.DivineOniEntity;
-import com.github.skillfi.reincarnation_plus.entity.DivineOniEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;

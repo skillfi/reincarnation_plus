@@ -56,7 +56,6 @@ public class OgreVariant {
         KIJIN(4, RPEntitiesStats.Kijin),
         ONI(3, RPEntitiesStats.Oni),
         DIVINE_ONI(2, RPEntitiesStats.DivineOni),
-        WICKED_ONI(1, RPEntitiesStats.WickedOni),
         DIVINE_FIGHTER(0, RPEntitiesStats.DivineFighter);
 
         private static final Evolving[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Evolving::getEvolution)).toArray(Evolving[]::new);

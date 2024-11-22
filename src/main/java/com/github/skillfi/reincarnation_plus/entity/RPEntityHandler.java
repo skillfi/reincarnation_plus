@@ -23,7 +23,6 @@ public class RPEntityHandler {
         event.put((EntityType) RPEntities.KIJIN.get(), KijinEntity.setAttributes());
         event.put((EntityType) RPEntities.ONI.get(), OniEntity.setAttributes());
         event.put((EntityType) RPEntities.DIVINE_ONI.get(), DivineOniEntity.setAttributes());
-        event.put((EntityType) RPEntities.WICKED_ONI.get(), WickedOniEntity.setAttributes());
         event.put((EntityType) RPEntities.DIVINE_FIGHTER.get(), DivineFighterEntity.setAttributes());
     }
 

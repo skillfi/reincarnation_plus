@@ -117,7 +117,6 @@ public class RPMod {
         EntityRenderers.register(RPEntities.KIJIN.get(), KijinRenderer::new);
         EntityRenderers.register(RPEntities.ONI.get(), OniRenderer::new);
         EntityRenderers.register(RPEntities.DIVINE_ONI.get(), DivineOniRenderer::new);
-        EntityRenderers.register(RPEntities.WICKED_ONI.get(), WickedOniRenderer::new);
         EntityRenderers.register(RPEntities.DIVINE_FIGHTER.get(), DivineFighterRenderer::new);
     }
 }

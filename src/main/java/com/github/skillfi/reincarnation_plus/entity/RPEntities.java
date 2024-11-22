@@ -43,12 +43,6 @@ public class RPEntities {
                     .sized(1.2F, 2.5F)
                     .build(new ResourceLocation(RPMod.MODID, "divine_oni").toString())
     );
-    public static final RegistryObject<EntityType<WickedOniEntity>> WICKED_ONI = ENTITY_REGISTRY.register("wicked_oni",
-            () -> EntityType.Builder.of(WickedOniEntity::new, MobCategory.MONSTER)
-                    .canSpawnFarFromPlayer()
-                    .sized(1.2F, 2.5F)
-                    .build(new ResourceLocation(RPMod.MODID, "wicked_oni").toString())
-    );
     public static final RegistryObject<EntityType<DivineFighterEntity>> DIVINE_FIGHTER = ENTITY_REGISTRY.register("divine_fighter",
             () -> EntityType.Builder.of(DivineFighterEntity::new, MobCategory.MONSTER)
                     .canSpawnFarFromPlayer()

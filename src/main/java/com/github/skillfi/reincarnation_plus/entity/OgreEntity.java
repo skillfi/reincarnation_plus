@@ -16,7 +16,6 @@ import com.github.manasmods.tensura.entity.template.TensuraTamableEntity;
 import com.github.manasmods.tensura.race.RaceHelper;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.battlewill.MeleeArts;
-import com.github.manasmods.tensura.registry.items.TensuraMobDropItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.github.manasmods.tensura.registry.skill.*;
 import com.github.manasmods.tensura.registry.sound.TensuraSoundEvents;
@@ -71,8 +70,11 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatable {
 
@@ -80,7 +82,6 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     public static final RPEntitiesStats KIJIN = RPEntitiesStats.Kijin;
     public static final RPEntitiesStats ONI = RPEntitiesStats.Oni;
     public static final RPEntitiesStats DIVINE_ONI = RPEntitiesStats.DivineOni;
-    public static final RPEntitiesStats WICKED_ONI = RPEntitiesStats.WickedOni;
     public static final RPEntitiesStats DIVINE_FIGHTER = RPEntitiesStats.DivineFighter;
     public static ArrayList<ManasSkill> skills= new ArrayList<>();
     public static ArrayList<ManasSkill> instances= new ArrayList<>();
@@ -147,7 +148,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
                 }
             }
         });
-        this.goalSelector.addGoal(3, new HumanoidNPCEntity.NPCMeleeAttackGoal(this, 2.0, true));
+        this.goalSelector.addGoal(3, new OgreAttackGoal());
         this.goalSelector.addGoal(4, new WanderingFollowOwnerGoal(this, 1.5, 10.0F, 5.0F, false));
         this.goalSelector.addGoal(6, new TamableFollowParentGoal(this, 1.5));
         this.goalSelector.addGoal(7, new TensuraTamableEntity.WanderAroundPosGoal(this));
@@ -202,8 +203,6 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
      <p>
     {@link OgreVariant.Evolving#DIVINE_ONI} = 2
      <p>
-     {@link OgreVariant.Evolving#WICKED_ONI} = 2
-     <p>
     {@link OgreVariant.Evolving#ONI} = 3
      <p>
     {@link OgreVariant.Evolving#KIJIN} = 4
@@ -241,8 +240,6 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     /** Max Evolving {@link OgreVariant.Evolving#DIVINE_FIGHTER} = 0
      <p>
      {@link OgreVariant.Evolving#DIVINE_ONI} = 2
-     <p>
-     {@link OgreVariant.Evolving#WICKED_ONI} = 1
      <p>
      {@link OgreVariant.Evolving#ONI} = 3
      <p>
@@ -292,6 +289,8 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return OgreVariant.Evolving.byId(evolved_id).getStats();
     }
 
+
+
     public int getMaxEvolutionState() {
         return 1;
     }
@@ -335,25 +334,44 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
             baby.randomTexture();
             if (this.isKijin() && ((OgreEntity) pOtherParent).isKijin()) {
-                ArrayList<ManasSkill> pOtherSkills = ((OgreEntity) pOtherParent).getSkills();
-                ArrayList<ManasSkill> pOtherInstances = ((OgreEntity) pOtherParent).getInstances();
-                ArrayList<ManasSkill> thisSkills = this.getSkills();
-                ArrayList<ManasSkill> thisInstances = this.getInstances();
-                int i = this.random.nextInt(pOtherSkills.size());
-                int j = this.random.nextInt(thisSkills.size());
-                for (ManasSkill instance : pOtherInstances){
-                    baby.activateInstance(instance);
-                }
-                for (ManasSkill instance: thisInstances){
-                    baby.activateInstance(instance);
-                }
-                baby.learnSkill(pOtherSkills.get(i));
-                baby.learnSkill(thisSkills.get(j));
+                getGeneFromParents(baby, pOtherParent);
             }
 
             return baby;
         }
     }
+
+    private void getGeneFromParents(KijinEntity baby, AgeableMob pOtherParent) {
+        // Каст батьків до OgreEntity
+        OgreEntity parentOther = (OgreEntity) pOtherParent;
+
+        // Активуємо всі інстанси обох батьків
+        Stream.concat(this.getInstances().stream(), parentOther.getInstances().stream())
+                .forEach(baby::activateInstance);
+
+        // Випадкові навички від обох батьків
+        baby.learnSkill(this.getRandomSkill(this.getSkills()));
+        baby.learnSkill(this.getRandomSkill(parentOther.getSkills()));
+
+        // Випадкова навичка героя
+        List<List<ManasSkill>> parentHeroes = List.of(this.getHeroSkills(), parentOther.getHeroSkills());
+        baby.learnSkill(this.getRandomSkill(this.getRandomList(parentHeroes)));
+
+        // Випадковий інстанс героя
+        List<List<ManasSkill>> parentHeroInstances = List.of(this.getHeroInstances(), parentOther.getHeroInstances());
+        baby.activateInstance(this.getRandomSkill(this.getRandomList(parentHeroInstances)));
+    }
+
+    // Допоміжний метод для отримання випадкового елемента списку
+    private <T> T getRandomSkill(List<T> list) {
+        return list.get(this.random.nextInt(list.size()));
+    }
+
+    // Допоміжний метод для отримання випадкового списку зі списку списків
+    private <T> List<T> getRandomList(List<List<T>> lists) {
+        return lists.get(this.random.nextInt(lists.size()));
+    }
+
 
     public boolean isFood(ItemStack pStack) {
         return pStack.getItem().isEdible();
@@ -566,7 +584,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
     public void addShionSkills(){
         heroSkills.add((ManasSkill) ExtraSkills.DEMON_LORD_HAKI.get());
-        heroSkills.add((ManasSkill) ExtraSkills.INFINITE_REGENERATION.get());
+        heroInstances.add((ManasSkill) ExtraSkills.INFINITE_REGENERATION.get());
         heroSkills.add((ManasSkill) ExtraSkills.MULTILAYER_BARRIER.get());
         heroSkills.add((ManasSkill) ExtraSkills.UNIVERSAL_PERCEPTION.get());
         heroSkills.add((ManasSkill) ExtraSkills.THOUGHT_ACCELERATION.get());
@@ -841,4 +859,207 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return this.entityData.get(MISC_ANIMATION);
     }
 
+    @Nullable
+    public ManasSkillInstance getDemonLordHaki() {
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.DEMON_LORD_HAKI.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getMultiLayerBarrier() {
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.MULTILAYER_BARRIER.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getStrengthenBody() {
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.STRENGTHEN_BODY.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getThoughtComunication() {
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)CommonSkills.THOUGHT_COMMUNICATION.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getShadowMotion() {
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.SHADOW_MOTION.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getBlackFlame(){
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.BLACK_FLAME.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getBodyDouble(){
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.BODY_DOUBLE.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getSteelStrenght(){
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)ExtraSkills.STEEL_STRENGTH.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getOgreBerserker(){
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)IntrinsicSkills.OGRE_BERSERKER.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    @Nullable
+    public ManasSkillInstance getDivineBerserker(){
+        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)UniqueSkills.DIVINE_BERSERKER.get());
+        if (skill.isEmpty()) {
+            return null;
+        } else {
+            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+        }
+    }
+
+    class OgreAttackGoal extends HumanoidNPCEntity.NPCMeleeAttackGoal {
+        private final OgreEntity ogre = OgreEntity.this;
+
+        public OgreAttackGoal() {
+            super(OgreEntity.this, (double)2.5F, true);
+        }
+
+        public boolean canUse() {
+            return this.ogre.isOrderedToSit() ? false : super.canUse();
+        }
+
+        public boolean canContinueToUse() {
+            return this.ogre.isOrderedToSit() ? false : super.canContinueToUse();
+        }
+
+        public void tick() {
+            if (this.ogre.getMiscAnimation() == 0) {
+                super.tick();
+            }
+
+        }
+
+        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+            double distance = this.getAttackReachSqr(pEnemy);
+            if (this.ogre.getMiscAnimation() == 0) {
+                int randomAttack = this.randomAttack(pDistToEnemySqr, pEnemy);
+                double var10000;
+                switch (randomAttack) {
+                    case 2:
+                        this.ogre.getNavigation().stop();
+                        var10000 = (double)225.0F;
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        this.ogre.getNavigation().stop();
+                        var10000 = (double)3600.0F;
+                        break;
+                    default:
+                        var10000 = distance;
+                }
+
+                double attackRange = var10000;
+                if (pDistToEnemySqr <= attackRange && this.isTimeToAttack()) {
+                    this.resetAttackCooldown();
+                    this.ogre.setMiscAnimation(randomAttack);
+                    if (randomAttack == 2) {
+                        this.ogre.doHurtTarget(pEnemy);
+                    } else if (randomAttack == 5) {
+                        this.ogre.stopRiding();
+                        this.ogre.moveTo(pEnemy.position());
+                        TensuraParticleHelper.addServerParticlesAroundSelf(this.ogre, ParticleTypes.SQUID_INK);
+                        this.ogre.hurtMarked = true;
+                    }
+                }
+            }
+
+        }
+
+        protected int randomAttack(double distance, LivingEntity entity) {
+            if (this.ogre.isBaby()) {
+                return 2;
+            } else {
+                if (this.ogre.random.nextInt(10) == 1) {
+                    if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getShadowMotion() != null) {
+                        return 10;
+                    }
+                    if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getSteelStrenght() != null) {
+                        return 9;
+                    }
+                    if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getDemonLordHaki() != null) {
+                        return 8;
+                    }
+                    if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getStrengthenBody() != null) {
+                        return 7;
+                    }if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getMultiLayerBarrier() != null) {
+                        return 6;
+                    }if (entity.isOnGround() && this.ogre.isOnGround() && distance >= (double)200.0F && this.ogre.random.nextInt(10) == 1 && this.ogre.getBlackFlame() != null) {
+                        return 5;
+                    }
+
+                    if ((distance >= (double)200.0F || this.ogre.random.nextInt(15) == 1) && this.ogre.getBodyDouble() != null) {
+                        return 3;
+                    }
+
+                    if (distance >= (double)36.0F || this.ogre.random.nextInt(20) == 1) {
+                        return 2;
+                    }
+                }
+
+                return 1;
+            }
+        }
+
+        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
+            return (double)(this.mob.getBbWidth() * this.mob.getBbWidth() * 3.0F + pAttackTarget.getBbWidth());
+        }
+    }
 }
