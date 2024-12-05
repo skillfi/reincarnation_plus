@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:adamantite_odachi"
+  },
+  "moltenAmount": 8,
+  "moltenType": "reincarnation_plus:magicules"
+}

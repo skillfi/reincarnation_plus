@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:hihiirokane_ingot"
+  },
+  "moltenAmount": 54,
+  "moltenType": "reincarnation_plus:magicules"
+}

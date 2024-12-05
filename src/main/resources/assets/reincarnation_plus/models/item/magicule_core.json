@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "reincarnation_plus:items/magicule_core"
+  }
+}

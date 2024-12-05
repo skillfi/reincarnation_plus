@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:hihiirokane_kodachi"
+  },
+  "moltenAmount": 12,
+  "moltenType": "reincarnation_plus:magicules"
+}

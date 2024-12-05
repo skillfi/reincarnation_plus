@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:air",
+  "gainEP": 0.005,
+  "item": "reincarnation_plus:leather_leggings",
+  "maxEP": 2500,
+  "minEP": 1000
+}

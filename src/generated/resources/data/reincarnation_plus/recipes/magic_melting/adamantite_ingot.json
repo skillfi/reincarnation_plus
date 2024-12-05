@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:adamantite_ingot"
+  },
+  "moltenAmount": 36,
+  "moltenType": "reincarnation_plus:magicules"
+}

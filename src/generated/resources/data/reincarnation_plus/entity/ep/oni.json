@@ -1,0 +1,11 @@
+{
+  "entity": "reincarnation_plus:oni",
+  "evolution": "tensura:none",
+  "maxEP": 100000,
+  "minEP": 100000,
+  "skills": [
+    "tensura:strength",
+    "tensura:steel_strength",
+    "tensura:self_regeneration"
+  ]
+}

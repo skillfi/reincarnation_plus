@@ -1,7 +1,10 @@
 {
   "entity": "reincarnation_plus:kijin",
   "evolution": "tensura:none",
-  "maxEP": 100000,
-  "minEP": 10000,
-  "skills": []
+  "maxEP": 5000,
+  "minEP": 5000,
+  "skills": [
+    "tensura:strength",
+    "tensura:earth_transform"
+  ]
 }

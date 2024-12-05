@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:high_quality_magic_crystal"
+  },
+  "moltenAmount": 10,
+  "moltenType": "reincarnation_plus:magicules"
+}

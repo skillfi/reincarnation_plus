@@ -1,0 +1,94 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"cube": {
+					"rotation": {
+						"0.0": {
+							"vector": [50, 50, 0]
+						},
+						"0.25": {
+							"vector": [25, 25, 0],
+							"easing": "linear"
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"0.75": {
+							"vector": [-25, -25, 0]
+						},
+						"1.0": {
+							"vector": [-50, -50, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0.4, 0.4, 0.4]
+						},
+						"0.25": {
+							"vector": [0.6, 0.6, 0.6],
+							"easing": "linear"
+						},
+						"0.5": {
+							"vector": [0.8, 0.8, 0.8]
+						},
+						"0.75": {
+							"vector": [0.6, 0.6, 0.6],
+							"easing": "linear"
+						},
+						"1.0": {
+							"vector": [0.4, 0.4, 0.4]
+						}
+					}
+				},
+				"inner_glass": {
+					"rotation": {
+						"0.0": {
+							"vector": [50, 50, 0]
+						},
+						"0.25": {
+							"vector": [25, 25, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [-25, -25, 0]
+						},
+						"1.0": {
+							"vector": [-50, -50, 0]
+						}
+					}
+				},
+				"outer_glass": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 50, 0]
+						},
+						"0.25": {
+							"vector": [0, 25, 0],
+							"easing": "linear"
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"0.75": {
+							"vector": [0, -25, 0],
+							"easing": "linear"
+						},
+						"1.0": {
+							"vector": [0, -50, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

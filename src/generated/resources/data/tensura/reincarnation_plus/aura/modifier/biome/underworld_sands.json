@@ -1,0 +1,15 @@
+{
+  "biome": "tensura:underworld_sands",
+  "modifiers": [
+    {
+      "mode": "ADD",
+      "value": 500.0
+    }
+  ],
+  "regen_modifiers": [
+    {
+      "mode": "ADD",
+      "value": 50.0
+    }
+  ]
+}

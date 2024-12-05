@@ -6,7 +6,7 @@
 
   "_comment1": "Items",
   "item.reincarnation_plus.crystalized_water_bucket": "Crystalized Water Bucket",
-  "item.reincarnation_plus.ogre_man_spawn_egg": "Ogre Man Spawn Egg",
+  "item.reincarnation_plus.ogre_spawn_egg": "Ogre Man Spawn Egg",
   "item.reincarnation_plus.gem_stone": "Gem Stone",
   "item.reincarnation_plus.gem_dust": "Gem Dust",
 
@@ -27,6 +27,7 @@
   "block.reincarnation_plus.gem_stage_0": "Gem Stage 0",
   "block.reincarnation_plus.gem_stage_3": "Gem Stage 3",
   "block.reincarnation_plus.gem_stage_2": "Gem Stage 2",
+  "block.reincarnation_plus.magicule_core": "Magicule Core",
 
 
   "_comment3": "Fluids",
@@ -37,5 +38,33 @@
   "_comment2.1": "Blocks",
   "block.reincarnation_plus.gem_stone_block": "Gem Stone Block",
   "block.reincarnation_plus.crystalized_water": "Crystalized Water",
-  "block.reincarnation_plus.gems_block": "Gem Block"
+  "block.reincarnation_plus.gems_block": "Gem Block",
+  "block.reincarnation_plus.magic_infuser": "Magic Infuser",
+  "block.reincarnation_plus.magic_amplifier": "Magic Amplifier",
+
+  "_comment4": "Attributes",
+  "reincarantion_plus.attribute.ep_storage": "EP Storage",
+  "reincarantion_plus.attribute.max_ep": "Max EP",
+  "reincarantion_plus.attribute.in_chunk": "In chunk",
+
+  "_comment5": "Tabs",
+  "itemGroup.reincarnation_plus_items": "REI: Items",
+  "itemGroup.reincarnation_plus_blocks": "REI: Blocks",
+
+  "_comment6": "screen",
+  "reincarnation_plus.magic_infuser.smeltery_label": "Smeltery",
+  "tooltip.reincarnation_plus.magic_infuser.empty": "Empty",
+  "reincarnation_plus.magic_infuser.label": "M. Infuser",
+  "tooltip.reincarnation_plus.magic_infuser.infusion_right": "Next",
+  "tooltip.reincarnation_plus.magic_infuser.infusion_left": "Previous",
+  "tooltip.reincarnation_plus.magic_infuser.molten_item": "%s Molten %s",
+  "tooltip.reincarnation_plus.magic_infuser.molten_output": "Convert to Ingot/Nugget",
+  "reincarnation_plus.molten.magicules.material": "Magicules",
+  "reincarnation_plus.molten.infusion.material": "Infusion",
+  "reincarnation_plus.molten.infusion.time": "%s Infusion Time",
+  "tooltip.reincarnation_plus.magic_infuser.infusion": "Infusion",
+
+  "_comment7": "Jei",
+  "reincarnation_plus.jei.infusion.title": "Magic Infusion",
+  "reincarnation_plus.jei.melting.title": "Melting"
 }

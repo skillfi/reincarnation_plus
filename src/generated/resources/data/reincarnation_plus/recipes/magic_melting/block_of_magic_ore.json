@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:block_of_magic_ore"
+  },
+  "moltenAmount": 9,
+  "moltenType": "reincarnation_plus:magicules"
+}

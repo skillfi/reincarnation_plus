@@ -1,0 +1,15 @@
+{
+  "biome": "minecraft:cold_ocean",
+  "modifiers": [
+    {
+      "mode": "ADD",
+      "value": 0.0
+    }
+  ],
+  "regen_modifiers": [
+    {
+      "mode": "ADD",
+      "value": 0.0
+    }
+  ]
+}

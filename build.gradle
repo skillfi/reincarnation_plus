@@ -107,6 +107,7 @@ repositories {
     maven { url 'https://jitpack.io' }
 
     maven { url "https://maven.firstdarkdev.xyz/snapshots" }
+    maven {url = "https://maven.blamejared.com/"} //JEI
 
     flatDir {
         dirs 'lib'
@@ -115,10 +116,10 @@ repositories {
 
 dependencies {
     //Minecraft Forge
-    minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
+    minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeLoaderVersion}"
 
     // ManasCore and Dependencies
-    implementation fg.deobf("com.github.manasmods:ManasCore:${minecraftVersion}-${manasCoreVersion}:slim")
+    implementation fg.deobf("com.github.manasmods:ManasCore:${minecraftVersion}-${manasCoreVersionCheck}:slim")
     implementation fg.deobf("com.lowdragmc.photon:photon-forge-${minecraftVersion}:${photonVersion}") {
         transitive = false
     }
@@ -127,15 +128,23 @@ dependencies {
     }
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinExtrasVersion}"))
     implementation("io.github.llamalad7:mixinextras-forge:${mixinExtrasVersion}")
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.38')
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}.38")
+    implementation fg.deobf("mezz.jei:jei-${minecraftVersion}-forge:${jeiVersionCheck}")
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Tensura
-    implementation fg.deobf("blank:tensura:${minecraftVersion}-${tensuraVersion}")
-    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraftVersion}-${terraBlenderVersion}")
+    implementation fg.deobf("blank:tensura:${minecraftVersion}-${tensuraVersionCheck}")
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraftVersion}-${terraBlenderVersionCheck}")
+
+    // Ice and Fire
+    implementation fg.deobf("curse.maven:citadel-331936:4556677")
+    implementation fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037952")
+    implementation fg.deobf("curse.maven:atlasviewer-633577:4420382")
+    implementation fg.deobf("curse.maven:mob-entity-path-visualizer-590716:4063117")
+    implementation fg.deobf("curse.maven:terralith-513688:4823693")
 }
 
 mixin {
@@ -162,8 +171,53 @@ jar {
     }
 }
 
-jar.finalizedBy('reobfJar')
+def replaceResources = tasks.register("replaceResources", Copy) {
+    it.outputs.upToDateWhen { false }
+    //Copy it into the build dir
+    it.from(sourceSets.main.resources) {
+        def forgeLoaderVersion = forgeLoaderVersion.substring(0, forgeLoaderVersion.indexOf('.'))
+        def nextMajorMinecraftVersion = getNextMajorMinecraftVersion(minecraftVersion)
+        def minecraftVersionCheck = "[${minecraftVersion},${nextMajorMinecraftVersion})"
+        def iafVersionCheck = "[1.19.2-2.1.13,)"
+        def geckolibVersionCheck = "[${geckolib_version},)"
+        def tensuraVersionCheck = "[1.0.0.0,)"
+        def manasCoreVersionCheck = "[${manasCoreVersionCheck},)"
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+        include "META-INF/mods.toml"
+        expand 'modVersion': "${modVersion}",
+                'forgeLoaderVersion': "[${forgeLoaderVersion},)",
+                'minecraftVersionCheck': "${minecraftVersionCheck}",
+                'iafVersionCheck': "${iafVersionCheck}",
+                'geckolibVersionCheck': "${geckolibVersionCheck}",
+                'tensuraVersionCheck': "${tensuraVersionCheck}",
+                'manasCoreVersionCheck': "${manasCoreVersionCheck}"
+
+    }
+    it.into "$buildDir/resources/main/"
 }
+
+
+processResources {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    exclude('META-INF/mods.toml')
+    configure { finalizedBy(replaceResources) }
+}
+
+classes.configure {
+    dependsOn(replaceResources)
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+static String getNextMajorMinecraftVersion(String currentVersion) {
+    def version = currentVersion.substring(0, currentVersion.indexOf('.'))
+    def majorVersion = currentVersion.substring(currentVersion.indexOf('.') + 1, currentVersion.indexOf('.', currentVersion.indexOf('.') + 1))
+    def majorInt = Integer.valueOf(majorVersion)
+    majorInt++
+    majorVersion = majorInt.toString()
+    return "${version}.${majorVersion}"
+}
+
+jar.finalizedBy('reobfJar')

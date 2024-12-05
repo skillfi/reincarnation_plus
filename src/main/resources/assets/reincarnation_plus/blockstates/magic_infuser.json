@@ -1,0 +1,84 @@
+{
+  "variants": {
+    "facing=north,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser",
+      "y": 0
+    },
+    "facing=east,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser",
+      "y": 90
+    },
+    "facing=south,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser",
+      "y": 180
+    },
+    "facing=west,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser",
+      "y": 270
+    },
+    "facing=north,lit=true,infuse=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_on",
+      "y": 0
+    },
+    "facing=east,lit=true,infuse=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_on",
+      "y": 90
+    },
+    "facing=south,lit=true,infuse=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_on",
+      "y": 180
+    },
+    "facing=west,lit=true,infuse=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_on",
+      "y": 270
+    },
+    "facing=north,lit=true,infuse=true,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 0
+    },
+    "facing=east,lit=true,infuse=true,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 90
+    },
+    "facing=south,lit=true,infuse=true,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 180
+    },
+    "facing=west,lit=true,infuse=true,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 270
+    },
+    "facing=north,infuse=true,lit=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 0
+    },
+    "facing=east,infuse=true,lit=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 90
+    },
+    "facing=south,infuse=true,lit=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 180
+    },
+    "facing=west,infuse=true,lit=false,part=base": {
+      "model": "reincarnation_plus:block/magic_infuser_infuse",
+      "y": 270
+    },
+    "facing=north,lit=false,part=top,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser_top",
+      "y": 0
+    },
+    "facing=east,lit=false,part=top,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser_top",
+      "y": 90
+    },
+    "facing=south,lit=false,part=top,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser_top",
+      "y": 180
+    },
+    "facing=west,lit=false,part=top,infuse=false": {
+      "model": "reincarnation_plus:block/magic_infuser_top",
+      "y": 270
+    }
+  }
+}

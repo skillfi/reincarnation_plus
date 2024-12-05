@@ -30,6 +30,7 @@ elements
 build
 lib
 run
+runServer
 .settings
 .idea
 .classpath

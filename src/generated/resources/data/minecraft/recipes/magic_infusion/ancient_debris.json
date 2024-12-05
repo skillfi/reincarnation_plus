@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "cookingTime": 120000,
+  "input": {
+    "item": "minecraft:iron_block"
+  },
+  "inputLeft": {
+    "amount": 160.0,
+    "moltenType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:ancient_debris"
+  }
+}

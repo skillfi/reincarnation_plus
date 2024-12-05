@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:mithril_axe"
+  },
+  "moltenAmount": 2,
+  "moltenType": "reincarnation_plus:magicules"
+}

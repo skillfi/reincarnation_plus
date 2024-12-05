@@ -1,0 +1,15 @@
+{
+  "biome": "minecraft:deep_frozen_ocean",
+  "modifiers": [
+    {
+      "mode": "ADD",
+      "value": 0.0
+    }
+  ],
+  "regen_modifiers": [
+    {
+      "mode": "ADD",
+      "value": 0.0
+    }
+  ]
+}

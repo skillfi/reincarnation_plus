@@ -1,11 +1,9 @@
 {
   "entity": "reincarnation_plus:ogre",
   "evolution": "tensura:none",
-  "maxEP": 10000,
-  "minEP": 6000,
+  "maxEP": 600,
+  "minEP": 600,
   "skills": [
-    "tensura:strength",
-    "tensura:fighter",
-    "tensura:ogre_berserker"
+    "tensura:strength"
   ]
 }

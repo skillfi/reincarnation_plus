@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="${forgeLoaderVersion}"
 license="All Rights Reserved"
 
 [[mods]]
 modId="reincarnation_plus"
-version="1.0.0.4"
-displayName="Reincarnation +"
+version="${modVersion}"
+displayName="Tensura Addon"
 credits=""
 displayURL=""
 authors="skillfi"
@@ -13,31 +13,37 @@ authors="skillfi"
 [[dependencies.reincarnation_plus]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2]"
+    versionRange="${minecraftVersionCheck}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.reincarnation_plus]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="${forgeLoaderVersion}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.reincarnation_plus]]
-    modId="geckolib"
-    mandatory=false
-    versionRange="[0,)"
+    modId="geckolib3"
+    mandatory=true
+    versionRange="${geckolibVersionCheck}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.reincarnation_plus]]
     modId="tensura"
-    mandatory=false
-    versionRange="[0,)"
+    mandatory=true
+    versionRange="${tensuraVersionCheck}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.reincarnation_plus]]
     modId="manascore"
-    mandatory=false
-    versionRange="[0,)"
+    mandatory=true
+    versionRange="${manasCoreVersionCheck}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.reincarnation_plus]]
+    modId="iceandfire"
+    mandatory=true
+    versionRange="${iafVersionCheck}"
     ordering="NONE"
     side="BOTH"
 

@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:orichalcum_katana"
+  },
+  "moltenAmount": 2,
+  "moltenType": "reincarnation_plus:magicules"
+}
