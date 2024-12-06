@@ -47,21 +47,42 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     private final ItemStack output;
 
     public boolean matches(MagicInfuserBlockEntity pContainer, Level level) {
+        // Перевірка, чи вхідний слот має потрібний ItemStack
         ItemStack inputStack = pContainer.getItem(2).copy();
-        if (!this.leftInput.equals(EMPTY)){
+
+        // Перевірка для лівого входу
+        if (!this.leftInput.equals(EMPTY)) {
+            // Якщо матеріалу недостатньо, рецепт не підходить
             if (pContainer.getMagicMaterialAmount() < this.leftInputAmount) {
                 return false;
             }
+
+            // Якщо вхідний предмет не відповідає рецепту, рецепт не підходить
             if (!this.input.test(inputStack)) {
                 return false;
             }
-            else {
-                return pContainer.getMagicMaterialAmount() >= this.leftInputAmount;
+
+            // Перевірка вихідного слоту
+            ItemStack outputStack = pContainer.getItem(3);
+
+            // Якщо вихідний слот не порожній і не збігається з очікуваним результатом
+            if (!outputStack.isEmpty() && !ItemStack.isSame(outputStack, this.output)) {
+                return false;
             }
-        } else {
+
+            // Перевірка кількості вихідного предмета (не перевищує максимум)
+            if (!outputStack.isEmpty() && outputStack.getCount() + this.output.getCount() > outputStack.getMaxStackSize()) {
+                return false;
+            }
+
+            // Якщо всі перевірки пройдені
             return true;
         }
+
+        // Якщо лівий вхід порожній, рецепт завжди підходить
+        return true;
     }
+
 
     public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
         this.infuse(pContainer, this.leftInput, this.leftInputAmount);

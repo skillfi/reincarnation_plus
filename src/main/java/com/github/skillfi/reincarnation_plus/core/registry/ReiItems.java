@@ -66,6 +66,7 @@ public class ReiItems {
 	public static final RegistryObject<Item> OGRE_SPAWN_EGG = ITEMS.register("ogre_spawn_egg", () -> new ForgeSpawnEggItem(ReiEntities.OGRE, -52378, -1, new Item.Properties().tab(ReiCreativeTab.ITEMS)));
 	public static final RegistryObject<Item> MAGIC_INFUSER = ITEMS.register(ReiBlockEntities.Blocks.MAGICAL_INFUSER.getId().getPath(), () -> new BlockItem(ReiBlockEntities.Blocks.MAGICAL_INFUSER.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
 	public static final RegistryObject<Item> MAGIC_AMPLIFIER = ITEMS.register(ReiBlockEntities.Blocks.MAGIC_AMPLIFIER.getId().getPath(), () -> new BlockItem(ReiBlockEntities.Blocks.MAGIC_AMPLIFIER.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
+	public static final RegistryObject<Item> MAGIC_MECH = ITEMS.register(ReiBlockEntities.Blocks.MAGIC_MECH.getId().getPath(), () -> new BlockItem(ReiBlockEntities.Blocks.MAGIC_MECH.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
 		return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));

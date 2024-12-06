@@ -2,6 +2,9 @@
   "_comment": "Entities",
   "entity.reincarnation_plus.ogre": "Ogre",
   "entity.reincarnation_plus.kijin": "Kijin",
+  "entity.reincarnation_plus.oni": "Oni",
+  "entity.reincarnation_plus.divine_oni": "Divine Oni",
+  "entity.reincarnation_plus.divine_fighter": "Divine Fighter",
 
 
   "_comment1": "Items",
@@ -41,6 +44,7 @@
   "block.reincarnation_plus.gems_block": "Gem Block",
   "block.reincarnation_plus.magic_infuser": "Magic Infuser",
   "block.reincarnation_plus.magic_amplifier": "Magic Amplifier",
+  "block.reincarnation_plus.magic_mech": "Magic Meh",
 
   "_comment4": "Attributes",
   "reincarantion_plus.attribute.ep_storage": "EP Storage",

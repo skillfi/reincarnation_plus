@@ -13,6 +13,7 @@ import com.github.manasmods.tensura.registry.items.TensuraMaterialItems;
 import com.github.manasmods.tensura.registry.items.TensuraMobDropItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.libs.data.ReiTags;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfuserMeltingRecipe;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfusionRecipe;
@@ -46,7 +47,6 @@ public class ReiRecipeProvider extends RecipeProvider {
         this.buildRecipes(consumer);
         this.magicInfusion(consumer);
         this.magicMelting(consumer);
-//        this.kilnMelting(consumer);
     }
 
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
@@ -108,6 +108,15 @@ public class ReiRecipeProvider extends RecipeProvider {
                 .pattern("DDD")
                 .pattern("D D")
                 .unlockedBy("has_monster_leather", has(TensuraMobDropItems.MONSTER_LEATHER_D.get()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(ReiItems.MAGIC_MECH.get())
+                .define('I', Items.IRON_INGOT)
+                .define('W', ItemTags.WOOL)
+                .pattern("III")
+                .pattern("IWW")
+                .pattern("III")
+                .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
                 .save(consumer);
 
         ShapedRecipeBuilder.shaped(ReiItems.MAGIC_INFUSER.get())

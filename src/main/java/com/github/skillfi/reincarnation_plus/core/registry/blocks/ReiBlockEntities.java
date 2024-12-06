@@ -5,11 +5,10 @@
 package com.github.skillfi.reincarnation_plus.core.registry.blocks;
 
 import com.github.manasmods.manascore.api.data.gen.annotation.GenerateBlockLoot;
-import com.github.manasmods.tensura.block.entity.KilnBlockEntity;
-import com.github.manasmods.tensura.registry.blocks.TensuraBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.MagicAmplifierBlock;
 import com.github.skillfi.reincarnation_plus.core.block.MagicInfuserBlock;
+import com.github.skillfi.reincarnation_plus.core.block.MagicMechBlock;
 import com.github.skillfi.reincarnation_plus.core.block.entity.*;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.block.Block;
@@ -31,6 +30,7 @@ public class ReiBlockEntities {
 	public static final RegistryObject<BlockEntityType<?>> CORE_BLOCK_ENTITY = register("magicule_core", ReiBlocks.EP_CORE, EPCoreTileEntity::new);
 	public static final RegistryObject<BlockEntityType<MagicInfuserBlockEntity>> MAGICAL_INFUSER_ENTITY = REGISTRY.register("magic_infuser", ()->BlockEntityType.Builder.of(MagicInfuserBlockEntity::new, new Block[]{(Block) Blocks.MAGICAL_INFUSER.get()}).build((Type)null));
 	public static final RegistryObject<BlockEntityType<MagicAmplifierBlockEntity>> MAGIC_AMPLIFIER = REGISTRY.register("magic_amplifier", () -> BlockEntityType.Builder.of(MagicAmplifierBlockEntity::new, new Block[]{(Block) Blocks.MAGIC_AMPLIFIER.get()}).build((Type)null));
+	public static final RegistryObject<BlockEntityType<MagicMehBlockEntity>> MAGIC_MECH = REGISTRY.register("magic_mech", () -> BlockEntityType.Builder.of(MagicMehBlockEntity::new, new Block[]{(Block) Blocks.MAGIC_MECH.get()}).build((Type)null));
 
 	private static RegistryObject<BlockEntityType<?>> register(String registryname, RegistryObject<Block> block, BlockEntityType.BlockEntitySupplier<?> supplier) {
 		return REGISTRY.register(registryname, () -> BlockEntityType.Builder.of(supplier, block.get()).build(null));
@@ -49,6 +49,8 @@ public class ReiBlockEntities {
 		public static final RegistryObject<MagicAmplifierBlock> MAGIC_AMPLIFIER;
 		@GenerateBlockLoot.SelfDrop
 		public static final RegistryObject<MagicInfuserBlock> MAGICAL_INFUSER;
+		@GenerateBlockLoot.SelfDrop
+		public static final RegistryObject<MagicMechBlock> MAGIC_MECH;
 
 		public Blocks() {
 		}
@@ -57,6 +59,7 @@ public class ReiBlockEntities {
 			registry = DeferredRegister.create(ForgeRegistries.BLOCKS, ReiMod.MODID);
 			MAGIC_AMPLIFIER = registry.register("magic_amplifier", MagicAmplifierBlock::new);
 			MAGICAL_INFUSER = registry.register("magic_infuser", MagicInfuserBlock::new);
+			MAGIC_MECH = registry.register("magic_mech", MagicMechBlock::new);
 		}
 	}
 }

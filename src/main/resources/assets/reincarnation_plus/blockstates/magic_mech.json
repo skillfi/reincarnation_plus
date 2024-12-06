@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "reincarnation_plus:block/magic_mech",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "reincarnation_plus:block/magic_mech",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "reincarnation_plus:block/magic_mech",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "reincarnation_plus:block/magic_mech",
+      "y": 270
+    }
+  }
+}

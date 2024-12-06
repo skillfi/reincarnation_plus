@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "III",
+    "IWW",
+    "III"
+  ],
+  "result": {
+    "item": "reincarnation_plus:magic_mech"
+  }
+}

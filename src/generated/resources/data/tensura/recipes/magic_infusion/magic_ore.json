@@ -1,6 +1,6 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 100,
+  "cookingTime": 5000,
   "input": {
     "item": "minecraft:iron_ore"
   },

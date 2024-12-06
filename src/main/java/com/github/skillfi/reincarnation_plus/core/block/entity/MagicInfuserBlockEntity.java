@@ -72,6 +72,9 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     private double speedModifier;
     @Getter
     @Setter
+    private int boostDuration = 0;
+    @Getter
+    @Setter
     private Optional<ResourceLocation> rightBarId;
     @Getter
     @Setter
@@ -283,8 +286,15 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         return var10000;
     }
 
-    public void boost(){
-        speedModifier += 1.0;
+    public void boost(int baseSpeedModifier){
+        if (speedModifier == 0){
+            speedModifier += baseSpeedModifier;
+            needUpdate = true;
+        }
+    }
+
+    public void resetSpeed(){
+        speedModifier = 0;
         needUpdate = true;
     }
 
@@ -405,6 +415,18 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
 
     public static void tick(Level level, BlockPos pos, BlockState state, MagicInfuserBlockEntity pEntity) {
         if (!level.isClientSide()) {
+            if (pEntity.boostDuration > 0) {
+                pEntity.boostDuration--;
+                if (pEntity.speedModifier > 0){
+                    pEntity.setInfusionTime((int) (pEntity.getInfusionTime() / pEntity.getSpeedModifier()));
+                }
+
+                // Логіка пришвидшеної роботи під час boostDuration
+                if (pEntity.boostDuration == 0) {
+                    pEntity.resetSpeed(); // Скидання швидкості до стандартної
+                }
+            }
+
             BlockEntity belowBlock = level.getBlockEntity(pos.below());
             if (belowBlock instanceof MagicAmplifierBlockEntity amplifierBlock) {
                 pEntity.upgrade(amplifierBlock.getMaxMagicMaterialAmount());
