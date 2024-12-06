@@ -5,7 +5,7 @@
     "item": "minecraft:raw_iron"
   },
   "inputLeft": {
-    "amount": 40.0,
+    "amount": 10,
     "moltenType": "reincarnation_plus:magicules"
   },
   "result": {

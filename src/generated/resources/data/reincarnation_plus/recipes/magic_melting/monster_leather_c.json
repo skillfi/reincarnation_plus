@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:magic_melting",
+  "input": {
+    "item": "tensura:monster_leather_c"
+  },
+  "moltenAmount": 2,
+  "moltenType": "reincarnation_plus:magicules"
+}

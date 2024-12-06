@@ -66,11 +66,16 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     @Setter
     private Optional<ResourceLocation> leftBarId;
     @Getter
+    private static final double BaseSpeedModifier = 1.0;
+    @Setter
+    @Getter
+    private double speedModifier;
+    @Getter
     @Setter
     private Optional<ResourceLocation> rightBarId;
     @Getter
     @Setter
-    private float magicMaterialAmount;
+    private int magicMaterialAmount;
     @Getter
     @Setter
     private int maxMagicMaterialAmount;
@@ -98,7 +103,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     @Getter
     @Setter
     private int maxInfusionTime;
-    private float lastMoltenAmount;
+    private int lastMoltenAmount;
     private ItemStack lastInfusionStack;
     private ItemStack lastInputStack;
     private ItemStack lastFuelStack;
@@ -125,6 +130,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         this.additionalMagicMaterialAmount = 0;
         this.itemMaterialAmount = 0;
         this.meltingProgress = 0;
+        this.speedModifier = BaseSpeedModifier;
         this.infusionProgress = 0;
         this.fuelTime = 0;
         this.maxFuelTime = 0;
@@ -220,10 +226,10 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         ContainerHelper.saveAllItems(nbt, this.items);
         this.leftBarId.ifPresent((location) -> nbt.putString("magic_infuser.molten.itemId", location.toString()));
         this.rightBarId.ifPresent((location) -> nbt.putString("magic_infuser.infusionId", location.toString()));
-        nbt.putFloat("magic_infuser.molten", this.magicMaterialAmount);
+        nbt.putInt("magic_infuser.molten", this.magicMaterialAmount);
         nbt.putInt("magic_infuser.maxMolten", this.maxMagicMaterialAmount);
         nbt.putInt("magic_infuser.addMolten", this.additionalMagicMaterialAmount);
-        nbt.putInt("magic_infuser.item", this.itemMaterialAmount);
+        nbt.putDouble("magic_infuser.speedModifier", this.speedModifier);
         nbt.putInt("magic_infuser.meltingProgess", this.meltingProgress);
         nbt.putInt("magic_infuser.fuel", this.fuelTime);
         nbt.putInt("magic_infuser.maxFuel", this.maxFuelTime);
@@ -239,10 +245,10 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         ContainerHelper.loadAllItems(nbt, this.items);
         this.leftBarId = nbt.contains("magic_infuser.molten.itemId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString("magic_infuser.molten.itemId"))) : Optional.of(MagicInfusionRecipe.MAGICULES);
         this.rightBarId = nbt.contains("magic_infuser.infusionId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString("magic_infuser.infusionId"))) : Optional.of(MagicInfusionRecipe.INFUSION);
-        this.magicMaterialAmount = nbt.getFloat("magic_infuser.molten");
+        this.magicMaterialAmount = nbt.getInt("magic_infuser.molten");
         this.maxMagicMaterialAmount = nbt.getInt("magic_infuser.maxMolten");
         this.additionalMagicMaterialAmount = nbt.getInt("magic_infuser.addMolten");
-        this.itemMaterialAmount = nbt.getInt("magic_infuser.item");
+        this.speedModifier = nbt.getDouble("magic_infuser.speedModifier");
         this.meltingProgress = nbt.getInt("magic_infuser.meltingProgess");
         this.fuelTime = nbt.getInt("magic_infuser.fuel");
         this.maxFuelTime = nbt.getInt("magic_infuser.maxFuel");
@@ -275,6 +281,11 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         }
 
         return var10000;
+    }
+
+    public void boost(){
+        speedModifier += 1.0;
+        needUpdate = true;
     }
 
     public boolean canTakeItemThroughFace(int pIndex, ItemStack pStack, Direction pDirection) {
@@ -455,7 +466,6 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
 
                             if (infusionProgress >= 99) {
                                 magicInfusionRecipe.assemble(this);
-                                this.setItem(OUTPUT_INFUSION_SLOT_INDEX, magicInfusionRecipe.getResultItem().copy());
                                 resetInfusionProgress();
                             } else {
                                 infusionProgress = 100 * (this.maxInfusionTime - this.infusionTime) / this.maxInfusionTime;
@@ -542,19 +552,6 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         }
     }
 
-    private void checkSelectedRecipeIndex() {
-        if (this.totalPossibleRecipes == 0) {
-            this.selectedRecipeIndex = 0;
-            this.needUpdate = true;
-        } else if (this.selectedRecipeIndex >= this.totalPossibleRecipes) {
-            --this.selectedRecipeIndex;
-            this.needUpdate = true;
-        } else if (this.selectedRecipeIndex < 0) {
-            this.selectedRecipeIndex = 0;
-            this.needUpdate = true;
-        }
-    }
-
     private void updatePossibleInfussionRecipes() {
         Optional<MagicInfusionRecipe> selectedRecipe = this.possibleInfusionRecipes.size() > this.selectedRecipeIndex && this.selectedRecipeIndex >= 0 ? Optional.of((MagicInfusionRecipe)this.possibleInfusionRecipes.get(this.selectedRecipeIndex)) : Optional.empty();
         assert this.level != null;
@@ -626,6 +623,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
                 return false;
             } else {
                 AtomicInteger fuelTime = new AtomicInteger();
+                assert this.level != null;
                 this.level.getRecipeManager().
                         getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, this.level).
                         ifPresent((magicInfusionRecipe) -> {
@@ -695,7 +693,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         this.needUpdate = true;
     }
 
-    public void removeMoltenMaterialAmount(float moltenAmount) {
+    public void removeMoltenMaterialAmount(int moltenAmount) {
         this.magicMaterialAmount -= moltenAmount;
         this.needUpdate = true;
     }

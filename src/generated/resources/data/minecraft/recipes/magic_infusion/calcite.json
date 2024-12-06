@@ -5,7 +5,7 @@
     "item": "minecraft:diorite"
   },
   "inputLeft": {
-    "amount": 2.0,
+    "amount": 1,
     "moltenType": "reincarnation_plus:magicules"
   },
   "result": {

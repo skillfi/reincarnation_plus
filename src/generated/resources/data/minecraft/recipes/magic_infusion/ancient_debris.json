@@ -5,7 +5,7 @@
     "item": "minecraft:iron_block"
   },
   "inputLeft": {
-    "amount": 160.0,
+    "amount": 40,
     "moltenType": "reincarnation_plus:magicules"
   },
   "result": {

@@ -5,7 +5,7 @@
     "item": "minecraft:wheat_seeds"
   },
   "inputLeft": {
-    "amount": 10.0,
+    "amount": 3,
     "moltenType": "reincarnation_plus:magicules"
   },
   "result": {

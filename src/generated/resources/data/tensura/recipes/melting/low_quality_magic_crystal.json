@@ -1,8 +1,0 @@
-{
-  "type": "tensura:kiln_melting",
-  "input": {
-    "item": "tensura:low_quality_magic_crystal"
-  },
-  "moltenAmount": 1,
-  "moltenType": "tensura:magisteel"
-}

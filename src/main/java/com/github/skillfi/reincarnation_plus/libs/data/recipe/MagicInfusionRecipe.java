@@ -38,7 +38,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     @Getter
     private final ResourceLocation leftInput;
     @Getter
-    private final float leftInputAmount;
+    private final int leftInputAmount;
     @Getter
     private final Ingredient input;
     @Getter
@@ -46,22 +46,29 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     @Getter
     private final ItemStack output;
 
-    public boolean matches(MagicInfuserBlockEntity magicInfuserBlockEntity, Level level) {
-        Optional<ResourceLocation> leftBarId = magicInfuserBlockEntity.getLeftBarId();
-        ItemStack inputStack = magicInfuserBlockEntity.getItem(2).copy();
-        boolean magicules = magicInfuserBlockEntity.getMagicMaterialAmount() >= this.leftInputAmount;
-        if (!this.input.test(inputStack)) {
-            return false;
+    public boolean matches(MagicInfuserBlockEntity pContainer, Level level) {
+        ItemStack inputStack = pContainer.getItem(2).copy();
+        if (!this.leftInput.equals(EMPTY)){
+            if (pContainer.getMagicMaterialAmount() < this.leftInputAmount) {
+                return false;
+            }
+            if (!this.input.test(inputStack)) {
+                return false;
+            }
+            else {
+                return pContainer.getMagicMaterialAmount() >= this.leftInputAmount;
+            }
+        } else {
+            return true;
         }
-        return magicules;
     }
 
     public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
         this.infuse(pContainer, this.leftInput, this.leftInputAmount);
-        return ItemStack.EMPTY.copy();
+        return getResultItem();
     }
 
-    public void infuse(MagicInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
+    public void infuse(MagicInfuserBlockEntity pContainer, ResourceLocation type, int amount) {
         if (!type.equals(EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials()
                     .parallelStream()
@@ -70,6 +77,14 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
                     .ifPresentOrElse((material) -> {
                         pContainer.removeMoltenMaterialAmount(amount);
                         pContainer.removeItem(2, 1);
+                        ItemStack output  = pContainer.getItem(3).copy();
+                        if (!output.isEmpty()){
+                            output.grow(1);
+                            pContainer.setItem(3, output);
+                        } else {
+                            pContainer.setItem(3, getResultItem());
+                        }
+
                     }, () -> log.error("Could not assemble InfusionRecipe: {}", this));
         }
     }
@@ -146,7 +161,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         return Objects.hash(new Object[]{this.id, this.leftInput, this.leftInputAmount, this.input, this.output});
     }
 
-    public MagicInfusionRecipe(ResourceLocation id, ResourceLocation leftInput, float leftInputAmount, Ingredient ingredient, int cookingTime, ItemStack output) {
+    public MagicInfusionRecipe(ResourceLocation id, ResourceLocation leftInput, int leftInputAmount, Ingredient ingredient, int cookingTime, ItemStack output) {
         this.id = id;
         this.leftInput = leftInput;
         this.leftInputAmount = leftInputAmount;
@@ -201,11 +216,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     public static class Builder {
         private final ItemStack output;
         private ResourceLocation leftInput;
-        private float leftAmount;
+        private int leftAmount;
         private Ingredient input;
         private int infusionTime;
 
-        public Builder magicules(ResourceLocation moltenType, float amount) {
+        public Builder magicules(ResourceLocation moltenType, int amount) {
             this.leftInput = moltenType;
             this.leftAmount = amount;
             return this;
