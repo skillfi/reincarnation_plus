@@ -261,6 +261,10 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             consumer.accept((new MagicInfusionRecipe(new ResourceLocation(id.getNamespace(), "magic_infusion/" + id.getPath()), this.leftInput, this.leftAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output)).finishRecipe());
         }
 
+        public void build(Consumer<FinishedRecipe> consumer, String fileName) {
+            this.build(consumer, new ResourceLocation("magic_melting/" + fileName));
+        }
+
         public void build(Consumer<FinishedRecipe> consumer) {
             this.build(consumer, (ResourceLocation)Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.output.getItem())));
         }

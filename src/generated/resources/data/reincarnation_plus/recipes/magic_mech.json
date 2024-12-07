@@ -1,7 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "I": {
+    "M": {
+      "item": "tensura:low_magisteel_ingot"
+    },
+    "S": {
       "item": "minecraft:iron_ingot"
     },
     "W": {
@@ -9,9 +12,9 @@
     }
   },
   "pattern": [
-    "III",
-    "IWW",
-    "III"
+    "SSS",
+    "MWW",
+    "SSS"
   ],
   "result": {
     "item": "reincarnation_plus:magic_mech"

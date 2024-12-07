@@ -2,7 +2,7 @@
   "type": "reincarnation_plus:magic_infusion",
   "cookingTime": 4800,
   "input": {
-    "item": "minecraft:raw_iron"
+    "item": "minecraft:raw_gold"
   },
   "inputLeft": {
     "amount": 10,

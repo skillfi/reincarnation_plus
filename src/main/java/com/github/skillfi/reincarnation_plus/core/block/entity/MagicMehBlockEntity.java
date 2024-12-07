@@ -36,7 +36,7 @@ public class MagicMehBlockEntity extends RandomizableContainerBlockEntity implem
     @Setter
     public boolean boost;
     @Getter
-    public int speedModifier = 2;
+    public double speedModifier = 0.2;
     public MagicMehBlockEntity(BlockPos position, BlockState state) {
         super(ReiBlockEntities.MAGIC_MECH.get(), position, state);
     }

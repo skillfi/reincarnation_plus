@@ -286,7 +286,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         return var10000;
     }
 
-    public void boost(int baseSpeedModifier){
+    public void boost(double baseSpeedModifier){
         if (speedModifier == 0){
             speedModifier += baseSpeedModifier;
             needUpdate = true;
@@ -413,12 +413,17 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         }
     }
 
+    public void reduceInfusionTimeByPercentage(float percentage){
+        int reduction = Math.round(maxInfusionTime * (percentage / 100));
+        setInfusionTime(Math.max(1, infusionTime - reduction));
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, MagicInfuserBlockEntity pEntity) {
         if (!level.isClientSide()) {
             if (pEntity.boostDuration > 0) {
                 pEntity.boostDuration--;
                 if (pEntity.speedModifier > 0){
-                    pEntity.setInfusionTime((int) (pEntity.getInfusionTime() / pEntity.getSpeedModifier()));
+                    pEntity.reduceInfusionTimeByPercentage((float) pEntity.speedModifier);
                 }
 
                 // Логіка пришвидшеної роботи під час boostDuration
