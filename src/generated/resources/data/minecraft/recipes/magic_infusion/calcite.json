@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:diorite"
   },
-  "inputLeft": {
-    "amount": 1,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 0.5,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

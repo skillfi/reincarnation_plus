@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:monster_leather_a"
   },
-  "moltenAmount": 10,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 2.5,
+  "magiculesId": "reincarnation_plus:magicules"
 }

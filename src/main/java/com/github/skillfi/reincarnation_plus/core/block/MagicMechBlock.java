@@ -91,8 +91,10 @@ public class MagicMechBlock extends Block implements EntityBlock {
 
                     // Якщо сусідній блок є MagicInfuserBlockEntity, активуємо його
                     if (neighborEntity instanceof MagicInfuserBlockEntity infuser) {
-                        infuser.boost(mehBlockEntity.speedModifier);
-                        infuser.setBoostDuration(60);
+                        if (infuser.getInfusionProgress() < 90){
+                            infuser.boost(mehBlockEntity.speedModifier);
+                            infuser.setBoostDuration(60);
+                        }
                     }
                 }
             }

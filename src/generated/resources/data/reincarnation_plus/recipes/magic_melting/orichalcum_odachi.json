@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:orichalcum_odachi"
   },
-  "moltenAmount": 2,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 0.5,
+  "magiculesId": "reincarnation_plus:magicules"
 }

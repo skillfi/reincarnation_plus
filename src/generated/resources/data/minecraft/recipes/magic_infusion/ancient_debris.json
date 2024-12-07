@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:iron_block"
   },
-  "inputLeft": {
-    "amount": 40,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 40.0,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

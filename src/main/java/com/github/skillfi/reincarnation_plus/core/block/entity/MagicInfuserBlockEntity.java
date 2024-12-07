@@ -78,13 +78,13 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     private Optional<ResourceLocation> rightBarId;
     @Getter
     @Setter
-    private int magicMaterialAmount;
+    private float magicMaterialAmount;
     @Getter
     @Setter
-    private int maxMagicMaterialAmount;
+    private float maxMagicMaterialAmount;
     @Getter
     @Setter
-    private int additionalMagicMaterialAmount;
+    private float additionalMagicMaterialAmount;
     @Getter
     @Setter
     private int itemMaterialAmount;
@@ -106,7 +106,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     @Getter
     @Setter
     private int maxInfusionTime;
-    private int lastMoltenAmount;
+    private float lastMoltenAmount;
     private ItemStack lastInfusionStack;
     private ItemStack lastInputStack;
     private ItemStack lastFuelStack;
@@ -124,12 +124,12 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     private LazyOptional<? extends IItemHandler>[] handlers;
 
     public MagicInfuserBlockEntity(BlockPos pos, BlockState state) {
-        super((BlockEntityType) ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), pos, state);
+        super(ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), pos, state);
         this.items = NonNullList.withSize(4, ItemStack.EMPTY);
         this.leftBarId = Optional.of(MagicInfusionRecipe.MAGICULES);
         this.rightBarId = Optional.of(MagicInfusionRecipe.INFUSION);
         this.magicMaterialAmount = 0;
-        this.maxMagicMaterialAmount = 144;
+        this.maxMagicMaterialAmount = 35;
         this.additionalMagicMaterialAmount = 0;
         this.itemMaterialAmount = 0;
         this.meltingProgress = 0;
@@ -161,35 +161,37 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public void performInfusion() {
-        if (this.level instanceof ServerLevel) {
-            if (!this.possibleInfusionRecipes.isEmpty()) {
-                MagicInfusionRecipe recipe = (MagicInfusionRecipe)this.possibleInfusionRecipes.get(this.selectedRecipeIndex);
-                this.magicMaterialAmount -= recipe.getLeftInputAmount();
-                if (this.magicMaterialAmount <= 0) {
-                    this.leftBarId = Optional.of(MagicInfusionRecipe.EMPTY);
-                }
+        if (this.level instanceof ServerLevel serverLevel) {
+            if (!getItem(2).isEmpty()){
+                serverLevel.getRecipeManager().
+                getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, serverLevel).
+                ifPresentOrElse(
+                    magicInfusionRecipe -> {
+                        if (infusionTime == 0){
+                            setInfusionTime(magicInfusionRecipe.getCookingTime());
+                            setMaxInfusionTime(magicInfusionRecipe.getCookingTime());
+                        }
 
-                if (recipe.matches(this, this.level)) {
-                    // Підбираємо існуючий предмет у слоті
-                    ItemStack currentOutputStack = items.get(OUTPUT_INFUSION_SLOT_INDEX);
-                    ItemStack recipeOutput = recipe.getResultItem();
+                        if (!checkInfusion()) {
+                            resetInfusionProgress();
+                            return;
+                        }
 
-                    if (currentOutputStack.isEmpty()) {
-                        // Якщо слот порожній - встановлюємо предмет
-                        items.set(OUTPUT_INFUSION_SLOT_INDEX, recipeOutput);
-                    } else if (ItemStack.isSameItemSameTags(currentOutputStack, recipeOutput)) {
-                        // Якщо у слоті вже є подібний предмет - додаємо додаткові одиниці
-                        currentOutputStack.grow(recipeOutput.getCount());
-                        items.set(OUTPUT_INFUSION_SLOT_INDEX, currentOutputStack);
-                    }
+                        if (infusionProgress >= 99) {
+                            magicInfusionRecipe.assemble(this);
+                            resetInfusionProgress();
+                        } else {
 
-                    resetInfusionProgress();
-                } else {
-                    this.updatePossibleInfussionRecipes();
-                }
+                            infusionProgress = 100 * (this.maxInfusionTime - this.infusionTime) / this.maxInfusionTime;
+                        }
 
-                this.needUpdate = true;
+
+                        needUpdate = true;
+                    },
+                    this::resetInfusionProgress
+                );
             }
+
         }
     }
 
@@ -229,9 +231,9 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         ContainerHelper.saveAllItems(nbt, this.items);
         this.leftBarId.ifPresent((location) -> nbt.putString("magic_infuser.molten.itemId", location.toString()));
         this.rightBarId.ifPresent((location) -> nbt.putString("magic_infuser.infusionId", location.toString()));
-        nbt.putInt("magic_infuser.molten", this.magicMaterialAmount);
-        nbt.putInt("magic_infuser.maxMolten", this.maxMagicMaterialAmount);
-        nbt.putInt("magic_infuser.addMolten", this.additionalMagicMaterialAmount);
+        nbt.putFloat("magic_infuser.magicules", this.magicMaterialAmount);
+        nbt.putFloat("magic_infuser.maxMagicules", this.maxMagicMaterialAmount);
+        nbt.putFloat("magic_infuser.addMolten", this.additionalMagicMaterialAmount);
         nbt.putDouble("magic_infuser.speedModifier", this.speedModifier);
         nbt.putInt("magic_infuser.meltingProgess", this.meltingProgress);
         nbt.putInt("magic_infuser.fuel", this.fuelTime);
@@ -248,9 +250,9 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         ContainerHelper.loadAllItems(nbt, this.items);
         this.leftBarId = nbt.contains("magic_infuser.molten.itemId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString("magic_infuser.molten.itemId"))) : Optional.of(MagicInfusionRecipe.MAGICULES);
         this.rightBarId = nbt.contains("magic_infuser.infusionId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString("magic_infuser.infusionId"))) : Optional.of(MagicInfusionRecipe.INFUSION);
-        this.magicMaterialAmount = nbt.getInt("magic_infuser.molten");
-        this.maxMagicMaterialAmount = nbt.getInt("magic_infuser.maxMolten");
-        this.additionalMagicMaterialAmount = nbt.getInt("magic_infuser.addMolten");
+        this.magicMaterialAmount = nbt.getFloat("magic_infuser.magicules");
+        this.maxMagicMaterialAmount = nbt.getFloat("magic_infuser.maxMagicules");
+        this.additionalMagicMaterialAmount = nbt.getFloat("magic_infuser.addMolten");
         this.speedModifier = nbt.getDouble("magic_infuser.speedModifier");
         this.meltingProgress = nbt.getInt("magic_infuser.meltingProgess");
         this.fuelTime = nbt.getInt("magic_infuser.fuel");
@@ -278,8 +280,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         boolean var10000;
         switch (pIndex) {
             case 0 -> var10000 = AbstractFurnaceBlockEntity.isFuel(pItemStack);
-            case 1 -> var10000 = true;
-            case 2 -> var10000 = true;
+            case 1, 2 -> var10000 = true;
             default -> var10000 = false;
         }
 
@@ -326,7 +327,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public ItemStack getItem(int pIndex) {
-        return (ItemStack)this.items.get(pIndex);
+        return this.items.get(pIndex);
     }
 
     public ItemStack removeItem(int pIndex, int pCount) {
@@ -359,8 +360,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         boolean var10000;
         switch (pIndex) {
             case 0 -> var10000 = AbstractFurnaceBlockEntity.isFuel(pStack);
-            case 1 -> var10000 = true;
-            case 2 -> var10000 = true;
+            case 1, 2 -> var10000 = true;
             default -> var10000 = false;
         }
 
@@ -384,29 +384,26 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         if (this.level != null) {
             Containers.dropContents(this.level, this.worldPosition, inventory);
         }
-
     }
 
     private boolean checkInfusingCache() {
         if (this.lastMoltenAmount != this.magicMaterialAmount) {
             this.lastMoltenAmount = this.magicMaterialAmount;
             return true;
-        }  else if (!this.lastCatalystStack.equals((ItemStack)this.items.get(INPUT_CATALYST_SLOT_INDEX), true)) {
-            this.lastCatalystStack = ((ItemStack)this.items.get(INPUT_CATALYST_SLOT_INDEX)).copy();
+        }  else if (!this.lastCatalystStack.equals(this.items.get(INPUT_CATALYST_SLOT_INDEX), true)) {
+            this.lastCatalystStack = this.items.get(INPUT_CATALYST_SLOT_INDEX).copy();
             return true;
-        } else if (this.getInfusionTime() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return this.getInfusionTime() > 0;
     }
 
     private boolean checkMeltingCache() {
-        if (!this.lastInputStack.equals((ItemStack)this.items.get(INPUT_SLOT_INDEX), true)) {
-            this.lastInputStack = ((ItemStack)this.items.get(INPUT_SLOT_INDEX)).copy();
+        if (!this.lastInputStack.equals(this.items.get(INPUT_SLOT_INDEX), true)) {
+            this.lastInputStack = this.items.get(INPUT_SLOT_INDEX).copy();
             return true;
-        } else if (!this.lastFuelStack.equals((ItemStack)this.items.get(INPUT_FUEL_SLOT_INDEX), true)) {
-            this.lastFuelStack = ((ItemStack)this.items.get(INPUT_FUEL_SLOT_INDEX)).copy();
+        } else if (!this.lastFuelStack.equals(this.items.get(INPUT_FUEL_SLOT_INDEX), true)) {
+            this.lastFuelStack = this.items.get(INPUT_FUEL_SLOT_INDEX).copy();
+            return true;
+        } else if (magicMaterialAmount < (maxMagicMaterialAmount + additionalMagicMaterialAmount)) {
             return true;
         } else {
             return false;
@@ -422,7 +419,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         if (!level.isClientSide()) {
             if (pEntity.boostDuration > 0) {
                 pEntity.boostDuration--;
-                if (pEntity.speedModifier > 0){
+                if (pEntity.speedModifier > 0 && pEntity.getInfusionProgress() < 95){
                     pEntity.reduceInfusionTimeByPercentage((float) pEntity.speedModifier);
                 }
 
@@ -435,14 +432,11 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
             BlockEntity belowBlock = level.getBlockEntity(pos.below());
             if (belowBlock instanceof MagicAmplifierBlockEntity amplifierBlock) {
                 pEntity.upgrade(amplifierBlock.getMaxMagicMaterialAmount());
-                pEntity.setMaxMagicMaterialAmount(144);
             } else {
                 pEntity.upgrade(0);
-                pEntity.setMaxMagicMaterialAmount(144);
             }
             if (pEntity.getAdditionalMagicMaterialAmount() == 0){
                 pEntity.upgrade(0);
-                pEntity.setMaxMagicMaterialAmount(144);
             }
             boolean infusionNeedsUpdate = pEntity.checkInfusingCache();
             boolean meltingNeedsUpdate = pEntity.checkMeltingCache();
@@ -482,27 +476,35 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
 
     private void checkInfusionRecipe() {
         assert this.level != null;
-        this.level.getRecipeManager().
-                getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, this.level).
-                ifPresentOrElse(
-                        magicInfusionRecipe -> {
-                            if (!checkInfusion()) {
-                                resetInfusionProgress();
-                                return;
-                            }
+        performInfusion();
+    }
 
-                            if (infusionProgress >= 99) {
-                                magicInfusionRecipe.assemble(this);
-                                resetInfusionProgress();
-                            } else {
-                                infusionProgress = 100 * (this.maxInfusionTime - this.infusionTime) / this.maxInfusionTime;
-                            }
+    public void performMelting(){
+        this.level.getRecipeManager()
+            .getRecipeFor(ReiRecipeTypes.MAGIC_INFUSER_MELTING.get(), this, this.level)
+            .ifPresentOrElse(
+            magicMeltingRecipe -> {
+                if (!checkFuel()) {
+                    resetMeltingProgress();
+                    return;
+                }
 
+                if (lastMeltingRecipe == null || !lastMeltingRecipe.getId().equals(magicMeltingRecipe.getId())) {
+                    lastMeltingRecipe = (MagicInfuserMeltingRecipe) magicMeltingRecipe;
+                    resetMeltingProgress();
+                }
 
-                            needUpdate = true;
-                        },
-                    this::resetInfusionProgress
-                );
+                if (meltingProgress >= 100) {
+                    magicMeltingRecipe.assemble(this);
+                    resetMeltingProgress();
+                } else {
+                    meltingProgress++;
+                }
+
+                needUpdate = true;
+            },
+            this::resetMeltingProgress
+        );
     }
 
     private void checkMeltingRecipe() {
@@ -512,31 +514,7 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         }
 
         assert this.level != null;
-        this.level.getRecipeManager()
-                .getRecipeFor(ReiRecipeTypes.MAGIC_INFUSER_MELTING.get(), this, this.level)
-                .ifPresentOrElse(
-                        magicMeltingRecipe -> {
-                            if (!checkFuel()) {
-                                resetMeltingProgress();
-                                return;
-                            }
-
-                            if (lastMeltingRecipe == null || !lastMeltingRecipe.getId().equals(magicMeltingRecipe.getId())) {
-                                lastMeltingRecipe = (MagicInfuserMeltingRecipe) magicMeltingRecipe;
-                                resetMeltingProgress();
-                            }
-
-                            if (meltingProgress >= 100) {
-                                magicMeltingRecipe.assemble(this);
-                                resetMeltingProgress();
-                            } else {
-                                meltingProgress++;
-                            }
-
-                            needUpdate = true;
-                        },
-                        this::resetMeltingProgress
-                );
+        performMelting();
     }
 
     private void updateFuelTime() {
@@ -649,23 +627,8 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
             if (infuseSlotStack.isEmpty()) {
                 return false;
             } else {
-                AtomicInteger fuelTime = new AtomicInteger();
-                assert this.level != null;
-                this.level.getRecipeManager().
-                        getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, this.level).
-                        ifPresent((magicInfusionRecipe) -> {
-                            if (magicInfusionRecipe.matches(this, this.level)){
-                                fuelTime.set(magicInfusionRecipe.getCookingTime());
-                            }
-                        });
-                if (fuelTime.get() < 0) {
-                    return false;
-                } else {
-                    this.infusionTime = fuelTime.get();
-                    this.maxInfusionTime = fuelTime.get();
-                    this.needUpdate = true;
-                    return true;
-                }
+                this.needUpdate = true;
+                return true;
             }
         }
     }
@@ -711,16 +674,16 @@ public class MagicInfuserBlockEntity extends BaseContainerBlockEntity implements
         return tag;
     }
 
-    public void addMoltenMaterialAmount(int moltenAmount) {
+    public void addMoltenMaterialAmount(float moltenAmount) {
         this.magicMaterialAmount += moltenAmount;
         this.needUpdate = true;
     }
-    public void upgrade(int additionalMagicMaterialAmount) {
+    public void upgrade(float additionalMagicMaterialAmount) {
         this.additionalMagicMaterialAmount = additionalMagicMaterialAmount;
         this.needUpdate = true;
     }
 
-    public void removeMoltenMaterialAmount(int moltenAmount) {
+    public void removeMoltenMaterialAmount(float moltenAmount) {
         this.magicMaterialAmount -= moltenAmount;
         this.needUpdate = true;
     }

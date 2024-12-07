@@ -5,6 +5,7 @@ import com.github.skillfi.reincarnation_plus.core.block.entity.MagicInfuserBlock
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiCatalystSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiFuelSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiInfuseSlot;
+import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiMeltingSlot;
 import com.github.skillfi.reincarnation_plus.core.registry.ReiMenus;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks;
@@ -53,7 +54,7 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
         this.addPlayerHotbar(inv);
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent((handler) -> {
             this.fuelSlotIndex = this.addSlot(new ReiFuelSlot(handler, 0, 35, 97)).index;
-            this.meltingSlotIndex = this.addSlot(new SlotItemHandler(handler, 1, 35, 51)).index;
+            this.meltingSlotIndex = this.addSlot(new ReiMeltingSlot(handler, 1, 35, 51, this)).index;
             this.infuseSlotIndex = this.addSlot(new ReiCatalystSlot(handler, 2, 143, 36, this)).index;
             this.infusingSlotIndex = this.addSlot(new ReiInfuseSlot(handler, 3, 174, 36, this)).index;
         });
@@ -72,9 +73,9 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public int getMagiculesProgress() {
-        int progress = (int)this.blockEntity.getMagicMaterialAmount();
-        int maxmagicules = this.blockEntity.getMaxMagicMaterialAmount();
-        int addtionMagicules = this.blockEntity.getAdditionalMagicMaterialAmount();
+        int progress = (int) ((int) this.blockEntity.getMagicMaterialAmount());
+        int maxmagicules = (int) this.blockEntity.getMaxMagicMaterialAmount();
+        int addtionMagicules = (int) this.blockEntity.getAdditionalMagicMaterialAmount();
         int progressArrowSize = 74;
         return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
     }

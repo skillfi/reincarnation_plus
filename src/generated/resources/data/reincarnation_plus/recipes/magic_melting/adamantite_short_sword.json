@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:adamantite_short_sword"
   },
-  "moltenAmount": 8,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 2.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

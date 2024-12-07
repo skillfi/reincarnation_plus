@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:high_magisteel_nugget"
   },
-  "moltenAmount": 1,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 0.25,
+  "magiculesId": "reincarnation_plus:magicules"
 }

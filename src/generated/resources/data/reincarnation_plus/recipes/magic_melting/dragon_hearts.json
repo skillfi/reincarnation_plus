@@ -3,6 +3,6 @@
   "input": {
     "tag": "iceandfire:dragon_hearts"
   },
-  "moltenAmount": 7,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 7.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

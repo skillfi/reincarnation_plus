@@ -23,9 +23,12 @@ public class ReiCatalystSlot extends SlotItemHandler {
     }
 
     public void set(ItemStack pStack) {
-        this.menu.blockEntity.setItem(2, pStack);
+        this.menu.blockEntity.setItem(getSlotIndex(), pStack);
         this.setChanged();
-        this.menu.blockEntity.performInfusion();
+        if (!pStack.isEmpty()){
+            this.menu.blockEntity.performInfusion();
+        }
+
     }
 
 }

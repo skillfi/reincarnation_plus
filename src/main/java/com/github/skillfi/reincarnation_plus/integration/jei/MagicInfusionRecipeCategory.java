@@ -43,10 +43,10 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
         ArrayList<Component> tooltip = new ArrayList();
 
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getLeftInput().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getLeftInput())) {
-                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, (float)recipe.getLeftInputAmount() / 4.0F, 36));
-            } else if (this.isHovering(145, 6, 13, 74, mouseX, mouseY) && !recipe.getLeftInput().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar()) {
-                tooltip.add(RenderUtils.toolTipInfusionTime(moltenMaterial, (float)recipe.getCookingTime(), recipe.getCookingTime()));
+            if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
+                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getMagicules(), 36.0F));
+            } else if (this.isHovering(145, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar()) {
+                tooltip.add(RenderUtils.toolTipInfusionTime(moltenMaterial, recipe.getCookingTime(), recipe.getCookingTime()));
             }
         }
 
@@ -79,7 +79,7 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
     }
 
     public void draw(MagicInfusionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        RenderUtils.renderMoltenMaterial(stack, MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255)), (int)recipe.getLeftInputAmount(), 144);
+        RenderUtils.renderMoltenMaterial(stack, MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255)), recipe.getMagicules(), 36.0F);
         RenderUtils.renderInfusion(stack, MagicInfuserMoltenMaterial.of(INFUSION, false, new Color(186, 85, 211)), recipe.getCookingTime(), recipe.getCookingTime());
     }
 }

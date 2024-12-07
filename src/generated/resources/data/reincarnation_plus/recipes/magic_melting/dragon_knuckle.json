@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:dragon_knuckle"
   },
-  "moltenAmount": 4,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 1.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

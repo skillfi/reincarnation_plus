@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "cookingTime": 2400,
+  "input": {
+    "item": "minecraft:quartz"
+  },
+  "magicules": {
+    "amount": 0.5,
+    "id": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:amethyst_shard"
+  }
+}

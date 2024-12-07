@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:green_wool"
   },
-  "inputLeft": {
-    "amount": 1,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 1.0,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

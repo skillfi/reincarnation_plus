@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:adamantite_ingot"
   },
-  "moltenAmount": 36,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 9.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

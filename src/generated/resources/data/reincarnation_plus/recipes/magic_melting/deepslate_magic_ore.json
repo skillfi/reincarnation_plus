@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:deepslate_magic_ore"
   },
-  "moltenAmount": 1,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 0.25,
+  "magiculesId": "reincarnation_plus:magicules"
 }

@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:block_of_magic_ore"
   },
-  "moltenAmount": 9,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 2.25,
+  "magiculesId": "reincarnation_plus:magicules"
 }

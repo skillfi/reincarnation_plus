@@ -19,9 +19,9 @@ public class RenderUtils {
 
     private static final ResourceLocation FLUID = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/molten.png");
 
-    public static void renderMoltenMaterial(PoseStack stack, MagicInfuserMoltenMaterial moltenMaterial, int progress, int maxProgress) {
+    public static void renderMoltenMaterial(PoseStack stack, MagicInfuserMoltenMaterial moltenMaterial, float progress, float maxProgress) {
         int width = 13;
-        int height = progress * 74 / maxProgress;
+        int height = (int) progress * 74 /  (int) maxProgress;
         if (height < 1) {
             height = 1;
         }
@@ -91,13 +91,13 @@ public class RenderUtils {
         RenderSystem.disableBlend(); // Вимкнення режиму змішування кольорів
     }
 
-    public static MutableComponent toolTipFromMoltenMaterial(MagicInfuserMoltenMaterial moltenMaterial, float amount, int maxAmount) {
+    public static MutableComponent toolTipFromMoltenMaterial(MagicInfuserMoltenMaterial moltenMaterial, float amount, float maxAmount) {
         MutableComponent moltenMaterialName = Component.translatable(String.format("%s.molten.%s.material", moltenMaterial.getMoltenType().getNamespace(), moltenMaterial.getMoltenType().getPath()));
         int textColor = (new Color(moltenMaterial.getRed(), moltenMaterial.getGreen(), moltenMaterial.getBlue())).getRGB();
         String moltenAmount = amount + "/" + maxAmount;
         return Component.translatable("tooltip.reincarnation_plus.magic_infuser.molten_item", new Object[]{moltenAmount, moltenMaterialName}).withStyle(Style.EMPTY.withColor(textColor));
     }
-    public static MutableComponent toolTipInfusionTime(MagicInfuserMoltenMaterial moltenMaterial, float amount, int maxAmount) {
+    public static MutableComponent toolTipInfusionTime(MagicInfuserMoltenMaterial moltenMaterial, int amount, int maxAmount) {
         int textColor = (new Color(moltenMaterial.getRed(), moltenMaterial.getGreen(), moltenMaterial.getBlue())).getRGB();
         String moltenAmount = amount + "/" + maxAmount;
         return Component.translatable("reincarnation_plus.molten.infusion.time", new Object[]{moltenAmount}).withStyle(Style.EMPTY.withColor(textColor));

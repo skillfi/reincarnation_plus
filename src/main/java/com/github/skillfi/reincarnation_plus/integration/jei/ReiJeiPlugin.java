@@ -40,19 +40,19 @@ public class ReiJeiPlugin implements IModPlugin {
     }
 
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(((Item) ReiItems.MAGIC_INFUSER.get()).getDefaultInstance(), new RecipeType[]{MAGIC_INFUSER_MELTING});
-        registration.addRecipeCatalyst(((Item) ReiItems.MAGIC_INFUSER.get()).getDefaultInstance(), new RecipeType[]{MAGIC_INFUSION});
+        registration.addRecipeCatalyst(ReiItems.MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSER_MELTING});
+        registration.addRecipeCatalyst(ReiItems.MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSION});
     }
 
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager rm = ((ClientLevel) Objects.requireNonNull(Minecraft.getInstance().level)).getRecipeManager();
+        RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         registration.addRecipes(MAGIC_INFUSER_MELTING, rm.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ReiRecipeTypes.MAGIC_INFUSER_MELTING.get()));
         registration.addRecipes(MAGIC_INFUSION, rm.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType)ReiRecipeTypes.MAGIC_INFUSION.get()));
     }
 
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MagicInfuserScreen.class, 203, 77, 17, 15, new RecipeType[]{MAGIC_INFUSER_MELTING});
-        registration.addRecipeClickArea(MagicInfuserScreen.class, 79, 4, 18, 14, new RecipeType[]{MAGIC_INFUSION});
+        registration.addRecipeClickArea(MagicInfuserScreen.class, 37, 89, 13, 13, new RecipeType[]{MAGIC_INFUSER_MELTING});
+        registration.addRecipeClickArea(MagicInfuserScreen.class, 95, 5, 15, 76, new RecipeType[]{MAGIC_INFUSION});
     }
 
     static {

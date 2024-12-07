@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -36,9 +35,9 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     @Getter
     private final ResourceLocation id;
     @Getter
-    private final ResourceLocation leftInput;
+    private final ResourceLocation magiculesId;
     @Getter
-    private final int leftInputAmount;
+    private final float magicules;
     @Getter
     private final Ingredient input;
     @Getter
@@ -51,9 +50,9 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         ItemStack inputStack = pContainer.getItem(2).copy();
 
         // Перевірка для лівого входу
-        if (!this.leftInput.equals(EMPTY)) {
+        if (!this.magiculesId.equals(EMPTY)) {
             // Якщо матеріалу недостатньо, рецепт не підходить
-            if (pContainer.getMagicMaterialAmount() < this.leftInputAmount) {
+            if (pContainer.getMagicMaterialAmount() < this.magicules) {
                 return false;
             }
 
@@ -65,7 +64,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             // Перевірка вихідного слоту
             ItemStack outputStack = pContainer.getItem(3);
 
-            // Якщо вихідний слот не порожній і не збігається з очікуваним результатом
+            // Якщо вихідний слот не порожній or не збігається з очікуваним результатом
             if (!outputStack.isEmpty() && !ItemStack.isSame(outputStack, this.output)) {
                 return false;
             }
@@ -85,11 +84,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
 
 
     public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
-        this.infuse(pContainer, this.leftInput, this.leftInputAmount);
+        this.infuse(pContainer, this.magiculesId, this.magicules);
         return getResultItem();
     }
 
-    public void infuse(MagicInfuserBlockEntity pContainer, ResourceLocation type, int amount) {
+    public void infuse(MagicInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
         if (!type.equals(EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials()
                     .parallelStream()
@@ -117,11 +116,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     public FinishedRecipe finishRecipe() {
         return new FinishedRecipe() {
             public void serializeRecipeData(JsonObject root) {
-                if (!MagicInfusionRecipe.this.getLeftInput().equals(MagicInfusionRecipe.EMPTY)) {
+                if (!MagicInfusionRecipe.this.getMagiculesId().equals(MagicInfusionRecipe.EMPTY)) {
                     JsonObject input = new JsonObject();
-                    input.addProperty("moltenType", MagicInfusionRecipe.this.leftInput.toString());
-                    input.addProperty("amount", MagicInfusionRecipe.this.leftInputAmount);
-                    root.add("inputLeft", input);
+                    input.addProperty("id", MagicInfusionRecipe.this.magiculesId.toString());
+                    input.addProperty("amount", MagicInfusionRecipe.this.magicules);
+                    root.add("magicules", input);
                 }
 
                 if (!MagicInfusionRecipe.this.input.isEmpty()) {
@@ -158,7 +157,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     }
 
     public int compareTo(@NotNull MagicInfusionRecipe o) {
-        return Float.compare(this.leftInputAmount, o.leftInputAmount);
+        return Float.compare(this.magicules, o.magicules);
     }
 
     public boolean equals(Object o) {
@@ -168,10 +167,10 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             MagicInfusionRecipe recipe = (MagicInfusionRecipe)o;
             if (!this.id.equals(recipe.id)) {
                 return false;
-            } else if (this.leftInputAmount != recipe.leftInputAmount) {
+            } else if (this.magicules != recipe.magicules) {
                 return false;
             } else {
-                return this.leftInput.equals(recipe.leftInput) && this.input.equals(recipe.input) && this.output.equals(recipe.output, false);
+                return this.magiculesId.equals(recipe.magiculesId) && this.input.equals(recipe.input) && this.output.equals(recipe.output, false);
             }
         } else {
             return false;
@@ -179,13 +178,13 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     }
 
     public int hashCode() {
-        return Objects.hash(new Object[]{this.id, this.leftInput, this.leftInputAmount, this.input, this.output});
+        return Objects.hash(new Object[]{this.id, this.magiculesId, this.magicules, this.input, this.output});
     }
 
-    public MagicInfusionRecipe(ResourceLocation id, ResourceLocation leftInput, int leftInputAmount, Ingredient ingredient, int cookingTime, ItemStack output) {
+    public MagicInfusionRecipe(ResourceLocation id, ResourceLocation magiculesId, float magicules, Ingredient ingredient, int cookingTime, ItemStack output) {
         this.id = id;
-        this.leftInput = leftInput;
-        this.leftInputAmount = leftInputAmount;
+        this.magiculesId = magiculesId;
+        this.magicules = magicules;
         this.input = ingredient;
         this.cookingTime = cookingTime;
         this.output = output;
@@ -193,7 +192,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
 
     public String toString() {
         ResourceLocation var10000 = this.getId();
-        return "MagicInfusionRecipe(id=" + var10000 + ", leftInput=" + this.getLeftInput() + ", leftInputAmount=" + this.getLeftInputAmount() + ", rightInput=" + this.getInput() + ", cookingTime="+this.getCookingTime()+ ", output=" + this.getOutput() + ")";
+        return "MagicInfusionRecipe(id=" + var10000 + ", leftInput=" + this.getMagiculesId() + ", leftInputAmount=" + this.getMagicules() + ", rightInput=" + this.getInput() + ", cookingTime="+this.getCookingTime()+ ", output=" + this.getOutput() + ")";
     }
 
     public static class Serializer implements RecipeSerializer<MagicInfusionRecipe> {
@@ -202,11 +201,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
 
         public MagicInfusionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             ResourceLocation inputLeft = MagicInfusionRecipe.EMPTY;
-            int inputLeftAmount = 0;
-            if (pSerializedRecipe.has("inputLeft")) {
-                JsonObject inputLeftRoot = pSerializedRecipe.getAsJsonObject("inputLeft");
-                inputLeft = ResourceLocation.tryParse(inputLeftRoot.get("moltenType").getAsString());
-                inputLeftAmount = inputLeftRoot.get("amount").getAsInt();
+            float inputLeftAmount = 0;
+            if (pSerializedRecipe.has("magicules")) {
+                JsonObject inputLeftRoot = pSerializedRecipe.getAsJsonObject("magicules");
+                inputLeft = ResourceLocation.tryParse(inputLeftRoot.get("id").getAsString());
+                inputLeftAmount = inputLeftRoot.get("amount").getAsFloat();
             }
 
             Ingredient input = Ingredient.fromJson(pSerializedRecipe.getAsJsonObject("input"));
@@ -221,8 +220,8 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
 
         public void toNetwork(FriendlyByteBuf pBuffer, MagicInfusionRecipe pRecipe) {
-            pBuffer.writeResourceLocation(pRecipe.leftInput);
-            pBuffer.writeFloat(pRecipe.leftInputAmount);
+            pBuffer.writeResourceLocation(pRecipe.magiculesId);
+            pBuffer.writeFloat(pRecipe.magicules);
             pRecipe.input.toNetwork(pBuffer);
             pBuffer.writeInt(pRecipe.cookingTime);
             pBuffer.writeItemStack(pRecipe.output, false);
@@ -236,14 +235,14 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
 
     public static class Builder {
         private final ItemStack output;
-        private ResourceLocation leftInput;
-        private int leftAmount;
+        private ResourceLocation magiculesId;
+        private float magicules;
         private Ingredient input;
         private int infusionTime;
 
-        public Builder magicules(ResourceLocation moltenType, int amount) {
-            this.leftInput = moltenType;
-            this.leftAmount = amount;
+        public Builder magicules(ResourceLocation moltenType, float amount) {
+            this.magiculesId = moltenType;
+            this.magicules = amount;
             return this;
         }
 
@@ -258,11 +257,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
 
         public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-            consumer.accept((new MagicInfusionRecipe(new ResourceLocation(id.getNamespace(), "magic_infusion/" + id.getPath()), this.leftInput, this.leftAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output)).finishRecipe());
+            consumer.accept((new MagicInfusionRecipe(new ResourceLocation(id.getNamespace(), "magic_infusion/" + id.getPath()), this.magiculesId, this.magicules, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output)).finishRecipe());
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {
-            this.build(consumer, new ResourceLocation("magic_melting/" + fileName));
+            this.build(consumer, new ResourceLocation("magic_infusion/" + fileName));
         }
 
         public void build(Consumer<FinishedRecipe> consumer) {
@@ -278,8 +277,8 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
 
         private Builder(ItemStack output) {
-            this.leftInput = MagicInfusionRecipe.EMPTY;
-            this.leftAmount = 0;
+            this.magiculesId = MagicInfusionRecipe.EMPTY;
+            this.magicules = 0;
             this.input = Ingredient.EMPTY;
             this.infusionTime = 0;
             this.output = output;

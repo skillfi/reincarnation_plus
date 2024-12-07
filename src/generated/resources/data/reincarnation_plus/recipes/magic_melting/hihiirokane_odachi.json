@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:hihiirokane_odachi"
   },
-  "moltenAmount": 12,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 3.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

@@ -1,12 +1,12 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 2400,
+  "cookingTime": 3600,
   "input": {
     "item": "minecraft:quartz_block"
   },
-  "inputLeft": {
-    "amount": 1,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 2.0,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

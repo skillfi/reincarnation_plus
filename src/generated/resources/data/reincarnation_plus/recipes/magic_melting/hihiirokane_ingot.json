@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:hihiirokane_ingot"
   },
-  "moltenAmount": 54,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 13.5,
+  "magiculesId": "reincarnation_plus:magicules"
 }

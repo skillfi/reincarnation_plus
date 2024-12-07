@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:dragon_essence"
   },
-  "moltenAmount": 25,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 25.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

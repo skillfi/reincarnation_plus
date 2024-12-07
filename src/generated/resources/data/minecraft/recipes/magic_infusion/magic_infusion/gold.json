@@ -2,11 +2,11 @@
   "type": "reincarnation_plus:magic_infusion",
   "cookingTime": 5000,
   "input": {
-    "tag": "minecraft:iron_ores"
+    "tag": "minecraft:gold_ores"
   },
-  "inputLeft": {
-    "amount": 15,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 10.0,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

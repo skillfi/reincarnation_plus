@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:raw_copper"
   },
-  "inputLeft": {
-    "amount": 25,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 25.0,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

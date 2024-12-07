@@ -10,12 +10,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public class MagicAmplifierBlockEntity extends BlockEntity {
     @Getter
     @Setter
-    private int maxMagicMaterialAmount;
+    private float maxMagicMaterialAmount;
 
 
     public MagicAmplifierBlockEntity(BlockPos pos, BlockState state) {
         super(ReiBlockEntities.MAGIC_AMPLIFIER.get(), pos, state);
-        maxMagicMaterialAmount = 500;
+        maxMagicMaterialAmount = 200.0F;
     }
 
 }

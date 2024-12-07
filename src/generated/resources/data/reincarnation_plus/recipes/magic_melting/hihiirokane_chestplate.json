@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:hihiirokane_chestplate"
   },
-  "moltenAmount": 24,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 6.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

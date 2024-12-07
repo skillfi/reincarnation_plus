@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:adamantite_leggings"
   },
-  "moltenAmount": 16,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 4.0,
+  "magiculesId": "reincarnation_plus:magicules"
 }

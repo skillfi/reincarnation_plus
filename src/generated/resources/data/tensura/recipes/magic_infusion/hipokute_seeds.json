@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:wheat_seeds"
   },
-  "inputLeft": {
-    "amount": 3,
-    "moltenType": "reincarnation_plus:magicules"
+  "magicules": {
+    "amount": 2.5,
+    "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

@@ -93,11 +93,11 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
 
     protected void containerTick() {
         super.containerTick();
-        if (hasChanged(((MagicInfuserMenu)this.menu).blockEntity.getLeftBarId(), this.leftBarMaterial)) {
+        if (hasChanged(this.menu.blockEntity.getLeftBarId(), this.leftBarMaterial)) {
             this.leftBarMaterial = materialOf(Optional.of(MOLTEN_MAGICULES));
         }
 
-        if (hasChanged(((MagicInfuserMenu)this.menu).blockEntity.getRightBarId(), this.rightBarMaterial)) {
+        if (hasChanged(this.menu.blockEntity.getRightBarId(), this.rightBarMaterial)) {
             this.rightBarMaterial = materialOf(Optional.of(INFUSION));
         }
 
@@ -120,7 +120,7 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
         } else if (material.isEmpty()) {
             return true;
         } else {
-            return !((MagicInfuserMoltenMaterial)material.get()).getMoltenType().equals(barId.get());
+            return !material.get().getMoltenType().equals(barId.get());
         }
     }
 
@@ -153,8 +153,8 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
      * @param y координата y де починається малювання
      */
     private void renderProgress(PoseStack pPoseStack, int x, int y) {
-        if (((MagicInfuserMenu) this.menu).isSmelting()) {
-            this.blit(pPoseStack, x + 31, y + 71 - ((MagicInfuserMenu) this.menu).getScaledProgress(), 78, 246 - ((MagicInfuserMenu) this.menu).getScaledProgress(), 24, ((MagicInfuserMenu) this.menu).getScaledProgress());
+        if (this.menu.isSmelting()) {
+            this.blit(pPoseStack, x + 31, y + 71 - this.menu.getScaledProgress(), 78, 246 - this.menu.getScaledProgress(), 24, this.menu.getScaledProgress());
         }
 
     }
@@ -162,8 +162,8 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
     private void renderMolten(PoseStack stack, int x, int y) {
         this.leftBarMaterial.ifPresent((moltenMaterial) -> {
             int width = 13;
-            int height = ((MagicInfuserMenu)this.menu).getMagiculesProgress();
-            if (((MagicInfuserMenu)this.menu).getMagiculesProgress() > 0 && height < 1) {
+            int height = this.menu.getMagiculesProgress();
+            if (this.menu.getMagiculesProgress() > 0 && height < 1) {
                 height = 1;
             }
 
@@ -196,12 +196,12 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
      */
     private void renderInfusion(PoseStack stack, int x, int y) {
         this.rightBarMaterial.ifPresent((moltenMaterial) -> {
-            if (((MagicInfuserMenu)this.menu).hasInfuse()){
+            if (this.menu.hasInfuse()){
                 int width = 13; // Встановлює ширину смуги відображення
-                int height = ((MagicInfuserMenu)this.menu).getInfuseProgress(); // Отримує поточний прогрес інфузії
+                int height = this.menu.getInfuseProgress(); // Отримує поточний прогрес інфузії
 
                 // Переконується, що висота не є меншою за 1, якщо прогрес більший за 0.
-                if (((MagicInfuserMenu)this.menu).getInfuseProgress() > 0 && height < 1) {
+                if (this.menu.getInfuseProgress() > 0 && height < 1) {
                     height = 1;
                 }
 
@@ -273,7 +273,7 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
      */
     protected void renderTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         // Перевіряє, чи не несе меню об'єкт (або предмет в слоті), та якщо курсор знаходиться на слоті з предметом.
-        if (((MagicInfuserMenu)this.menu).getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+        if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             // Відображає підказку для предмету в слоті, на якому знаходиться курсор миші.
             this.renderTooltip(pPoseStack, this.hoveredSlot.getItem(), pMouseX, pMouseY);
         }
@@ -281,11 +281,11 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
         // Перевіряє, чи курсор миші знаходиться в області лівої смуги інфузії.
         if (this.isHovering(95, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
             // Перевіряє, чи лівий бар переповнений і містить матеріал.
-            if (!((MagicInfuserMenu)this.menu).blockEntity.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && ((MagicInfuserMenu)this.menu).blockEntity.getMagicMaterialAmount() > 0) {
+            if (!this.menu.blockEntity.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && this.menu.blockEntity.getMagicMaterialAmount() > 0) {
                 // Формує текстове значення для відображення рівня матеріалу.
-                float magicAmount = (float)((MagicInfuserMenu)this.menu).blockEntity.getMagicMaterialAmount();
-                String valueText = magicAmount / 4.0F + "/" + (this.menu.blockEntity.getMaxMagicMaterialAmount()+this.menu.blockEntity.getAdditionalMagicMaterialAmount()) / 4.0F;
+                float magicAmount = this.menu.blockEntity.getMagicMaterialAmount();
+                String valueText = magicAmount + "/" + (this.menu.blockEntity.getMaxMagicMaterialAmount()+this.menu.blockEntity.getAdditionalMagicMaterialAmount());
                 // Відображає інструментальну підказку з інформацією про матеріал у лівій смузі.
                 this.leftBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderMaterialTooltip(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
@@ -301,8 +301,8 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
             if (!((MagicInfuserMenu)this.menu).blockEntity.getRightBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
                     && ((MagicInfuserMenu)this.menu).blockEntity.getInfusionTime() > 0) {
                 // Формує текстове значення для відображення рівня магічного матеріалу.
-                float magicAmount = (float)((MagicInfuserMenu)this.menu).blockEntity.getInfusionTime();
-                String valueText = magicAmount + "/" + this.menu.blockEntity.getMaxInfusionTime();
+                float infusionTime = (float)((MagicInfuserMenu)this.menu).blockEntity.getInfusionTime();
+                String valueText = infusionTime + "/" + this.menu.blockEntity.getMaxInfusionTime();
                 // Відображає інструментальну підказку з інформацією про матеріал у правій смузі.
                 this.rightBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderInfusionTime(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));

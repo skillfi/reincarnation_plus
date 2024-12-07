@@ -1,7 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.menu.slot;
 
 import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;

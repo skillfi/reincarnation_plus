@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:magic_ore_shard"
   },
-  "moltenAmount": 1,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 0.25,
+  "magiculesId": "reincarnation_plus:magicules"
 }

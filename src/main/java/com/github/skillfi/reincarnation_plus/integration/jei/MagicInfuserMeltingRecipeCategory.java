@@ -1,9 +1,5 @@
 package com.github.skillfi.reincarnation_plus.integration.jei;
 
-import com.github.manasmods.tensura.data.pack.KilnMoltenMaterial;
-import com.github.manasmods.tensura.data.pack.TensuraData;
-import com.github.manasmods.tensura.data.recipe.KilnMeltingRecipe;
-import com.github.manasmods.tensura.data.recipe.KilnMixingRecipe;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.utils.RenderUtils;
@@ -46,8 +42,8 @@ public class MagicInfuserMeltingRecipeCategory implements IRecipeCategory<MagicI
 
     public void draw(MagicInfuserMeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (!recipe.getMoltenType().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.getMoltenType().equals(recipe.getMoltenType())) {
-                RenderUtils.renderMoltenMaterial(stack, moltenMaterial, recipe.getMoltenAmount(), 144);
+            if (!recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
+                RenderUtils.renderMoltenMaterial(stack, moltenMaterial, recipe.getMagicules(), 144);
             }
         }
     }
@@ -56,11 +52,11 @@ public class MagicInfuserMeltingRecipeCategory implements IRecipeCategory<MagicI
         ArrayList<Component> tooltip = new ArrayList();
 
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (!recipe.getMoltenType().equals(MagicInfusionRecipe.EMPTY)) {
+            if (!recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY)) {
                 if (moltenMaterial.isLeftBar()) {
-                    if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getMoltenType().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar()) {
-                        if (moltenMaterial.getMoltenType().equals(recipe.getMoltenType())) {
-                            tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, (float)recipe.getMoltenAmount() / 4.0F, 36));
+                    if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar()) {
+                        if (moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
+                            tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, (float)recipe.getMagicules(), 36.0F));
                         }
                     }
                 }

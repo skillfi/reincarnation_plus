@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:low_quality_magic_crystal"
   },
-  "moltenAmount": 1,
-  "moltenType": "reincarnation_plus:magicules"
+  "magicules": 0.25,
+  "magiculesId": "reincarnation_plus:magicules"
 }

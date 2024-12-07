@@ -29,9 +29,9 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     @Getter
     private final Ingredient input;
     @Getter
-    private final ResourceLocation moltenType;
+    private final ResourceLocation magiculesId;
     @Getter
-    private final int moltenAmount;
+    private final float magicules;
 
 
     public boolean matches(MagicInfuserBlockEntity pContainer, Level pLevel) {
@@ -39,11 +39,11 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
         if (!this.input.test(inputStack)) {
             return false;
         } else {
-            return this.sameOrEmpty(pContainer, this.moltenType, this.moltenAmount);
+            return this.sameOrEmpty(pContainer, this.magiculesId, this.magicules);
         }
     }
 
-    private boolean sameOrEmpty(MagicInfuserBlockEntity container, ResourceLocation type, int amount) {
+    private boolean sameOrEmpty(MagicInfuserBlockEntity container, ResourceLocation type, float amount) {
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
             if (moltenMaterial.getMoltenType().equals(type)) {
                 Optional<ResourceLocation> containerMaterial = moltenMaterial.isLeftBar() ? container.getLeftBarId() : Optional.empty();
@@ -64,12 +64,12 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     }
 
     public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
-        this.melt(pContainer, this.moltenType, this.moltenAmount);
+        this.melt(pContainer, this.magiculesId, this.magicules);
         pContainer.removeItem(1, 1);
         return ItemStack.EMPTY.copy();
     }
 
-    private void melt(MagicInfuserBlockEntity container, ResourceLocation type, int amount) {
+    private void melt(MagicInfuserBlockEntity container, ResourceLocation type, float amount) {
         if (!type.equals(MagicInfusionRecipe.EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials().parallelStream().
                     filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(type)).
@@ -95,8 +95,8 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
         return new FinishedRecipe() {
             public void serializeRecipeData(JsonObject root) {
                 root.add("input", MagicInfuserMeltingRecipe.this.input.toJson());
-                root.addProperty("moltenType", MagicInfuserMeltingRecipe.this.moltenType.toString());
-                root.addProperty("moltenAmount", MagicInfuserMeltingRecipe.this.moltenAmount);
+                root.addProperty("magiculesId", MagicInfuserMeltingRecipe.this.magiculesId.toString());
+                root.addProperty("magicules", MagicInfuserMeltingRecipe.this.magicules);
             }
 
             public ResourceLocation getId() {
@@ -117,17 +117,17 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
         };
     }
 
-    public MagicInfuserMeltingRecipe(ResourceLocation id, Ingredient input, ResourceLocation moltenType, int moltenAmount) {
+    public MagicInfuserMeltingRecipe(ResourceLocation id, Ingredient input, ResourceLocation magiculesId, float magicules) {
         this.id = id;
         this.input = input;
-        this.moltenType = moltenType;
-        this.moltenAmount = moltenAmount;
+        this.magiculesId = magiculesId;
+        this.magicules = magicules;
 
     }
 
     public String toString() {
         ResourceLocation var10000 = this.getId();
-        return "MagicInfuserMeltingRecipe(id=" + var10000 + ", input=" + this.getInput() + ", moltenType=" + this.getMoltenType() + ", moltenAmount=" + this.getMoltenAmount() + ")";
+        return "MagicInfuserMeltingRecipe(id=" + var10000 + ", Input=" + this.getInput() + ", MagiculesId=" + this.getMagiculesId() + ", Magicules=" + this.getMagicules() + ")";
     }
 
     public static class Serializer implements RecipeSerializer<MagicInfuserMeltingRecipe> {
@@ -136,8 +136,8 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
 
         public MagicInfuserMeltingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "input"));
-            ResourceLocation moltenType = ResourceLocation.tryParse(GsonHelper.getAsString(pSerializedRecipe, "moltenType"));
-            int moltenAmount = GsonHelper.getAsInt(pSerializedRecipe, "moltenAmount");
+            ResourceLocation moltenType = ResourceLocation.tryParse(GsonHelper.getAsString(pSerializedRecipe, "magiculesId"));
+            float moltenAmount = GsonHelper.getAsFloat(pSerializedRecipe, "magicules");
             return new MagicInfuserMeltingRecipe(pRecipeId, input, moltenType, moltenAmount);
         }
 
@@ -147,8 +147,8 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
 
         public void toNetwork(FriendlyByteBuf pBuffer, MagicInfuserMeltingRecipe pRecipe) {
             pRecipe.input.toNetwork(pBuffer);
-            pBuffer.writeResourceLocation(pRecipe.moltenType);
-            pBuffer.writeInt(pRecipe.moltenAmount);
+            pBuffer.writeResourceLocation(pRecipe.magiculesId);
+            pBuffer.writeFloat(pRecipe.magicules);
 
         }
     }
@@ -161,7 +161,7 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     public static class Builder {
         private Ingredient input;
         private final ResourceLocation moltenType;
-        private final int moltenAmount;
+        private final float moltenAmount;
 
 
         public Builder requires(Ingredient ingredient) {
@@ -177,12 +177,12 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
             this.build(consumer, new ResourceLocation(this.moltenType.getNamespace(), "magic_melting/" + fileName));
         }
 
-        private Builder(ResourceLocation moltenType, int moltenAmount) {
+        private Builder(ResourceLocation moltenType, float moltenAmount) {
             this.moltenType = moltenType;
             this.moltenAmount = moltenAmount;
         }
 
-        public static Builder of(ResourceLocation moltenType, int moltenAmount) {
+        public static Builder of(ResourceLocation moltenType, float moltenAmount) {
             return new Builder(moltenType, moltenAmount);
         }
     }
