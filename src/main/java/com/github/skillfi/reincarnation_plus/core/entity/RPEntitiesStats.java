@@ -48,9 +48,6 @@ public class RPEntitiesStats {
         this.ATTACK_DAMAGE = race.getBaseAttackDamage();
         this.Armor = 10;
         this.list = new ArrayList<>();
-        for (TensuraSkill skill: race.getIntrinsicSkills()){
-            this.addToList(skill.getRegistryName());
-        }
     }
 
     public void addToList(ResourceLocation loc) {

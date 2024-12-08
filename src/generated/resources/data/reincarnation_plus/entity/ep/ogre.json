@@ -3,7 +3,5 @@
   "evolution": "tensura:none",
   "maxEP": 600,
   "minEP": 600,
-  "skills": [
-    "tensura:strength"
-  ]
+  "skills": []
 }

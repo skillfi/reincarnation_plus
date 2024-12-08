@@ -3,8 +3,5 @@
   "evolution": "tensura:none",
   "maxEP": 5000,
   "minEP": 5000,
-  "skills": [
-    "tensura:strength",
-    "tensura:flame_transform"
-  ]
+  "skills": []
 }
