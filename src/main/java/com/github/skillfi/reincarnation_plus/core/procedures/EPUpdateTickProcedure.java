@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import com.github.skillfi.reincarnation_plus.core.world.structure.EPCaveStructure;
 
 public class EPUpdateTickProcedure {
 
@@ -40,7 +39,7 @@ public class EPUpdateTickProcedure {
     }
 
     /**
-     * Перевіряє, чи блок знаходиться в межах структури {@link EPCaveStructure}.
+     * Перевіряє, чи блок знаходиться в межах структури
      *
      * @param level   Серверний рівень
      * @param pos     Позиція блоку

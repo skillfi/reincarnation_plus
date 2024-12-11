@@ -1,27 +1,45 @@
 package com.github.skillfi.reincarnation_plus.core;
 
-import com.github.manasmods.tensura.data.gen.TensuraBlockTagProvider;
-import com.github.manasmods.tensura.data.gen.TensuraItemTagProvider;
-import com.github.skillfi.reincarnation_plus.core.block.client.magicule_block.MagiculeCoreRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.automatic_infuser.AutomaticMagiculaInfuserRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.cooper_magic_ore.CooperMagicOreBlockRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.gold_magic_ore.GoldMagicOreBlockRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.iron_magic_ore.IronMagicOreBlockRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.magic_infuser.MagiculaInfuserRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.infusion_bellows.InfusionBellowsRenderer;
 import com.github.skillfi.reincarnation_plus.core.client.ClientProxy;
 import com.github.skillfi.reincarnation_plus.core.config.EntityConfig;
 import com.github.skillfi.reincarnation_plus.core.config.SpawnRateConfig;
 import com.github.skillfi.reincarnation_plus.core.entity.client.*;
 import com.github.skillfi.reincarnation_plus.core.entity.ReiEntities;
 import com.github.skillfi.reincarnation_plus.core.entity.RPEntityHandler;
+import com.github.skillfi.reincarnation_plus.core.item.armor.JacketWomanArmorItem;
+import com.github.skillfi.reincarnation_plus.core.item.armor.KimonoWomanArmorItem;
+import com.github.skillfi.reincarnation_plus.core.item.armor.LeatherArmorItem;
+import com.github.skillfi.reincarnation_plus.core.item.armor.client.JacketWomanArmorRenderer;
+import com.github.skillfi.reincarnation_plus.core.item.armor.client.KimonoWomanArmorRenderer;
+import com.github.skillfi.reincarnation_plus.core.item.armor.client.LeatherArmorRenderer;
 import com.github.skillfi.reincarnation_plus.core.network.play2client.SyncMagicInfuserMoltenColoringPacket;
 import com.github.skillfi.reincarnation_plus.core.registry.*;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
+import com.github.skillfi.reincarnation_plus.core.world.features.ReiOreFeatures;
+import com.github.skillfi.reincarnation_plus.core.world.features.ReiPlacedFeatures;
 import com.github.skillfi.reincarnation_plus.libs.data.gen.*;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
 import com.github.skillfi.reincarnation_plus.libs.handler.*;
 import com.github.skillfi.reincarnation_plus.core.network.ReiNetwork;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import lombok.Getter;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.RegistryOps;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -34,6 +52,7 @@ import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
@@ -99,6 +118,12 @@ public class ReiMod {
         ReiBlockTagProvider blockTagProvider = new ReiBlockTagProvider(event);
         event.getGenerator().addProvider(event.includeServer(), blockTagProvider);
         event.getGenerator().addProvider(event.includeServer(), new ReiItemTagProvider(event, blockTagProvider));
+        RegistryOps<JsonElement> registryOps = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.builtinCopy());
+        ExistingFileHelper helper = event.getExistingFileHelper();
+        generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator, helper, ReiMod.MODID, registryOps, Registry.CONFIGURED_FEATURE_REGISTRY, ReiOreFeatures.gather(registryOps)));
+        generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator, helper, ReiMod.MODID, registryOps, Registry.PLACED_FEATURE_REGISTRY, ReiPlacedFeatures.gather(registryOps)));
+        generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator, helper, ReiMod.MODID, registryOps, ForgeRegistries.Keys.BIOME_MODIFIERS, ReiBiomeModifierSerializer.gather(registryOps)));
+
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -127,6 +152,19 @@ public class ReiMod {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerRenders(EntityRenderersEvent.RegisterRenderers event){
-        event.registerBlockEntityRenderer(ReiBlockEntities.CORE_BLOCK_ENTITY.get(), MagiculeCoreRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), MagiculaInfuserRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.AUTOMATIC_MAGICAL_INFUSER_ENTITY.get(), AutomaticMagiculaInfuserRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.INFUSION_BELLOWS.get(), InfusionBellowsRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.IRON_MAGIC_ORE.get(), IronMagicOreBlockRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.COOPER_MAGIC_ORE.get(), CooperMagicOreBlockRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.GOLD_MAGIC_ORE.get(), GoldMagicOreBlockRenderer::new);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void registerArmorRenderers(final EntityRenderersEvent.AddLayers event) {
+        LeatherArmorRenderer.registerArmorRenderer(LeatherArmorItem.class, LeatherArmorRenderer::new);
+        JacketWomanArmorRenderer.registerArmorRenderer(JacketWomanArmorItem.class, JacketWomanArmorRenderer::new);
+        KimonoWomanArmorRenderer.registerArmorRenderer(KimonoWomanArmorItem.class, KimonoWomanArmorRenderer::new);
     }
 }

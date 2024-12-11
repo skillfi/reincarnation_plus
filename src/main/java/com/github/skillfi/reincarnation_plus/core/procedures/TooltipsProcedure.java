@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.procedures;
 
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event;

@@ -11,7 +11,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.LiquidBlock;
 
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 
 public abstract class CrystalizedWaterFluid extends ForgeFlowingFluid {
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(() -> ReiFluidTypes.CRYSTALIZED_WATER_TYPE.get(), () -> ReiFluids.CRYSTALIZED_WATER.get(),

@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "cookingTime": 4800,
+  "input": {
+    "item": "minecraft:raw_iron"
+  },
+  "magicules": {
+    "amount": 10.0,
+    "id": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "tensura:magic_ore_shard"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:automatic_magic_melting",
+  "input": {
+    "item": "tensura:block_of_magic_ore"
+  },
+  "magicules": 45.0,
+  "magiculesId": "reincarnation_plus:magicules"
+}

@@ -20,5 +20,7 @@ public interface IAuraChunkCapability extends INBTSerializable<CompoundTag> {
 
     boolean consumeAura(BlockPos position, double amount);
 
+    boolean addAura(BlockPos pos, double amount);
+
     void setAura(BlockPos position, double amount);
 }

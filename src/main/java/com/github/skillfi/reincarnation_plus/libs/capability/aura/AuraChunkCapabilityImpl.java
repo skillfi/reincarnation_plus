@@ -164,6 +164,28 @@ public class AuraChunkCapabilityImpl implements IAuraChunkCapability {
         }
     }
 
+    public boolean addAura(BlockPos pos, double amount){
+        AuraCacheEntry entry = this.getOrCreateCacheEntry(pos);
+        if (entry == null) {
+            return false;
+        } else {
+            AuraEvent.Add event = new AuraEvent.Add(this.chunk, this, pos, amount);
+            if (MinecraftForge.EVENT_BUS.post(event)) {
+                return false;
+            } else {
+                double magicule = entry.getAura(this.maxAura, this.auraPercentage);
+                if (magicule < event.getAmount()) {
+                    return false;
+                } else {
+                    magicule += event.getAmount() * 0.01;
+                    this.auraPercentage = (double)1.0F / entry.getMaxAura(this.maxAura) * magicule;
+                    this.markDirty();
+                    return true;
+                }
+            }
+        }
+    }
+
     @Override
     public void setAura(BlockPos position, double amount) {
         AuraCacheEntry entry = this.getOrCreateCacheEntry(position);

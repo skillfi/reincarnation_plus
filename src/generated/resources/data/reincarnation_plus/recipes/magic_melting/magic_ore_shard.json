@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:magic_ore_shard"
   },
-  "magicules": 0.25,
+  "magicules": 5.0,
   "magiculesId": "reincarnation_plus:magicules"
 }

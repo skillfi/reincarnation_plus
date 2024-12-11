@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:automatic_magic_infusion",
+  "cookingTime": 3600,
+  "input": {
+    "item": "minecraft:quartz_block"
+  },
+  "magicules": {
+    "amount": 2.0,
+    "id": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:amethyst_block"
+  }
+}

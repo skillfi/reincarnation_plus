@@ -42,44 +42,7 @@ public class AuraHandler {
         if (!world.isClientSide()) {
             applyLevelModifier(e, world);
             applyBiomeModifier(e, world);
-//            distributeAuraToNeighbors(e.chunk, world);
         }
-    }
-
-    private static void distributeAuraToNeighbors(LevelChunk chunk, Level world) {
-        ChunkPos chunkPos = chunk.getPos();
-        long currentTime = System.currentTimeMillis();
-
-        // Перевіряємо кулдаун для цього чанка
-        lastAuraTransfer.compute(chunkPos, (pos, lastTransferTime) -> {
-            if (lastTransferTime != null && lastTransferTime + TRANSFER_COOLDOWN_MS > currentTime) {
-                return lastTransferTime; // Ще не минув кулдаун
-            }
-
-            IAuraChunkCapability cap = AuraChunkCapabilityImpl.get(chunk);
-            double currentAura = cap.getAura();
-
-            // Передаємо ауру сусіднім чанкам
-            for (Direction direction : Direction.values()) {
-                ChunkPos neighborPos = new ChunkPos(chunkPos.x + direction.getStepX(), chunkPos.z + direction.getStepZ());
-                LevelChunk neighborChunk = getLoadedChunk(world, neighborPos);
-                if (neighborChunk == null) continue;
-
-                IAuraChunkCapability neighborCap = AuraChunkCapabilityImpl.get(neighborChunk);
-                double neighborAura = neighborCap.getAura();
-
-                if (currentAura > neighborAura) {
-                    double difference = currentAura - neighborAura;
-                    double transferAmount = difference * TRANSFER_PERCENTAGE;
-
-                    // Передаємо ауру
-                    cap.consumeAura(chunkPos.getWorldPosition(), transferAmount); // Віднімаємо ауру з поточного чанка
-                    neighborCap.setAura(neighborPos.getWorldPosition(), transferAmount); // Додаємо ауру до сусіднього чанка
-                }
-            }
-
-            return currentTime;
-        });
     }
 
     // Метод для отримання завантаженого чанка

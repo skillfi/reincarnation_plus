@@ -1,0 +1,11 @@
+{
+  "type": "reincarnation_plus:rei_features",
+  "features": [
+    "reincarnation_plus:ore_copper_large",
+    "reincarnation_plus:ore_copper_small",
+    "reincarnation_plus:ore_gold",
+    "reincarnation_plus:ore_gold_buried",
+    "reincarnation_plus:ore_iron_small",
+    "reincarnation_plus:ore_iron"
+  ]
+}

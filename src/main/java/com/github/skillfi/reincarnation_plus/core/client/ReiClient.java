@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.client;
 
-import com.github.manasmods.tensura.client.screen.KilnScreen;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.client.screen.AutomaticMagicInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.client.screen.MagicInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.registry.menu.ReiMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -26,6 +26,7 @@ public class ReiClient {
     }
 
     public static void menuRegister() {
-        MenuScreens.register((MenuType) ReiMenuTypes.MAGIC_INFUSER.get(), MagicInfuserScreen::new);
+        MenuScreens.register(ReiMenuTypes.MAGIC_INFUSER.get(), MagicInfuserScreen::new);
+        MenuScreens.register(ReiMenuTypes.AUTOMATIC_MAGIC_INFUSER.get(), AutomaticMagicInfuserScreen::new);
     }
 }

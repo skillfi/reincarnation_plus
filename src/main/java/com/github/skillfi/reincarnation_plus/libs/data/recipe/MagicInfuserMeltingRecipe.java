@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.libs.data.recipe;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagicInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
@@ -34,7 +35,7 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     private final float magicules;
 
 
-    public boolean matches(MagicInfuserBlockEntity pContainer, Level pLevel) {
+    public boolean matches(MagiculaInfuserBlockEntity pContainer, Level pLevel) {
         ItemStack inputStack = pContainer.getItem(1).copy();
         if (!this.input.test(inputStack)) {
             return false;
@@ -43,7 +44,7 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
         }
     }
 
-    private boolean sameOrEmpty(MagicInfuserBlockEntity container, ResourceLocation type, float amount) {
+    private boolean sameOrEmpty(MagiculaInfuserBlockEntity container, ResourceLocation type, float amount) {
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
             if (moltenMaterial.getMoltenType().equals(type)) {
                 Optional<ResourceLocation> containerMaterial = moltenMaterial.isLeftBar() ? container.getLeftBarId() : Optional.empty();
@@ -63,13 +64,13 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
         return false;
     }
 
-    public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
+    public ItemStack assemble(MagiculaInfuserBlockEntity pContainer) {
         this.melt(pContainer, this.magiculesId, this.magicules);
         pContainer.removeItem(1, 1);
         return ItemStack.EMPTY.copy();
     }
 
-    private void melt(MagicInfuserBlockEntity container, ResourceLocation type, float amount) {
+    private void melt(MagiculaInfuserBlockEntity container, ResourceLocation type, float amount) {
         if (!type.equals(MagicInfusionRecipe.EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials().parallelStream().
                     filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(type)).

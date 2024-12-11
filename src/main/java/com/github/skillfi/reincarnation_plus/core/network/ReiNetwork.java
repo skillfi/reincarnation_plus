@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.network;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.network.play2client.ItemStackSyncS2CPacket;
 import com.github.skillfi.reincarnation_plus.core.network.play2client.SyncAuraPacket;
 import com.github.skillfi.reincarnation_plus.core.network.play2client.SyncMagicInfuserMoltenColoringPacket;
 import com.github.skillfi.reincarnation_plus.core.network.play2server.RequuestMagicInfuserActionPacket;
@@ -30,5 +31,7 @@ public class ReiNetwork {
         INSTANCE.registerMessage(i, SyncMagicInfuserMoltenColoringPacket.class, SyncMagicInfuserMoltenColoringPacket::toBytes, SyncMagicInfuserMoltenColoringPacket::new, SyncMagicInfuserMoltenColoringPacket::handle);
         ++i;
         INSTANCE.registerMessage(i, RequuestMagicInfuserActionPacket.class, RequuestMagicInfuserActionPacket::toBytes, RequuestMagicInfuserActionPacket::new, RequuestMagicInfuserActionPacket::handle);
+        ++i;
+        INSTANCE.registerMessage(i, ItemStackSyncS2CPacket.class, ItemStackSyncS2CPacket::toBytes, ItemStackSyncS2CPacket::new, ItemStackSyncS2CPacket::handle);
     }
 }

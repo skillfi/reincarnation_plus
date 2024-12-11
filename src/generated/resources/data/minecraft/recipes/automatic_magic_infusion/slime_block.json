@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:automatic_magic_infusion",
+  "cookingTime": 3600,
+  "input": {
+    "item": "minecraft:green_wool"
+  },
+  "magicules": {
+    "amount": 1.0,
+    "id": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:slime_block"
+  }
+}

@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.libs.data.recipe;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagicInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
 import com.google.gson.JsonElement;
@@ -11,9 +12,11 @@ import lombok.Getter;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -27,7 +30,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparable<MagicInfusionRecipe>{
+public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparable<MagicInfusionRecipe> {
     private static final Logger log = LogManager.getLogger(MagicInfusionRecipe.class);
     public static final ResourceLocation EMPTY = new ResourceLocation("minecraft:air");
     public static final ResourceLocation MAGICULES = new ResourceLocation("reincarnation_plus:magicules");
@@ -45,7 +48,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     @Getter
     private final ItemStack output;
 
-    public boolean matches(MagicInfuserBlockEntity pContainer, Level level) {
+    public boolean matches(MagiculaInfuserBlockEntity pContainer, Level level) {
         // Перевірка, чи вхідний слот має потрібний ItemStack
         ItemStack inputStack = pContainer.getItem(2).copy();
 
@@ -83,12 +86,12 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     }
 
 
-    public ItemStack assemble(MagicInfuserBlockEntity pContainer) {
+    public ItemStack assemble(MagiculaInfuserBlockEntity pContainer) {
         this.infuse(pContainer, this.magiculesId, this.magicules);
         return getResultItem();
     }
 
-    public void infuse(MagicInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
+    public void infuse(MagiculaInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
         if (!type.equals(EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials()
                     .parallelStream()
@@ -261,7 +264,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {
-            this.build(consumer, new ResourceLocation("magic_infusion/" + fileName));
+            this.build(consumer, new ResourceLocation("tags/" + fileName));
         }
 
         public void build(Consumer<FinishedRecipe> consumer) {

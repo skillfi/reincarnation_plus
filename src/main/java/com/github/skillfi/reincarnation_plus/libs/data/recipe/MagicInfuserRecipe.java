@@ -1,11 +1,11 @@
 package com.github.skillfi.reincarnation_plus.libs.data.recipe;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagicInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 
-public abstract class MagicInfuserRecipe implements Recipe<MagicInfuserBlockEntity> {
+public abstract class MagicInfuserRecipe implements Recipe<MagiculaInfuserBlockEntity> {
     public MagicInfuserRecipe() {
     }
 

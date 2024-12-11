@@ -63,6 +63,10 @@ public final class AuraAPI {
         return getMaxAura(entity.level, entity.blockPosition());
     }
 
+    public static boolean addAura(LivingEntity entity, double amount){
+        return addAura(entity.level, entity.blockPosition(), amount);
+    }
+
     /**
      * Отримує пару значень поточної та максимальної аури у зазначеній позиції.
      *
@@ -74,6 +78,8 @@ public final class AuraAPI {
         IAuraChunkCapability cap = getCapability(level.getChunkAt(pos));
         return Pair.of(cap.getAura(pos), cap.getMaxAura(pos));
     }
+
+
 
     /**
      * Отримує пару значень поточної та максимальної аури біля сутності.
@@ -96,6 +102,11 @@ public final class AuraAPI {
     public static boolean consumeAura(Level level, BlockPos pos, double amount) {
         IAuraChunkCapability cap = getCapability(level.getChunkAt(pos));
         return cap.consumeAura(pos, amount);
+    }
+
+    public static boolean addAura(Level level, BlockPos pos, double amount){
+        IAuraChunkCapability capability = getCapability(level.getChunkAt(pos));
+        return capability.addAura(pos, amount);
     }
 
     /**

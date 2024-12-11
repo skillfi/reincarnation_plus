@@ -1,7 +1,7 @@
 
 package com.github.skillfi.reincarnation_plus.core.block;
 
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;

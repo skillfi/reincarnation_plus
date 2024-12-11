@@ -3,6 +3,6 @@
   "input": {
     "item": "tensura:low_quality_magic_crystal"
   },
-  "magicules": 0.25,
+  "magicules": 1.0,
   "magiculesId": "reincarnation_plus:magicules"
 }

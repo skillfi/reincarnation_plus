@@ -112,4 +112,23 @@ public class AuraEvent extends Event {
             this.amount = amount;
         }
     }
+
+    @Cancelable
+    public static class Add extends AuraEvent {
+        @Getter
+        @Setter
+        private double amount;
+        @Getter
+        private final BlockPos position;
+
+        public Add(LevelChunk chunk, IAuraChunkCapability capability, BlockPos position, double amount) {
+            super(chunk, capability);
+            this.position = position;
+            this.amount = amount;
+        }
+
+        public double getNewAura() {
+            return Math.min(this.getAura() + this.amount, this.getMaxAura());
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package com.github.skillfi.reincarnation_plus.libs.data.gen;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
-import com.github.skillfi.reincarnation_plus.core.world.structure.EPCaveStructure;
 import com.google.gson.JsonElement;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
@@ -17,12 +16,6 @@ public class ReiStructures {
 
     public static ResourceKey<Structure> registerKey(String name) {
         return ResourceKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(ReiMod.MODID, name));
-    }
-
-    public static Map<ResourceLocation, Structure> gather(RegistryOps<JsonElement> registryOps) {
-        return Map.of(
-                EP_CAVE.location(), EPCaveStructure.buildStructureConfig(registryOps)
-        );
     }
 
     public static Structure getStructureByResourceKey(RegistryOps<?> registryOps, ResourceKey<Structure> structureKey) {

@@ -12,6 +12,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 @GenerateBlockModels
 @GenerateBlockLoot
 public class ReiBlocks {
@@ -27,7 +28,5 @@ public class ReiBlocks {
 	public static final RegistryObject<Block> GEM_STONE_BLOCK = BLOCKS.register("gem_stone_block", () -> new GemStoneBlock(
 			ReiGems.STATICAL,
 			ReiGems.GEM, BlockBehaviour.Properties.of(Material.AMETHYST).sound(SoundType.AMETHYST_CLUSTER).strength(1f, 10f).requiresCorrectToolForDrops().noOcclusion().isRedstoneConductor((bs, br, bp) -> false)));
-	@GenerateBlockLoot.SelfDrop
-	public static final RegistryObject<Block> EP_CORE = BLOCKS.register("magicule_core", EPCoreBlock::new);
 	public static final RegistryObject<Block> CRYSTALIZED_WATER = BLOCKS.register("crystalized_water", CrystalizedWaterBlock::new);
 }

@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.procedures;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagicInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -68,7 +68,7 @@ public class PipeTick {
             BlockPos neighborPos = pos.relative(direction);
             BlockEntity neighborEntity = world.getBlockEntity(neighborPos);
 
-            if (neighborEntity instanceof MagicInfuserBlockEntity infuser) {
+            if (neighborEntity instanceof MagiculaInfuserBlockEntity infuser) {
                 BlockEntity currentEntity = world.getBlockEntity(pos);
                 if (currentEntity != null) {
                     currentEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(currentHandler -> {

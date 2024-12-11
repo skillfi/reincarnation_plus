@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.integration.jei;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.utils.RenderUtils;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;

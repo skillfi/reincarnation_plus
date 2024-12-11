@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magicula_infuser",
+      "y": 0
+    },
+    "facing=east,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magicula_infuser",
+      "y": 90
+    },
+    "facing=south,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magicula_infuser",
+      "y": 180
+    },
+    "facing=west,lit=false,part=base,infuse=false": {
+      "model": "reincarnation_plus:block/magicula_infuser",
+      "y": 270
+    }
+  }
+}

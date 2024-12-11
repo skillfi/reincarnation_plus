@@ -4,7 +4,7 @@ package com.github.skillfi.reincarnation_plus.core.block;
 import com.github.skillfi.reincarnation_plus.libs.api.gem.GemType;
 import com.github.skillfi.reincarnation_plus.libs.api.gem.PolishingType;
 import com.github.skillfi.reincarnation_plus.core.block.entity.GemStoneEntity;
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.item.GemStoneItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;

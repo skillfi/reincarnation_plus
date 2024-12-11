@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:automatic_magic_melting",
+  "input": {
+    "item": "tensura:hihiirokane_chestplate"
+  },
+  "magicules": 120.0,
+  "magiculesId": "reincarnation_plus:magicules"
+}

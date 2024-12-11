@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:automatic_magic_melting",
+  "input": {
+    "item": "tensura:adamantite_long_sword"
+  },
+  "magicules": 40.0,
+  "magiculesId": "reincarnation_plus:magicules"
+}

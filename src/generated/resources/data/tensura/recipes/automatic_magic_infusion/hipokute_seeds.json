@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:automatic_magic_infusion",
+  "cookingTime": 2400,
+  "input": {
+    "item": "minecraft:wheat_seeds"
+  },
+  "magicules": {
+    "amount": 2.5,
+    "id": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "tensura:hipokute_seeds"
+  }
+}

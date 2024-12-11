@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.registry.menu;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.menu.AutomaticMagicInfuserMenu;
 import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -12,6 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ReiMenuTypes {
     private static final DeferredRegister<MenuType<?>> registry;
     public static final RegistryObject<MenuType<MagicInfuserMenu>> MAGIC_INFUSER;
+    public static final RegistryObject<MenuType<AutomaticMagicInfuserMenu>> AUTOMATIC_MAGIC_INFUSER;
 
     public ReiMenuTypes() {
     }
@@ -23,5 +25,6 @@ public class ReiMenuTypes {
     static {
         registry = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ReiMod.MODID);
         MAGIC_INFUSER = registry.register("magic_infuser_menu", () -> IForgeMenuType.create(MagicInfuserMenu::new));
+        AUTOMATIC_MAGIC_INFUSER = registry.register("automatic_magic_infuser_menu", () -> IForgeMenuType.create(AutomaticMagicInfuserMenu::new));
     }
 }

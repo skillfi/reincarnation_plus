@@ -1,10 +1,9 @@
 package com.github.skillfi.reincarnation_plus.integration.jei;
 
-import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
-import com.github.manasmods.tensura.registry.items.TensuraConsumableItems;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.client.screen.AutomaticMagicInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.client.screen.MagicInfuserScreen;
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfuserMeltingRecipe;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfusionRecipe;
@@ -16,9 +15,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Objects;
@@ -42,6 +39,8 @@ public class ReiJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ReiItems.MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSER_MELTING});
         registration.addRecipeCatalyst(ReiItems.MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSION});
+        registration.addRecipeCatalyst(ReiItems.AUTOMATIC_MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSER_MELTING});
+        registration.addRecipeCatalyst(ReiItems.AUTOMATIC_MAGIC_INFUSER.get().getDefaultInstance(), new RecipeType[]{MAGIC_INFUSION});
     }
 
     public void registerRecipes(IRecipeRegistration registration) {
@@ -52,7 +51,9 @@ public class ReiJeiPlugin implements IModPlugin {
 
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(MagicInfuserScreen.class, 37, 89, 13, 13, new RecipeType[]{MAGIC_INFUSER_MELTING});
-        registration.addRecipeClickArea(MagicInfuserScreen.class, 95, 5, 15, 76, new RecipeType[]{MAGIC_INFUSION});
+        registration.addRecipeClickArea(MagicInfuserScreen.class, 163, 10, 15, 5, new RecipeType[]{MAGIC_INFUSION});
+        registration.addRecipeClickArea(AutomaticMagicInfuserScreen.class, 37, 89, 13, 13, new RecipeType[]{MAGIC_INFUSER_MELTING});
+        registration.addRecipeClickArea(AutomaticMagicInfuserScreen.class, 163, 10, 15, 5, new RecipeType[]{MAGIC_INFUSION});
     }
 
     static {

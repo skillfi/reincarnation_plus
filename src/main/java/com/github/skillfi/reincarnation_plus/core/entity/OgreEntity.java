@@ -21,7 +21,7 @@ import com.github.manasmods.tensura.registry.skill.*;
 import com.github.manasmods.tensura.registry.sound.TensuraSoundEvents;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.entity.variant.ogre.*;
-import com.github.skillfi.reincarnation_plus.core.registry.ReiItems;
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.registry;
 
+import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
