@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "up": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "north": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "east": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "south": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "west": "reincarnation_plus:blocks/ore_gold/deepslate/age_2",
+    "particle": "reincarnation_plus:blocks/ore_gold/deepslate/age_2"
+  },
+  "render_type": "solid"
+}

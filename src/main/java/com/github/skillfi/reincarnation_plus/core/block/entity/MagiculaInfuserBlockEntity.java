@@ -71,69 +71,32 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     public static final int INPUT_SLOT_INDEX = 1;
     public static final int INPUT_CATALYST_SLOT_INDEX = 2;
     public static final int OUTPUT_INFUSION_SLOT_INDEX = 3;
-    @Getter
-    @Setter
-    private int state;
-    @Getter
-    @Setter
-    private Optional<ResourceLocation> leftBarId;
-    @Getter
-    private static final double BaseSpeedModifier = 0.0;
-    @Setter
-    @Getter
-    private double speedModifier;
-    @Setter
-    @Getter
-    private boolean automatic;
-    @Getter
-    @Setter
-    private int boostDuration = 0;
-    @Getter
-    @Setter
-    private Optional<ResourceLocation> rightBarId;
-    @Getter
-    @Setter
-    public int miscAnimationTicks = 0;
-    @Getter
-    @Setter
-    private float magicMaterialAmount;
-    @Getter
-    @Setter
-    private float maxMagicMaterialAmount;
-    @Getter
-    @Setter
-    private float additionalMagicMaterialAmount;
-    @Getter
-    @Setter
-    private int itemMaterialAmount;
-    @Setter
-    @Getter
-    private int meltingProgress;
-    @Setter
-    @Getter
-    private int infusionProgress;
-    @Setter
-    @Getter
-    private int fuelTime;
-    @Setter
-    @Getter
-    private int maxFuelTime;
-    @Getter
-    @Setter
-    private int infusionTime;
-    @Getter
-    @Setter
-    private int maxInfusionTime;
+    @Getter @Setter private int state;
+    @Getter @Setter private Optional<ResourceLocation> leftBarId;
+    @Getter private static final double BaseSpeedModifier = 0.0;
+    @Setter @Getter private double speedModifier;
+    @Setter @Getter private boolean automatic;
+    @Getter @Setter private int boostDuration = 0;
+    @Getter @Setter private Optional<ResourceLocation> rightBarId;
+    @Getter @Setter public int miscAnimationTicks = 0;
+    @Getter @Setter private float magicMaterialAmount;
+    @Getter @Setter private float maxMagicMaterialAmount;
+    @Getter @Setter private float additionalMagicMaterialAmount;
+    @Getter @Setter private int itemMaterialAmount;
+    @Setter @Getter private int meltingProgress;
+    @Setter @Getter private int infusionProgress;
+    @Setter @Getter private int fuelTime;
+    @Setter @Getter private int maxFuelTime;
+    @Getter @Setter private int infusionTime;
+    @Getter @Setter private int maxInfusionTime;
     private float lastMoltenAmount;
     private ItemStack lastInfusionStack;
     private ItemStack lastInputStack;
     private ItemStack lastFuelStack;
     private ItemStack lastCatalystStack;
     public boolean needUpdate;
-    @Getter
-    private List possibleInfusionRecipes;
-    @Getter
-    private int selectedRecipeIndex;
+    @Getter private List possibleInfusionRecipes;
+    @Getter private int selectedRecipeIndex;
     private int lastSelectedRecipeIndex;
     private MagicInfuserMeltingRecipe lastMeltingRecipe;
     private MagicInfusionRecipe lastInfusionRecipe;
@@ -179,6 +142,13 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
 
     public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new MagicInfuserMenu(id, inventory, this);
+    }
+
+    public boolean doubleChanse(){
+        if (this.getLevel().random.nextDouble() <= 0.05){
+            return true;
+        }
+        return false;
     }
 
     public void performInfusion() {

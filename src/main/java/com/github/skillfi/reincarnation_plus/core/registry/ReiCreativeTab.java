@@ -7,7 +7,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class ReiCreativeTab {
 	public static final CreativeModeTab ITEMS = new CreativeModeTab("reincarnation_plus_items") {
-		public ItemStack makeIcon() {return new ItemStack((ItemLike) ReiItems.GEM_STONE.get());
+		public ItemStack makeIcon() {return new ItemStack((ItemLike) ReiItems.HAKAMA_CHESTPLATE_D.get());
 		}
 	};
 	public static final CreativeModeTab BLOCKS = new CreativeModeTab("reincarnation_plus_blocks") {

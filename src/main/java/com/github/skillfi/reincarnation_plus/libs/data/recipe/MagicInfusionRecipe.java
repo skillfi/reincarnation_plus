@@ -1,6 +1,5 @@
 package com.github.skillfi.reincarnation_plus.libs.data.recipe;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
@@ -12,11 +11,9 @@ import lombok.Getter;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -35,18 +32,12 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     public static final ResourceLocation EMPTY = new ResourceLocation("minecraft:air");
     public static final ResourceLocation MAGICULES = new ResourceLocation("reincarnation_plus:magicules");
     public static final ResourceLocation INFUSION = new ResourceLocation("reincarnation_plus:infusion");
-    @Getter
-    private final ResourceLocation id;
-    @Getter
-    private final ResourceLocation magiculesId;
-    @Getter
-    private final float magicules;
-    @Getter
-    private final Ingredient input;
-    @Getter
-    private final int cookingTime;
-    @Getter
-    private final ItemStack output;
+    @Getter private final ResourceLocation id;
+    @Getter private final ResourceLocation magiculesId;
+    @Getter private final float magicules;
+    @Getter private final Ingredient input;
+    @Getter private final int cookingTime;
+    @Getter private final ItemStack output;
 
     public boolean matches(MagiculaInfuserBlockEntity pContainer, Level level) {
         // Перевірка, чи вхідний слот має потрібний ItemStack
@@ -87,8 +78,10 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
 
 
     public ItemStack assemble(MagiculaInfuserBlockEntity pContainer) {
+        if (pContainer.doubleChanse())
+            this.doubleInfuse(pContainer, this.magiculesId, this.magicules);
         this.infuse(pContainer, this.magiculesId, this.magicules);
-        return getResultItem();
+        return ItemStack.EMPTY;
     }
 
     public void infuse(MagiculaInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
@@ -106,6 +99,29 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
                             pContainer.setItem(3, output);
                         } else {
                             pContainer.setItem(3, getResultItem());
+                        }
+
+                    }, () -> log.error("Could not assemble InfusionRecipe: {}", this));
+        }
+    }
+
+    public void doubleInfuse(MagiculaInfuserBlockEntity pContainer, ResourceLocation type, float amount){
+        if (!type.equals(EMPTY)) {
+            ReiData.getMagicInfuserMoltenMaterials()
+                    .parallelStream()
+                    .filter(material -> material.getMoltenType().equals(type))
+                    .findFirst()
+                    .ifPresentOrElse((material) -> {
+                        pContainer.removeMoltenMaterialAmount(amount);
+                        pContainer.removeItem(2, 1);
+                        ItemStack output  = pContainer.getItem(3).copy();
+                        if (!output.isEmpty()){
+                            output.grow(2);
+                            pContainer.setItem(3, output);
+                        } else {
+                            ItemStack outputResult = getResultItem().copy();
+                            outputResult.grow(1);
+                            pContainer.setItem(3, outputResult);
                         }
 
                     }, () -> log.error("Could not assemble InfusionRecipe: {}", this));

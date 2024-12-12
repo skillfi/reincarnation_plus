@@ -1,5 +1,6 @@
 {
   "type": "reincarnation_plus:rei_features",
+  "biomes": "#minecraft:is_overworld",
   "features": [
     "reincarnation_plus:ore_copper_large",
     "reincarnation_plus:ore_copper_small",
@@ -7,5 +8,6 @@
     "reincarnation_plus:ore_gold_buried",
     "reincarnation_plus:ore_iron_small",
     "reincarnation_plus:ore_iron"
-  ]
+  ],
+  "step": "underground_ores"
 }

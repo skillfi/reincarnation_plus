@@ -1,6 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.world.features;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.registry.ReiWorldRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -28,7 +29,7 @@ public class ReiFeatureBiomeModifier implements BiomeModifier {
 
     public void modify(Holder<Biome> biome, BiomeModifier.Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase == Phase.ADD) {
-
+            ReiWorldRegistry.addFeatures(biome, this.featureMap, builder);
         }
 
     }

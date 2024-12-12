@@ -1,7 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.block.entity;
 
 import com.github.skillfi.reincarnation_plus.core.block.InfusionBellowsBlock;
-import com.github.skillfi.reincarnation_plus.core.block.MagiculaInfuserBlock;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,23 +44,19 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(0, ItemStack.EMPTY);
     private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    @Getter
-    @Setter
-    public boolean boost;
+    @Getter @Setter public boolean boost;
     @Getter @Setter private int state;
-    @Getter
-    public double speedModifier = 0.2;
+    @Getter public double speedModifier;
     @Getter @Setter private int boostduration;
     public boolean needUpdate;
-    @Getter
-    @Setter
-    public int miscAnimationTicks = 0;
+    @Getter @Setter public int miscAnimationTicks = 0;
 
 
     public InfusionBellowsBlockEntity(BlockPos position, BlockState state) {
         super(ReiBlockEntities.INFUSION_BELLOWS.get(), position, state);
         this.state = 0;
         this.boostduration = 0;
+        this.speedModifier = 0.5;
         this.needUpdate = false;
     }
 
@@ -71,8 +66,9 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
         if (!this.tryLoadLootTable(compound))
             this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compound, this.stacks);
-        this.state = compound.getInt("magic_mech.state");
-        this.boostduration = compound.getInt("magic_mech.boostduration");
+        this.state = compound.getInt("infusion_bellows.state");
+        this.boostduration = compound.getInt("infusion_bellows.boostduration");
+        this.speedModifier = compound.getDouble("infusion_bellows.speedModifier");
     }
 
     @Override
@@ -81,12 +77,9 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
         if (!this.trySaveLootTable(compound)) {
             ContainerHelper.saveAllItems(compound, this.stacks);
         }
-        compound.putInt("magic_mech.state", this.state);
-        compound.putInt("magic_mech.boostduration", this.boostduration);
-    }
-
-    private void setBoost(){
-
+        compound.putInt("infusion_bellows.state", this.state);
+        compound.putInt("infusion_bellows.boostduration", this.boostduration);
+        compound.putDouble("infusion_bellows.speedModifier", getSpeedModifier());
     }
 
     @Override
@@ -114,7 +107,7 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
 
     @Override
     public Component getDefaultName() {
-        return Component.literal("magic_mech");
+        return Component.literal("infusion_bellows");
     }
 
     @Override
@@ -129,7 +122,7 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Magic Meh");
+        return Component.literal("Infusion Bellows");
     }
 
     @Override
@@ -188,6 +181,15 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
             handler.invalidate();
     }
 
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 2);
+            needUpdate = false;
+        }
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, InfusionBellowsBlockEntity pEntity) {
         if (!level.isClientSide()) {
 
@@ -207,8 +209,6 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
 
             if (pEntity.needUpdate) {
                 pEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-                pEntity.needUpdate = false;
             }
         }
 

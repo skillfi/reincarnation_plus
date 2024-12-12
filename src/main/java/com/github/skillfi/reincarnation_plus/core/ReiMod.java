@@ -1,9 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core;
 
 import com.github.skillfi.reincarnation_plus.core.block.client.automatic_infuser.AutomaticMagiculaInfuserRenderer;
-import com.github.skillfi.reincarnation_plus.core.block.client.cooper_magic_ore.CooperMagicOreBlockRenderer;
-import com.github.skillfi.reincarnation_plus.core.block.client.gold_magic_ore.GoldMagicOreBlockRenderer;
-import com.github.skillfi.reincarnation_plus.core.block.client.iron_magic_ore.IronMagicOreBlockRenderer;
 import com.github.skillfi.reincarnation_plus.core.block.client.magic_infuser.MagiculaInfuserRenderer;
 import com.github.skillfi.reincarnation_plus.core.block.client.infusion_bellows.InfusionBellowsRenderer;
 import com.github.skillfi.reincarnation_plus.core.client.ClientProxy;
@@ -155,9 +152,6 @@ public class ReiMod {
         event.registerBlockEntityRenderer(ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), MagiculaInfuserRenderer::new);
         event.registerBlockEntityRenderer(ReiBlockEntities.AUTOMATIC_MAGICAL_INFUSER_ENTITY.get(), AutomaticMagiculaInfuserRenderer::new);
         event.registerBlockEntityRenderer(ReiBlockEntities.INFUSION_BELLOWS.get(), InfusionBellowsRenderer::new);
-        event.registerBlockEntityRenderer(ReiBlockEntities.IRON_MAGIC_ORE.get(), IronMagicOreBlockRenderer::new);
-        event.registerBlockEntityRenderer(ReiBlockEntities.COOPER_MAGIC_ORE.get(), CooperMagicOreBlockRenderer::new);
-        event.registerBlockEntityRenderer(ReiBlockEntities.GOLD_MAGIC_ORE.get(), GoldMagicOreBlockRenderer::new);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -25,17 +25,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ReiItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ReiMod.MODID);
-	public static final RegistryObject<Item> GEM_STONE = ITEMS.register("gem_stone", () -> new GemStoneItem(
-			com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STONE_BLOCK.get(),
-			new Item.Properties().stacksTo(1).tab(ReiCreativeTab.ITEMS)
-	));
-	public static final RegistryObject<Item> GEMS_BLOCK = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEMS_BLOCK, ReiCreativeTab.BLOCKS);
-	public static final RegistryObject<Item> GEM_STAGE_0 = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STAGE_0, null);
-	public static final RegistryObject<Item> GEM_STAGE_1 = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STAGE_1, null);
-	public static final RegistryObject<Item> GEM_STAGE_2 = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STAGE_2, null);
-	public static final RegistryObject<Item> GEM_STAGE_3 = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STAGE_3, null);
-	public static final RegistryObject<Item> GEM_STAGE_4 = block(com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlocks.GEM_STAGE_4, null);
-	public static final RegistryObject<Item> GEM_DUST = ITEMS.register("gem_dust", GemDustItem::new);
 	public static final RegistryObject<Item> SUPER_CHARGER = ITEMS.register("super_charger", SuperCharger::new);
 	public static final RegistryObject<Item> SIPHON = ITEMS.register("siphon", Siphon::new);
 	public static final RegistryObject<Item> CRYSTALIZED_WATER_BUCKET = ITEMS.register("crystalized_water_bucket", CrystalizedWaterItem::new);
@@ -66,9 +55,9 @@ public class ReiItems {
 	public static final RegistryObject<Item> MAGIC_AMPLIFIER = ITEMS.register(ReiBlockEntities.ReiBlocks.MAGIC_AMPLIFIER.getId().getPath(), () -> new BlockItem(ReiBlockEntities.ReiBlocks.MAGIC_AMPLIFIER.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
 	public static final RegistryObject<Item> INFUSION_BELLOWS = ITEMS.register(ReiBlockEntities.ReiBlocks.INFUSION_BELLOWS_BLOCK_REGISTRY_OBJECT.getId().getPath(), () -> new InfusionBellowsItem(ReiBlockEntities.ReiBlocks.INFUSION_BELLOWS_BLOCK_REGISTRY_OBJECT.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
 
-	public static final RegistryObject<Item> IRON_MAGIC_ORE = ITEMS.register(ReiBlockEntities.ReiBlocks.IRON_MAGIC_ORE.getId().getPath(), () -> new IronMagicOreItem(ReiBlockEntities.ReiBlocks.IRON_MAGIC_ORE.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
-	public static final RegistryObject<Item> COOPER_MAGIC_ORE = ITEMS.register(ReiBlockEntities.ReiBlocks.COOPER_MAGIC_ORE.getId().getPath(), () -> new CooperMagicOreItem(ReiBlockEntities.ReiBlocks.COOPER_MAGIC_ORE.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
-	public static final RegistryObject<Item> GOLD_MAGIC_ORE = ITEMS.register(ReiBlockEntities.ReiBlocks.GOLD_MAGIC_ORE.getId().getPath(), () -> new GoldMagicOreItem(ReiBlockEntities.ReiBlocks.GOLD_MAGIC_ORE.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
+	public static final RegistryObject<Item> IRON_MAGIC_ORE = block(ReiBlockEntities.ReiBlocks.IRON_MAGIC_ORE, null);
+	public static final RegistryObject<Item> COOPER_MAGIC_ORE = block(ReiBlockEntities.ReiBlocks.COOPER_MAGIC_ORE, null);
+	public static final RegistryObject<Item> GOLD_MAGIC_ORE = block(ReiBlockEntities.ReiBlocks.GOLD_MAGIC_ORE, null);
 
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
 		return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));

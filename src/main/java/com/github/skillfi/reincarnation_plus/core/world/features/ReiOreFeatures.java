@@ -54,10 +54,10 @@ public class ReiOreFeatures {
         ORE_REPLACEABLES = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         DEEPSLATE_ORE_REPLACEABLES = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         IRON_MAGIC_ORE_TARGET_LIST = Suppliers.memoize(() -> List.of(OreConfiguration.target(ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.IRON_MAGIC_ORE.get()).defaultBlockState()),
-                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.IRON_MAGIC_ORE.get()).defaultBlockState())));
+                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, ReiBlockEntities.ReiBlocks.DEEPSLATE_IRON_MAGIC_ORE.get().defaultBlockState())));
         COOPER_MAGIC_ORE_TARGET_LIST = Suppliers.memoize(() -> List.of(OreConfiguration.target(ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.COOPER_MAGIC_ORE.get()).defaultBlockState()),
-                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.COOPER_MAGIC_ORE.get()).defaultBlockState())));
+                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, ReiBlockEntities.ReiBlocks.DEEPSLATE_COOPER_MAGIC_ORE.get().defaultBlockState())));
         GOLD_MAGIC_ORE_TARGET_LIST = Suppliers.memoize(() -> List.of(OreConfiguration.target(ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.GOLD_MAGIC_ORE.get()).defaultBlockState()),
-                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, (ReiBlockEntities.ReiBlocks.GOLD_MAGIC_ORE.get()).defaultBlockState())));
+                OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, ReiBlockEntities.ReiBlocks.DEEPSLATE_GOLD_MAGIC_ORE.get().defaultBlockState())));
     }
 }

@@ -19,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ReiRegistry {
 
     public static void register(IEventBus modEventBus){
-        ReiGems.register();
         ReiBiomeAuraModifier.init(modEventBus);
         ReiLevelAuraModifier.init(modEventBus);
         ReiItems.ITEMS.register(modEventBus);
