@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.block.client.automatic_infuser;
 
+import com.github.skillfi.reincarnation_plus.core.block.AutomaticMagiculaInfuserBlock;
 import com.github.skillfi.reincarnation_plus.core.block.MagiculaInfuserBlock;
 import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
 public class AutomaticMagiculaInfuserRenderer extends GeoBlockRenderer<AutomaticMagiculaInfuserBlockEntity> {
@@ -33,8 +35,11 @@ public class AutomaticMagiculaInfuserRenderer extends GeoBlockRenderer<Automatic
     public void renderEarly(AutomaticMagiculaInfuserBlockEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         super.renderEarly(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         // Знаходимо кістку Infusion
-
-        if (animatable.getBlockState().getValue(MagiculaInfuserBlock.INFUSION)){
+        IBone infusion = this.getGeoModelProvider().getBone("Infusion");
+        IBone fire = this.getGeoModelProvider().getBone("Fire");
+        if (animatable.getBlockState().getValue(AutomaticMagiculaInfuserBlock.INFUSION)){
+            infusion.setHidden(false);
+            fire.setHidden(true);
             // Отримуємо трансформації кістки
             poseStack.pushPose();
             poseStack.scale(0.5f, 0.5f, 0.5f); // Масштабування до 1/4 (4 рази менше)
@@ -58,6 +63,12 @@ public class AutomaticMagiculaInfuserRenderer extends GeoBlockRenderer<Automatic
             }
             poseStack.popPose();
         }
+        if (animatable.getBlockState().getValue(AutomaticMagiculaInfuserBlock.LIT)){
+            fire.setHidden(false);
+            infusion.setHidden(true);
+        }
+        infusion.setHidden(true);
+        fire.setHidden(true);
     }
 
     private int getLightLevel(Level level, BlockPos pos) {

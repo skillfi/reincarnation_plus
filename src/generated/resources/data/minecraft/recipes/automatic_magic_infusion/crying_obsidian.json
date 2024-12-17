@@ -1,15 +1,15 @@
 {
   "type": "reincarnation_plus:automatic_magic_infusion",
-  "cookingTime": 600,
+  "cookingTime": 3600,
   "input": {
-    "item": "minecraft:wheat_seeds"
+    "item": "minecraft:obsidian"
   },
   "magicules": {
-    "amount": 2.5,
+    "amount": 1.0,
     "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,
-    "id": "tensura:hipokute_seeds"
+    "id": "minecraft:crying_obsidian"
   }
 }

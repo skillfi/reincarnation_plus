@@ -1,6 +1,6 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 5000,
+  "cookingTime": 4800,
   "input": {
     "tag": "minecraft:copper_ores"
   },

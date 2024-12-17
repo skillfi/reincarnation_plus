@@ -95,7 +95,7 @@ public class RenderUtils {
         MutableComponent moltenMaterialName = Component.translatable(String.format("%s.molten.%s.material", moltenMaterial.getMoltenType().getNamespace(), moltenMaterial.getMoltenType().getPath()));
         int textColor = (new Color(moltenMaterial.getRed(), moltenMaterial.getGreen(), moltenMaterial.getBlue())).getRGB();
         String moltenAmount = amount + "/" + maxAmount;
-        return Component.translatable("tooltip.reincarnation_plus.magic_infuser.molten_item", new Object[]{moltenAmount, moltenMaterialName}).withStyle(Style.EMPTY.withColor(textColor));
+        return Component.translatable("tooltip.reincarnation_plus.magicula_infuser.molten_item", new Object[]{moltenAmount, moltenMaterialName}).withStyle(Style.EMPTY.withColor(textColor));
     }
     public static MutableComponent toolTipInfusionTime(MagicInfuserMoltenMaterial moltenMaterial, int amount, int maxAmount) {
         int textColor = (new Color(moltenMaterial.getRed(), moltenMaterial.getGreen(), moltenMaterial.getBlue())).getRGB();

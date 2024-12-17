@@ -58,11 +58,6 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             // Перевірка вихідного слоту
             ItemStack outputStack = pContainer.getItem(3);
 
-            // Якщо вихідний слот не порожній or не збігається з очікуваним результатом
-            if (!outputStack.isEmpty() && !ItemStack.isSame(outputStack, this.output)) {
-                return false;
-            }
-
             // Перевірка кількості вихідного предмета (не перевищує максимум)
             if (!outputStack.isEmpty() && outputStack.getCount() + this.output.getCount() > outputStack.getMaxStackSize()) {
                 return false;
@@ -105,7 +100,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
     }
 
-    public void doubleInfuse(MagiculaInfuserBlockEntity pContainer, ResourceLocation type, float amount){
+    public void doubleInfuse(MagiculaInfuserBlockEntity pContainer, ResourceLocation type, float amount) {
         if (!type.equals(EMPTY)) {
             ReiData.getMagicInfuserMoltenMaterials()
                     .parallelStream()
@@ -114,19 +109,23 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
                     .ifPresentOrElse((material) -> {
                         pContainer.removeMoltenMaterialAmount(amount);
                         pContainer.removeItem(2, 1);
-                        ItemStack output  = pContainer.getItem(3).copy();
-                        if (!output.isEmpty()){
-                            output.grow(2);
+
+                        ItemStack output = pContainer.getItem(3).copy();
+
+                        // Якщо слот результату не пустий, збільшуємо його кількість на 2
+                        if (!output.isEmpty()) {
+                            output.grow(2); // Збільшення на 2 предмети
                             pContainer.setItem(3, output);
                         } else {
+                            // Якщо слот результату пустий, створюємо новий ItemStack з 2 одиницями
                             ItemStack outputResult = getResultItem().copy();
-                            outputResult.grow(1);
+                            outputResult.setCount(2); // Задаємо кількість 2
                             pContainer.setItem(3, outputResult);
                         }
-
                     }, () -> log.error("Could not assemble InfusionRecipe: {}", this));
         }
     }
+
 
     public ItemStack getResultItem() {
         return this.output.copy();

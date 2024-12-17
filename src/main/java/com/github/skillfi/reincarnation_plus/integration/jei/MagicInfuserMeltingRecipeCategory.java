@@ -43,7 +43,7 @@ public class MagicInfuserMeltingRecipeCategory implements IRecipeCategory<MagicI
     public void draw(MagicInfuserMeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
             if (!recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
-                RenderUtils.renderMoltenMaterial(stack, moltenMaterial, recipe.getMagicules(), 144);
+                RenderUtils.renderMoltenMaterial(stack, moltenMaterial, recipe.getMagicules(), 500);
             }
         }
     }
@@ -56,7 +56,7 @@ public class MagicInfuserMeltingRecipeCategory implements IRecipeCategory<MagicI
                 if (moltenMaterial.isLeftBar()) {
                     if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar()) {
                         if (moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
-                            tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, (float)recipe.getMagicules(), 36.0F));
+                            tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, (float)recipe.getMagicules(), 500.0F));
                         }
                     }
                 }

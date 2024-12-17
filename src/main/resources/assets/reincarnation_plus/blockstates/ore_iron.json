@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "reincarnation_plus:block/ore_iron"
+      "model": "minecraft:block/iron_ore"
     }
   }
 }

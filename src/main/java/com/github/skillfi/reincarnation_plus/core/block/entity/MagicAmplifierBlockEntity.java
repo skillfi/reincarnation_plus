@@ -8,9 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MagicAmplifierBlockEntity extends BlockEntity {
-    @Getter
-    @Setter
-    private float maxMagicMaterialAmount;
+    @Getter @Setter private float maxMagicMaterialAmount;
 
 
     public MagicAmplifierBlockEntity(BlockPos pos, BlockState state) {

@@ -1,12 +1,9 @@
 package com.github.skillfi.reincarnation_plus.core.client.screen;
 
-import com.github.manasmods.manascore.api.client.gui.widget.ImagePredicateButton;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
-import com.github.skillfi.reincarnation_plus.core.network.ReiNetwork;
-import com.github.skillfi.reincarnation_plus.core.network.play2server.RequuestMagicInfuserActionPacket;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfusionRecipe;
@@ -14,7 +11,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -25,7 +21,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.awt.*;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.skillfi.reincarnation_plus.libs.data.gen.ReiMoltenMaterialProvider.INFUSION;
@@ -33,13 +28,7 @@ import static com.github.skillfi.reincarnation_plus.libs.data.gen.ReiMoltenMater
 
 public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/magic_infuser_gui.png");
-    private static final ResourceLocation RIGHT_BUTTON = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/magic_infusion_right.png");
-    private static final ResourceLocation LEFT_BUTTON = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/magic_infusion_left.png");
     private static final ResourceLocation FLUID = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/molten.png");
-    private static final ResourceLocation INFUSE = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/infuse.png");
-//    private final ImagePredicateButton infusionRight;
-//    private final ImagePredicateButton infusionLeft;
-//    private final ImagePredicateButton infusion;
     private Optional<MagicInfuserMoltenMaterial> leftBarMaterial;
     private Optional<MagicInfuserMoltenMaterial> rightBarMaterial;
 
@@ -112,18 +101,6 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
 
     protected void init() {
         super.init();
-//        this.removeWidget(this.infusionLeft);
-//        this.infusionLeft.x = this.getGuiLeft() + 164;
-//        this.infusionLeft.y = this.getGuiTop() + 40;
-//        this.addRenderableWidget(this.infusionLeft);
-//        this.removeWidget(this.infusionRight);
-//        this.infusionRight.x = this.getGuiLeft() + 196;
-//        this.infusionRight.y = this.getGuiTop() + 40;
-//        this.addRenderableWidget(this.infusionRight);
-//        this.removeWidget(this.infusion);
-//        this.infusion.x = this.getGuiLeft() + 203;
-//        this.infusion.y = this.getGuiTop() + 65;
-//        this.addRenderableWidget(this.infusion);
     }
 
     @Override
@@ -162,7 +139,6 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
             }
         }
     }
-
 
     private static Optional<MagicInfuserMoltenMaterial> materialOf(Optional<ResourceLocation> id) {
         return id.flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
@@ -319,7 +295,9 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
     }
 
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.title, 139.0F, (float)this.titleLabelY + 1.0F, (new Color(225, 225, 225)).getRGB());
+        String[] title = this.title.getString().split(" ");
+        this.font.draw(pPoseStack, title[0], 128.0F, (float)this.titleLabelY + 1.0F, (new Color(225, 225, 225)).getRGB());
+        this.font.draw(pPoseStack, title[1], 173.0F, (float)this.titleLabelY + 1.0F, (new Color(225, 225, 225)).getRGB());
         this.font.draw(pPoseStack, Component.translatable("reincarnation_plus.magicula_infuser.smeltery_label"), 22.0F, (float)this.titleLabelY + 9.0F, (new Color(198, 198, 198)).getRGB());
         this.font.draw(pPoseStack, this.playerInventoryTitle, 142.0F, (float)this.inventoryLabelY + 2.0F, (new Color(63, 63, 64)).getRGB());
     }

@@ -7,6 +7,7 @@ import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.libs.api.aura.AuraAPI;
+import com.github.skillfi.reincarnation_plus.libs.block.state.properties.AutomaticMagicInfuserPart;
 import com.github.skillfi.reincarnation_plus.libs.block.state.properties.MagicInfuserPart;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.AutomaticMagicInfuserMeltingRecipe;
 import com.github.skillfi.reincarnation_plus.libs.data.recipe.AutomaticMagicInfusionRecipe;
@@ -76,61 +77,25 @@ public class AutomaticMagiculaInfuserBlockEntity extends BaseContainerBlockEntit
     public static final int INPUT_SLOT_INDEX = 1;
     public static final int INPUT_CATALYST_SLOT_INDEX = 2;
     public static final int OUTPUT_INFUSION_SLOT_INDEX = 3;
-    @Getter
-    @Setter
-    private int state;
-    @Getter
-    @Setter
-    private int tickcounter;
-    @Getter
-    @Setter
-    private Optional<ResourceLocation> leftBarId;
-    @Getter
-    private static final double BaseSpeedModifier = 0.0;
-    @Setter
-    @Getter
-    private double speedModifier;
-    @Setter
-    @Getter
-    private boolean automatic;
-    @Getter
-    @Setter
-    private int boostDuration;
-    @Getter
-    @Setter
-    private Optional<ResourceLocation> rightBarId;
-    @Getter
-    @Setter
-    public int miscAnimationTicks = 0;
-    @Getter
-    @Setter
-    private float magicMaterialAmount;
-    @Getter
-    @Setter
-    private float maxMagicMaterialAmount;
-    @Getter
-    @Setter
-    private float additionalMagicMaterialAmount;
-    @Getter
-    @Setter
-    private int itemMaterialAmount;
-    @Setter
-    @Getter
-    private int meltingProgress;
-    @Setter
-    @Getter
-    private int infusionProgress;
-    @Setter
-    @Getter
-    private int fuelTime;
-    @Setter
-    @Getter
-    private int maxFuelTime;
-    @Getter
-    @Setter
-    private int infusionTime;
-    @Getter
-    @Setter
+    @Getter @Setter private int state;
+    @Getter @Setter private int tickcounter;
+    @Getter @Setter private Optional<ResourceLocation> leftBarId;
+    @Getter private static final double BaseSpeedModifier = 0.0;
+    @Setter @Getter private double speedModifier;
+    @Setter @Getter private boolean automatic;
+    @Getter @Setter private int boostDuration;
+    @Getter @Setter private Optional<ResourceLocation> rightBarId;
+    @Getter @Setter public int miscAnimationTicks = 0;
+    @Getter @Setter private float magicMaterialAmount;
+    @Getter @Setter private float maxMagicMaterialAmount;
+    @Getter @Setter private float additionalMagicMaterialAmount;
+    @Getter @Setter private int itemMaterialAmount;
+    @Setter @Getter private int meltingProgress;
+    @Setter @Getter private int infusionProgress;
+    @Setter @Getter private int fuelTime;
+    @Setter @Getter private int maxFuelTime;
+    @Getter @Setter private int infusionTime;
+    @Getter @Setter
     private int maxInfusionTime;
     private float lastMoltenAmount;
     private ItemStack lastInfusionStack;
@@ -138,10 +103,8 @@ public class AutomaticMagiculaInfuserBlockEntity extends BaseContainerBlockEntit
     private ItemStack lastFuelStack;
     private ItemStack lastCatalystStack;
     public boolean needUpdate;
-    @Getter
-    private List possibleInfusionRecipes;
-    @Getter
-    private int selectedRecipeIndex;
+    @Getter private List possibleInfusionRecipes;
+    @Getter private int selectedRecipeIndex;
     private int lastSelectedRecipeIndex;
     private AutomaticMagicInfuserMeltingRecipe lastMeltingRecipe;
     private AutomaticMagicInfusionRecipe lastInfusionRecipe;
@@ -301,15 +264,12 @@ public class AutomaticMagiculaInfuserBlockEntity extends BaseContainerBlockEntit
     }
 
     public int[] getSlotsForFace(Direction pSide) {
-        if (((MagicInfuserPart)this.getBlockState().getValue(AutomaticMagiculaInfuserBlock.PART)).equals(MagicInfuserPart.TOP)) {
-            return new int[0];
+        this.getBlockState().getValue(AutomaticMagiculaInfuserBlock.PART);
+        Direction backSide = ((Direction) this.getBlockState().getValue(AutomaticMagiculaInfuserBlock.FACING)).getOpposite();
+        if (pSide.equals(backSide)) {
+            return new int[]{0};
         } else {
-            Direction backSide = ((Direction)this.getBlockState().getValue(AutomaticMagiculaInfuserBlock.FACING)).getOpposite();
-            if (pSide.equals(backSide)) {
-                return new int[]{0};
-            } else {
-                return pSide.equals(Direction.DOWN) ? new int[]{2} : new int[]{1};
-            }
+            return pSide.equals(Direction.DOWN) ? new int[]{2} : new int[]{1};
         }
     }
 
@@ -795,7 +755,7 @@ public class AutomaticMagiculaInfuserBlockEntity extends BaseContainerBlockEntit
         }
         if (((BlockEntity)event.getAnimatable()).getBlockState().getValue(AutomaticMagiculaInfuserBlock.INFUSION)){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("infusion", ILoopType.EDefaultLoopTypes.LOOP));
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("consumption", ILoopType.EDefaultLoopTypes.LOOP));
+//            event.getController().setAnimation(new AnimationBuilder().addAnimation("consumption", ILoopType.EDefaultLoopTypes.LOOP));
         }
         return PlayState.CONTINUE;
     }

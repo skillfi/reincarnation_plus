@@ -33,6 +33,7 @@ import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -75,29 +76,25 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     @Getter @Setter private Optional<ResourceLocation> leftBarId;
     @Getter private static final double BaseSpeedModifier = 0.0;
     @Setter @Getter private double speedModifier;
-    @Setter @Getter private boolean automatic;
-    @Getter @Setter private int boostDuration = 0;
+    @Getter @Setter private int boostDuration;
     @Getter @Setter private Optional<ResourceLocation> rightBarId;
     @Getter @Setter public int miscAnimationTicks = 0;
     @Getter @Setter private float magicMaterialAmount;
     @Getter @Setter private float maxMagicMaterialAmount;
     @Getter @Setter private float additionalMagicMaterialAmount;
-    @Getter @Setter private int itemMaterialAmount;
     @Setter @Getter private int meltingProgress;
     @Setter @Getter private int infusionProgress;
     @Setter @Getter private int fuelTime;
     @Setter @Getter private int maxFuelTime;
     @Getter @Setter private int infusionTime;
     @Getter @Setter private int maxInfusionTime;
-    private float lastMoltenAmount;
-    private ItemStack lastInfusionStack;
+    private float lastMagiculesAmount;
     private ItemStack lastInputStack;
     private ItemStack lastFuelStack;
     private ItemStack lastCatalystStack;
     public boolean needUpdate;
     @Getter private List possibleInfusionRecipes;
     @Getter private int selectedRecipeIndex;
-    private int lastSelectedRecipeIndex;
     private MagicInfuserMeltingRecipe lastMeltingRecipe;
     private MagicInfusionRecipe lastInfusionRecipe;
     private int totalPossibleRecipes;
@@ -112,7 +109,6 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         this.magicMaterialAmount = 0;
         this.maxMagicMaterialAmount = 35;
         this.additionalMagicMaterialAmount = 0;
-        this.itemMaterialAmount = 0;
         this.meltingProgress = 0;
         this.boostDuration = 0;
         this.speedModifier = BaseSpeedModifier;
@@ -122,15 +118,12 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         this.maxFuelTime = 0;
         this.infusionTime = 0;
         this.maxInfusionTime = 0;
-        this.lastInfusionStack = ItemStack.EMPTY;
         this.lastInputStack = ItemStack.EMPTY;
         this.lastFuelStack = ItemStack.EMPTY;
         this.lastCatalystStack = ItemStack.EMPTY;
         this.needUpdate = false;
-        this.automatic = false;
         this.possibleInfusionRecipes = new ArrayList();
         this.selectedRecipeIndex = 0;
-        this.lastSelectedRecipeIndex = -1;
         this.totalPossibleRecipes = 0;
         this.canHopperInfusing = false;
         this.handlers = SidedInvWrapper.create(this, new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH});
@@ -145,7 +138,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     public boolean doubleChanse(){
-        if (this.getLevel().random.nextDouble() <= 0.05){
+        if (this.getLevel().random.nextDouble() == 0.05){
             return true;
         }
         return false;
@@ -158,6 +151,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
                 getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, serverLevel).
                 ifPresentOrElse(
                     magicInfusionRecipe -> {
+                        rightBarId = Optional.of(MagicInfusionRecipe.INFUSION);
                         if (infusionTime == 0){
                             setInfusionTime(magicInfusionRecipe.getCookingTime());
                             setMaxInfusionTime(magicInfusionRecipe.getCookingTime());
@@ -281,9 +275,37 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
             case 1, 2 -> var10000 = true;
             default -> var10000 = false;
         }
-
         return var10000;
     }
+
+    public boolean isInfuse(ItemStack stack) {
+        assert this.level != null;
+
+        // Перебираємо всі рецепти і перевіряємо, чи якийсь з них приймає ItemStack
+        return this.level.getRecipeManager()
+                .getAllRecipesFor(ReiRecipeTypes.MAGIC_INFUSION.get())
+                .stream()
+                .anyMatch(magicInfusionRecipe ->
+                        magicInfusionRecipe.getInput().test(stack)
+                );
+    }
+
+
+
+    public boolean isMelting(ItemStack stack) {
+        assert this.level != null;
+
+        // Перебираємо всі рецепти і перевіряємо, чи якийсь з інгредієнтів підходить під ItemStack
+        return this.level.getRecipeManager()
+                .getAllRecipesFor(ReiRecipeTypes.MAGIC_INFUSER_MELTING.get())
+                .stream()
+                .anyMatch(magicMeltingRecipe ->
+                        magicMeltingRecipe.getInput().test(stack)
+                );
+    }
+
+
+
 
     public void boost(double baseSpeedModifier){
         if (speedModifier == 0){
@@ -294,17 +316,6 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
 
     public void resetSpeed(){
         speedModifier = 0;
-        needUpdate = true;
-    }
-
-    public void automaticSpeed(){
-        setSpeedModifier(0.25);
-        needUpdate = true;
-    }
-
-    public void use(){
-        setBoostDuration(30);
-        setSpeedModifier(0.75);
         needUpdate = true;
     }
 
@@ -416,8 +427,8 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     private boolean checkInfusingCache() {
-        if (this.lastMoltenAmount != this.magicMaterialAmount) {
-            this.lastMoltenAmount = this.magicMaterialAmount;
+        if (this.lastMagiculesAmount != this.magicMaterialAmount) {
+            this.lastMagiculesAmount = this.magicMaterialAmount;
             return true;
         }  else if (!this.lastCatalystStack.equals(this.items.get(INPUT_CATALYST_SLOT_INDEX), true)) {
             this.lastCatalystStack = this.items.get(INPUT_CATALYST_SLOT_INDEX).copy();
@@ -440,78 +451,81 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     public void reduceInfusionTimeByPercentage(float percentage){
-        int reduction = Math.round(maxInfusionTime * (percentage / 100));
+        int reduction = Math.round(infusionTime * (percentage / 100));
         setInfusionTime(Math.max(1, infusionTime - reduction));
+    }
+
+    public void reChangeMagicMaterialAmount(){
+        if (magicMaterialAmount > (getMaxMagicMaterialAmount() + getAdditionalMagicMaterialAmount())){
+            setMagicMaterialAmount(getMaxMagicMaterialAmount() + getAdditionalMagicMaterialAmount());
+        }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, MagiculaInfuserBlockEntity pEntity) {
         if (!level.isClientSide()) {
-            if (pEntity.isAutomatic())
-                pEntity.automaticSpeed();
             pEntity.miscAnimationHandler();
+            pEntity.reChangeMagicMaterialAmount();
+
+            // Обробка boostDuration
             if (pEntity.boostDuration > 0) {
                 pEntity.boostDuration--;
                 if (pEntity.speedModifier > 0 && pEntity.getInfusionTime() > 1){
-                    pEntity.reduceInfusionTimeByPercentage((float) pEntity.speedModifier);
+                    pEntity.reduceInfusionTimeByPercentage((float) 0.15);
                 }
-
-                // Логіка пришвидшеної роботи під час boostDuration
                 if (pEntity.boostDuration == 0) {
-                    if (pEntity.isAutomatic())
-                        pEntity.automaticSpeed();
-                    pEntity.resetSpeed(); // Скидання швидкості до стандартної
+                    pEntity.resetSpeed();
                 }
             }
 
+            // Перевірка блоку під інфузором
             BlockEntity belowBlock = level.getBlockEntity(pos.below());
-            if (belowBlock instanceof MagicAmplifierBlockEntity amplifierBlock) {
-                pEntity.upgrade(amplifierBlock.getMaxMagicMaterialAmount());
-            } else {
-                pEntity.upgrade(0);
-            }
-            if (pEntity.getAdditionalMagicMaterialAmount() == 0){
-                pEntity.upgrade(0);
-            }
+            pEntity.upgrade(belowBlock instanceof MagicAmplifierBlockEntity amplifierBlock
+                    ? amplifierBlock.getMaxMagicMaterialAmount()
+                    : 0);
+
+            // Оновлення стану інфузії та плавлення
             boolean infusionNeedsUpdate = pEntity.checkInfusingCache();
             boolean meltingNeedsUpdate = pEntity.checkMeltingCache();
 
             if (infusionNeedsUpdate || pEntity.infusionProgress > 0) {
                 pEntity.checkInfusionRecipe();
-                pEntity.updateInfusionTime();
-                pEntity.rightBarId = Optional.of(MagicInfusionRecipe.INFUSION);
             }
 
             if (meltingNeedsUpdate || pEntity.meltingProgress > 0) {
                 pEntity.checkMeltingRecipe();
             }
 
+            // Оновлення лівого індикатора
             if (pEntity.magicMaterialAmount > 0) {
                 pEntity.leftBarId = Optional.of(MagicInfusionRecipe.MAGICULES);
             }
 
-            if (pEntity.getItem(2).isEmpty() || pEntity.getItem(3).isEmpty()){
-                pEntity.getBlockState().setValue(MagiculaInfuserBlock.INFUSION, false);
+            // Перевірка предметів для інфузії
+            if (pEntity.getItem(2).isEmpty() || pEntity.getItem(3).isEmpty()) {
+                state = state.setValue(MagiculaInfuserBlock.INFUSION, false);
                 pEntity.needUpdate = true;
             }
-
+            pEntity.updateInfusionTime();
             pEntity.updateFuelTime();
 
-
+            // Оновлення блоку, якщо потрібне
             if (pEntity.needUpdate) {
                 pEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 2);
                 pEntity.needUpdate = false;
             }
+
         } else if (state.getValue(MagiculaInfuserBlock.LIT) || state.getValue(MagiculaInfuserBlock.INFUSION)) {
             RandomSource random = level.random;
             if (random.nextFloat() < 0.11F) {
-                for(int i = 0; i < random.nextInt(2) + 2; ++i) {
+                for (int i = 0; i < random.nextInt(2) + 2; ++i) {
                     CampfireBlock.makeParticles(level, pos.above(2), false, false);
                 }
             }
         }
-
     }
+
+
 
     private void checkInfusionRecipe() {
         assert this.level != null;

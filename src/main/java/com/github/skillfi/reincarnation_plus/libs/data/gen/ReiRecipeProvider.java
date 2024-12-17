@@ -167,18 +167,32 @@ public class ReiRecipeProvider extends RecipeProvider {
     }
 
     protected void magicInfusion(Consumer<FinishedRecipe> consumer){
-        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 15.0F, 5000, ItemTags.IRON_ORES, "iron");
-        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 25.0F, 5000, ItemTags.COPPER_ORES, "cooper");
-        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 10.0F, 5000, ItemTags.GOLD_ORES, "gold");
-        magicInfusionLeft(consumer, TensuraMaterialItems.HIPOKUTE_SEEDS.get().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 2.5F, 2400, Items.WHEAT_SEEDS.getDefaultInstance());
-        magicInfusionRawOres(consumer, TensuraMaterialItems.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 10.0F, 4800, Items.RAW_IRON.getDefaultInstance(), Items.RAW_COPPER.getDefaultInstance(), Items.RAW_GOLD.getDefaultInstance(), 15.0F, 5.0F);
+        //      region Ores
+        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 15.0F, 4800, ItemTags.IRON_ORES, "iron");
+        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 25.0F, 4800, ItemTags.COPPER_ORES, "cooper");
+        magicInfusionLeft(consumer, TensuraBlocks.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 10.0F, 4800, ItemTags.GOLD_ORES, "gold");
+
+        magicInfusionRawOres(consumer, TensuraMaterialItems.MAGIC_ORE.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 7.5F,
+                2400,
+                Items.RAW_IRON.getDefaultInstance(), Items.RAW_COPPER.getDefaultInstance(), Items.RAW_GOLD.getDefaultInstance(),
+                12.5F, 5.0F);
+        magicInfusionOres(consumer, Blocks.RAW_IRON_BLOCK.asItem().getDefaultInstance(), TensuraBlocks.MAGIC_ORE_BLOCK.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 15.0F*9.0F, 4800, "raw_iron_block");
+        magicInfusionOres(consumer, Blocks.RAW_COPPER_BLOCK.asItem().getDefaultInstance(), TensuraBlocks.MAGIC_ORE_BLOCK.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 25.0F*9.0F, 4800, "raw_copper_block");
+        magicInfusionOres(consumer, Blocks.RAW_GOLD_BLOCK.asItem().getDefaultInstance(), TensuraBlocks.MAGIC_ORE_BLOCK.get().asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 10.0F*9.0F, 4800, "raw_gold_block");
+        // endregion
+
+        // region OtherBlocks
+        magicInfusionLeft(consumer, TensuraMaterialItems.HIPOKUTE_SEEDS.get().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 2.5F, 600, Items.WHEAT_SEEDS.getDefaultInstance());
         magicInfusionLeft(consumer, Blocks.SLIME_BLOCK.asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 1.0F, 3600, Blocks.GREEN_WOOL.asItem().getDefaultInstance());
         magicInfusionLeft(consumer, Blocks.AMETHYST_BLOCK.asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 2.0F, 3600, Blocks.QUARTZ_BLOCK.asItem().getDefaultInstance());
         magicInfusionLeft(consumer, Items.AMETHYST_SHARD.getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 0.5F, 2400, Items.QUARTZ.getDefaultInstance());
         magicInfusionLeft(consumer, Blocks.CALCITE.asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 0.5F, 7400, Blocks.DIORITE.asItem().getDefaultInstance());
         magicInfusionLeft(consumer, Items.GUNPOWDER.getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 1.0F, 6000, Items.FLINT.getDefaultInstance());
         magicInfusionLeft(consumer, Blocks.ANCIENT_DEBRIS.asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 40.0F, 120000, Blocks.IRON_BLOCK.asItem().getDefaultInstance());
-
+        magicInfusionLeft(consumer, Blocks.CRYING_OBSIDIAN.asItem().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 1.0F, 3600, Blocks.OBSIDIAN.asItem().getDefaultInstance());
+        magicInfusionOres(consumer, TensuraMaterialItems.MITHRIL_INGOT.get().getDefaultInstance(), TensuraMaterialItems.ADAMANTITE_INGOT.get().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 225.0F, 5000, "adamantite");
+        magicInfusionOres(consumer, TensuraMaterialItems.PURE_MAGISTEEL_INGOT.get().getDefaultInstance(), TensuraMaterialItems.ADAMANTITE_INGOT.get().getDefaultInstance(), ReiMoltenMaterialProvider.MOLTEN_MAGICULES, 225.0F, 5000, "pure_adamantite");
+        // endregion
     }
 
     private void magicMelting(Consumer<FinishedRecipe> consumer){
@@ -267,12 +281,12 @@ public class ReiRecipeProvider extends RecipeProvider {
     }
     
     protected void magicMelting(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, float amount, Item input){
-        MagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(new ItemLike[]{input})).build(consumer, this.rl(input).getPath());
-        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(new ItemLike[]{input})).build(consumer, this.rl(input).getPath());
+        MagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
+        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
     }
     protected void magicMeltingx20(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, float amount, Item input){
-        MagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20.0F).requires(Ingredient.of(new ItemLike[]{input})).build(consumer, this.rl(input).getPath());
-        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20.0F).requires(Ingredient.of(new ItemLike[]{input})).build(consumer, this.rl(input).getPath());
+        MagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20.0F).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
+        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20.0F).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
     }
 
     protected static void magicInfusionLeft(Consumer<FinishedRecipe> consumer, ItemStack output, ResourceLocation magiculesId, float magicules, int infusionTime, ItemStack input) {
@@ -320,7 +334,8 @@ public class ReiRecipeProvider extends RecipeProvider {
                 time(infusionTime).
                 build(consumer, "raw_gold");
     }
-    protected static void magicInfusionLeft(Consumer<FinishedRecipe> consumer, ItemStack output, ResourceLocation magiculesId, float magicules, int infusionTime,TagKey<Item> input, String path) {
+
+    protected static void magicInfusionLeft(Consumer<FinishedRecipe> consumer, ItemStack output, ResourceLocation magiculesId, float magicules, int infusionTime, TagKey<Item> input, String path) {
         MagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, magicules).
                 requires(Ingredient.of(input)).
@@ -332,6 +347,10 @@ public class ReiRecipeProvider extends RecipeProvider {
                 requires(Ingredient.of(input)).
                 time(infusionTime).
                 build(consumer, path);
+    }
+
+    protected static void magicInfusionOres(Consumer<FinishedRecipe> consumer, ItemStack input, ItemStack output, ResourceLocation magicules, float amount, int time, String path){
+        MagicInfusionRecipe.Builder.of(output).requires(Ingredient.of(input)).magicules(magicules, amount).time(time).build(consumer, path);
     }
 
 

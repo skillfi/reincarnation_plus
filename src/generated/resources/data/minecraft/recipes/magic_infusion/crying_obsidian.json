@@ -1,15 +1,15 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 2400,
+  "cookingTime": 3600,
   "input": {
-    "item": "minecraft:raw_copper"
+    "item": "minecraft:obsidian"
   },
   "magicules": {
-    "amount": 12.5,
+    "amount": 1.0,
     "id": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,
-    "id": "tensura:magic_ore_shard"
+    "id": "minecraft:crying_obsidian"
   }
 }

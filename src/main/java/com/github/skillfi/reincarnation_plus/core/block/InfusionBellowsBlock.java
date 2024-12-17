@@ -61,9 +61,7 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
         super.onPlace(blockstate, world, pos, oldState, moving);
         if (!world.isClientSide()) {
             Direction directionToInfuser = findClosestInfuser(world, pos);
-            if (directionToInfuser != null) {
-                world.setBlock(pos, blockstate.setValue(FACING, directionToInfuser), 3);
-            }
+            world.setBlock(pos, blockstate.setValue(FACING, directionToInfuser), 2);
         }
     }
 
@@ -95,20 +93,20 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
         if (!world.isClientSide()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof InfusionBellowsBlockEntity mehBlockEntity) {
-                ((InfusionBellowsBlockEntity) blockEntity).setBoostduration(40);
+                mehBlockEntity.setBoostduration(40);
                 Direction[] directions = Direction.values();
                 for (Direction direction : directions) {
                     BlockPos neighborPos = pos.relative(direction);
                     BlockEntity neighborEntity = world.getBlockEntity(neighborPos);
                     if (neighborEntity instanceof MagiculaInfuserBlockEntity infuser) {
-                        if (infuser.getInfusionProgress() < 90 && infuser.getInfusionProgress() != 0) {
+                        if (infuser.getInfusionProgress() < 90 && infuser.getInfusionProgress() >= 0) {
                             infuser.boost(mehBlockEntity.speedModifier);
                             infuser.setBoostDuration(40);
                             BlockState newstate = blockstate.setValue(USE, true);
-                            world.setBlock(pos, newstate, 3);
+                            world.sendBlockUpdated(pos, newstate, newstate, 2);
                         }
                         BlockState newstate = blockstate.setValue(USE, false);
-                        world.setBlock(pos, newstate, 3);
+                        world.sendBlockUpdated(pos, newstate, newstate, 2);
                     }
                 }
             }

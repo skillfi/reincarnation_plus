@@ -25,20 +25,12 @@ import org.apache.logging.log4j.Logger;
 
 public class MagicInfuserMenu extends AbstractContainerMenu {
     private static final Logger log = LogManager.getLogger(MagicInfuserMenu.class);
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = 27;
-    private static final int VANILLA_SLOT_COUNT = 36;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = 36;
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;
     public final MagiculaInfuserBlockEntity blockEntity;
     public final AutomaticMagiculaInfuserBlockEntity automaticblockEntity;
     private final Level level;
     private int fuelSlotIndex;
     private int meltingSlotIndex;
-    private int infuseSlotIndex;
+    private int catalystSlotIndex;
     private int infusingSlotIndex;
 
     public MagicInfuserMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -56,115 +48,73 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent((handler) -> {
             this.fuelSlotIndex = this.addSlot(new ReiFuelSlot(handler, 0, 35, 97)).index;
             this.meltingSlotIndex = this.addSlot(new ReiMeltingSlot(handler, 1, 35, 51, this)).index;
-            this.infuseSlotIndex = this.addSlot(new ReiCatalystSlot(handler, 2, 143, 36, this)).index;
-            this.infusingSlotIndex = this.addSlot(new ReiInfuseSlot(handler, 3, 174, 36, this)).index;
+            this.catalystSlotIndex = this.addSlot(new ReiCatalystSlot(handler, 2, 143, 36, this)).index;
+            this.infusingSlotIndex = this.addSlot(new ReiInfuseSlot(handler, 3, 176, 36, this)).index;
         });
     }
 
     public boolean isSmelting() {
-        if (blockEntity != null){
-            return this.blockEntity.getMeltingProgress() > 0;
-        }
-        if (automaticblockEntity != null){
-            return this.automaticblockEntity.getMeltingProgress() >0;
-        }
-        return false;
+        return this.blockEntity.getMeltingProgress() > 0;
     }
 
     public boolean hasFuel() {
-        if (blockEntity != null)
-            return this.blockEntity.getFuelTime() > 0;
-        if (automaticblockEntity != null)
-            return this.automaticblockEntity.getFuelTime() > 0;
-        return false;
+        return this.blockEntity.getFuelTime() > 0;
     }
 
     public boolean hasInfuse() {
-        if (blockEntity != null)
-            return this.blockEntity.getInfusionTime() > 0;
-        if (automaticblockEntity != null)
-            return this.automaticblockEntity.getInfusionTime() > 0;
-        return false;
+        return this.blockEntity.getInfusionTime() > 0;
     }
 
     public int getMagiculesProgress() {
-        if (blockEntity != null){
-            int progress = (int) ((int) this.blockEntity.getMagicMaterialAmount());
-            int maxmagicules = (int) this.blockEntity.getMaxMagicMaterialAmount();
-            int addtionMagicules = (int) this.blockEntity.getAdditionalMagicMaterialAmount();
-            int progressArrowSize = 74;
-            return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
-        }if (automaticblockEntity != null){
-            int progress = (int) ((int) this.automaticblockEntity.getMagicMaterialAmount());
-            int maxmagicules = (int) this.automaticblockEntity.getMaxMagicMaterialAmount();
-            int addtionMagicules = (int) this.automaticblockEntity.getAdditionalMagicMaterialAmount();
-            int progressArrowSize = 74;
-            return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
-        }
-        return 0;
+        int progress = (int) ((int) this.blockEntity.getMagicMaterialAmount());
+        int maxmagicules = (int) this.blockEntity.getMaxMagicMaterialAmount();
+        int addtionMagicules = (int) this.blockEntity.getAdditionalMagicMaterialAmount();
+        int progressArrowSize = 74;
+        return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
     }
 
     public int getScaledProgress() {
-        if (blockEntity != null){
-            int progress = this.blockEntity.getMeltingProgress();
-            int maxProgress = 100;
-            int progressArrowSize = 25;
-            return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
-        } else {
-            int progress = this.automaticblockEntity.getMeltingProgress();
-            int maxProgress = 100;
-            int progressArrowSize = 25;
-            return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
-        }
+        int progress = this.blockEntity.getMeltingProgress();
+        int maxProgress = 100;
+        int progressArrowSize = 25;
+        return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     public int getInfuseProgress() {
-        if (blockEntity != null){
-            int infuseProgress = this.blockEntity.getInfusionTime();
-            int maxInfusionProgress = this.blockEntity.getMaxInfusionTime();
-            int progressArrowSize = 74;
-            return maxInfusionProgress != 0 ? (int)((float)infuseProgress / (float)maxInfusionProgress * (float)progressArrowSize) : 0;
-        }else  {
-            int infuseProgress = this.automaticblockEntity.getInfusionTime();
-            int maxInfusionProgress = this.automaticblockEntity.getMaxInfusionTime();
-            int progressArrowSize = 74;
-            return maxInfusionProgress != 0 ? (int)((float)infuseProgress / (float)maxInfusionProgress * (float)progressArrowSize) : 0;
-        }
+        int infuseProgress = this.blockEntity.getInfusionTime();
+        int maxInfusionProgress = this.blockEntity.getMaxInfusionTime();
+        int progressArrowSize = 74;
+        return maxInfusionProgress != 0 ? (int)((float)infuseProgress / (float)maxInfusionProgress * (float)progressArrowSize) : 0;
     }
 
     public int getScaledFuelProgress() {
-        if (blockEntity != null){
-            int fuelProgress = this.blockEntity.getFuelTime();
-            int maxFuelProgress = this.blockEntity.getMaxFuelTime();
-            int fuelProgressSize = 13;
-            return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
-        }else {
-            int fuelProgress = this.automaticblockEntity.getFuelTime();
-            int maxFuelProgress = this.automaticblockEntity.getMaxFuelTime();
-            int fuelProgressSize = 13;
-            return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
-        }
+        int fuelProgress = this.blockEntity.getFuelTime();
+        int maxFuelProgress = this.blockEntity.getMaxFuelTime();
+        int fuelProgressSize = 13;
+        return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
     }
 
     public ItemStack quickMoveStack(Player playerIn, int index) {
-        Slot sourceSlot = (Slot)this.slots.get(index);
-        if (sourceSlot == null) {
-            return ItemStack.EMPTY;
-        } else if (!sourceSlot.hasItem()) {
+        Slot sourceSlot = this.slots.get(index);
+        if (sourceSlot == null || !sourceSlot.hasItem()) {
             return ItemStack.EMPTY;
         } else {
             ItemStack sourceStack = sourceSlot.getItem();
             ItemStack copyOfSourceStack = sourceStack.copy();
             if (index < 36) {
-                Slot fuelSlot = (Slot)this.slots.get(this.fuelSlotIndex);
-                Slot infuseSlot = (Slot)this.slots.get(this.infuseSlotIndex);
+                Slot fuelSlot = (ReiFuelSlot)this.slots.get(this.fuelSlotIndex);
+                Slot infuseSlot = (ReiCatalystSlot)this.slots.get(this.catalystSlotIndex);
+                Slot meltingSlot = (ReiMeltingSlot)this.slots.get(this.meltingSlotIndex);
                 if (fuelSlot.mayPlace(sourceStack) && !this.moveItemStackTo(sourceStack, this.fuelSlotIndex, this.fuelSlotIndex + 1, false)) {
                     return ItemStack.EMPTY;
+                } else if (meltingSlot.mayPlace(sourceStack) && !this.moveItemStackTo(sourceStack, this.meltingSlotIndex, this.meltingSlotIndex + 1, false)) {
+                    return TensuraMenuHelper.quickMoveStack(playerIn, sourceStack, meltingSlot, copyOfSourceStack);
+                } else if (infuseSlot.mayPlace(sourceStack) && !this.moveItemStackTo(sourceStack, this.catalystSlotIndex, this.catalystSlotIndex + 1, false)){
+                    return TensuraMenuHelper.quickMoveStack(playerIn, sourceStack, infuseSlot, copyOfSourceStack);
                 } else {
-                    Slot meltingSlot = (Slot)this.slots.get(this.meltingSlotIndex);
-                    return meltingSlot.mayPlace(sourceStack) && !this.moveItemStackTo(sourceStack, this.meltingSlotIndex, this.meltingSlotIndex + 1, false) ? ItemStack.EMPTY : TensuraMenuHelper.quickMoveStack(playerIn, sourceStack, sourceSlot, copyOfSourceStack);
+                    return ItemStack.EMPTY;
                 }
-            } else if (index < 39) {
+            } else if (index < 40) {
                 return !this.moveItemStackTo(sourceStack, 0, 36, false) ? ItemStack.EMPTY : TensuraMenuHelper.quickMoveStack(playerIn, sourceStack, sourceSlot, copyOfSourceStack);
             } else {
                 log.error("Invalid slotIndex {} for QuickCraft in BlockEntity at {}", index, this.blockEntity.getBlockPos());
@@ -174,11 +124,7 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public boolean stillValid(Player player) {
-        if (blockEntity != null)
-            return stillValid(ContainerLevelAccess.create(this.level, this.blockEntity.getBlockPos()), player, (Block) ReiBlockEntities.ReiBlocks.MAGICAL_INFUSER.get());
-        if (automaticblockEntity != null)
-            return stillValid(ContainerLevelAccess.create(this.level, this.automaticblockEntity.getBlockPos()), player, (Block) ReiBlockEntities.ReiBlocks.AUTOMATIC_MAGICAL_INFUSER.get());
-        return false;
+        return stillValid(ContainerLevelAccess.create(this.level, this.blockEntity.getBlockPos()), player, (Block) ReiBlockEntities.ReiBlocks.MAGICAL_INFUSER.get());
     }
 
     /**

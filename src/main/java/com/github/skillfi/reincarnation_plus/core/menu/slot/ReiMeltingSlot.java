@@ -15,11 +15,7 @@ public class ReiMeltingSlot extends SlotItemHandler {
     }
 
     public boolean mayPlace(ItemStack stack) {
-        return true;
-    }
-
-    public void onTake(Player pPlayer, ItemStack pStack) {
-        this.menu.blockEntity.resetInfusionProgress();
+        return this.menu.blockEntity.isMelting(stack);
     }
 
     public void set(ItemStack pStack) {

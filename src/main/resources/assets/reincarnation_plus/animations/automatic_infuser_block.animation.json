@@ -58,7 +58,6 @@
 		"infusion": {
 			"loop": true,
 			"animation_length": 1,
-			"override_previous_animation": true,
 			"bones": {
 				"BellowsUp": {
 					"position": {
@@ -168,7 +167,6 @@
 		"consumption": {
 			"loop": true,
 			"animation_length": 1.25,
-			"override_previous_animation": true,
 			"bones": {
 				"Consumption": {
 					"rotation": {
@@ -204,7 +202,7 @@
 							"easing": "easeInOutSine"
 						},
 						"0.5": {
-							"vector": [0, 6, -5],
+							"vector": [0, 6, -4.5],
 							"easing": "easeInOutSine"
 						},
 						"0.75": {
@@ -221,7 +219,12 @@
 						}
 					},
 					"scale": {
-						"vector": [1, 0.7, 1]
+						"0.0": {
+							"vector": [1, 0.7, 1]
+						},
+						"0.5": {
+							"vector": [1, 0.4, 1]
+						}
 					}
 				}
 			}

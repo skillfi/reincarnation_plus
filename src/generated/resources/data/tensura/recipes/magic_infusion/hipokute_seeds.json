@@ -1,6 +1,6 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 2400,
+  "cookingTime": 600,
   "input": {
     "item": "minecraft:wheat_seeds"
   },

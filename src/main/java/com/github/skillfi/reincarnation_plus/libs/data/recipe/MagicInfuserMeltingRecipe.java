@@ -57,6 +57,9 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
                 }
 
                 float existingAmount = container.getMagicMaterialAmount();
+                if (amount > (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) - existingAmount && (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) - existingAmount != 0){
+                    return true;
+                }
                 return existingAmount + amount <= (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount());
             }
         }
@@ -77,7 +80,7 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
                     findFirst().ifPresentOrElse((moltenMaterial) -> {
                 if (moltenMaterial.isLeftBar()) {
                     container.setLeftBarId(Optional.of(moltenMaterial.getMoltenType()));
-                    container.addMoltenMaterialAmount(amount);
+                    container.addMoltenMaterialAmount(Math.min(amount, (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) - container.getMagicMaterialAmount()));
                 }
 
             }, () -> log.error("Could not assemble MeltingRecipe: {}", this));

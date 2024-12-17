@@ -1,11 +1,11 @@
 {
   "type": "reincarnation_plus:automatic_magic_infusion",
-  "cookingTime": 4800,
+  "cookingTime": 2400,
   "input": {
     "item": "minecraft:raw_copper"
   },
   "magicules": {
-    "amount": 15.0,
+    "amount": 12.5,
     "id": "reincarnation_plus:magicules"
   },
   "result": {
