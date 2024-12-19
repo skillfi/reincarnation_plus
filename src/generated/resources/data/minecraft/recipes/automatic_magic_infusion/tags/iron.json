@@ -5,7 +5,7 @@
     "tag": "minecraft:iron_ores"
   },
   "magicules": {
-    "amount": 15.0,
+    "amount": 15000.0,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

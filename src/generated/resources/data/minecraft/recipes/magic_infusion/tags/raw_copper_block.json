@@ -5,7 +5,7 @@
     "item": "minecraft:raw_copper_block"
   },
   "magicules": {
-    "amount": 225.0,
+    "amount": 225000,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

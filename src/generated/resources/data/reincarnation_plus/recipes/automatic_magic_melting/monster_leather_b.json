@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:automatic_magic_melting",
-  "input": {
-    "item": "tensura:monster_leather_b"
-  },
-  "magicules": 1.25,
-  "magiculesId": "reincarnation_plus:magicules"
-}

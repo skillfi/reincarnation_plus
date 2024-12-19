@@ -5,7 +5,7 @@
     "item": "minecraft:raw_iron_block"
   },
   "magicules": {
-    "amount": 135.0,
+    "amount": 135000,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

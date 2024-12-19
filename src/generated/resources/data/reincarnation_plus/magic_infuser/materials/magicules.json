@@ -2,7 +2,8 @@
   "alpha": 255,
   "blue": 255,
   "green": 233,
-  "leftBar": true,
+  "leftBar": false,
   "moltenType": "reincarnation_plus:magicules",
-  "red": 0
+  "red": 0,
+  "rightBar": true
 }

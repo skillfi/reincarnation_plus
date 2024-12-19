@@ -76,7 +76,7 @@ import java.util.stream.Stream;
 
 public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatable {
 
-    //    Evolution
+    //    region Evolution
     public static final RPEntitiesStats OGRE = RPEntitiesStats.Ogre;
     public static final RPEntitiesStats KIJIN = RPEntitiesStats.Kijin;
     public static final RPEntitiesStats ONI = RPEntitiesStats.MysticOni;
@@ -86,23 +86,27 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     public static ArrayList<ManasSkill> instances= new ArrayList<>();
     public static ArrayList<ManasSkill> heroSkills = new ArrayList<>();
     public static ArrayList<ManasSkill> heroInstances = new ArrayList<>();
+    // endregion
     public static final double MOVEMENT_THRESHOLD = 0.01;
     //    Animations
     private static final EntityDataAccessor<Integer> MISC_ANIMATION;
-    //    Evolving
+    //    region Evolving
     private static final EntityDataAccessor<Integer> EVOLVING;
     private static final EntityDataAccessor<Integer> KNOWN_HERO;
     private static final EntityDataAccessor<Boolean> CAN_EVOLVE;
-    //    Mate
+    // endregion
+    //    region Mate
     private static final EntityDataAccessor<Integer> GENDER_FOR_MATE;
-    //    Textures
+    // endregion
+    //    region Textures
     private static final EntityDataAccessor<Integer> FACE;
     private static final EntityDataAccessor<Integer> HAIR;
     private static final EntityDataAccessor<Integer> CLOTHING;
     private static final EntityDataAccessor<Boolean> SKIN;
     private static final EntityDataAccessor<Integer> GENDER;
+    // endregion
     //    Skills
-    public static ArrayList<ManasSkill> skills= new ArrayList<>();
+    private static ArrayList<ManasSkill> skills= new ArrayList<>();
 
     static {
         EVOLVING = SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.INT);
@@ -131,6 +135,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.maxUpStep = 1.0F;
     }
 
+    // region init
     public static AttributeSupplier setAttributes() {
         return Mob.createMobAttributes().
                 add(Attributes.MAX_HEALTH, (OGRE.getHP())).
@@ -176,7 +181,9 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,  (entity) -> entity instanceof LivingEntity && this.isAngryAt((LivingEntity) entity)));
         this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
     }
+    // endregion
 
+    // region Data
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(MISC_ANIMATION, 0);
@@ -222,6 +229,16 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.entityData.set(CLOTHING, compound.getInt("Clothing"));
     }
 
+    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
+        if (DATA_FLAGS_ID.equals(pKey)) {
+            this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(pKey);
+    }
+    // endregion
+
+    // region Base Methods
     /**
      Max Evolving {@link Evolving#DIVINE_FIGHTER} = 1
      <p>
@@ -345,14 +362,30 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return 1;
     }
 
-    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-        if (DATA_FLAGS_ID.equals(pKey)) {
-            this.refreshDimensions();
-        }
-
-        super.onSyncedDataUpdated(pKey);
+    public Gender getGender() {
+        return Gender.byId(this.entityData.get(GENDER));
     }
 
+    public void setGender(int gender) {
+        this.entityData.set(GENDER, gender);
+        if (gender == 2 || gender == 1){
+            this.setMateGender(1);
+        } else {
+            this.setMateGender(0);
+        }
+    }
+
+    public void setMateGender(int gender){
+        this.entityData.set(GENDER_FOR_MATE, gender);
+    }
+
+    public int getMateGender(){
+        return this.entityData.get(GENDER_FOR_MATE);
+    }
+
+    // endregion
+
+    // region Entity Base Mothods
     public void setChargingCrossbow(boolean pIsCharging) {
         super.setChargingCrossbow(pIsCharging);
         if (pIsCharging) {
@@ -383,6 +416,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
             return baby;
         }
     }
+    // endregion
 
     private void getGeneFromParents(KijinEntity baby, AgeableMob pOtherParent) {
         // Каст батьків до OgreEntity
@@ -576,6 +610,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return this.entityData.get(CAN_EVOLVE);
     }
 
+    // region Skills
     // Припустимо, що цей метод викликається для персонажа kijin
     public void addBenimaruSkills() {
         // Список усіх скілів
@@ -644,6 +679,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         heroInstances.add((ManasSkill) ResistanceSkills.ABNORMAL_CONDITION_RESISTANCE.get());
         heroInstances.add((ManasSkill) IntrinsicSkills.FLAME_BREATH.get());
     }
+    // endregion
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
@@ -653,7 +689,6 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         this.populateDefaultEquipmentSlots(this.random, pDifficulty);
         this.randomTexture();
         this.randomHero(this.random);
-        ReiMod.LOGGER.info("Ogre spawned at " + this.blockPosition().getX() + ", " + this.blockPosition().getY() + ", " + this.blockPosition().getZ());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
@@ -754,12 +789,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return SoundSource.NEUTRAL;
     }
 
-    @Override
-    public void move(MoverType type, Vec3 movement) {
-        super.move(type, movement);
-        this.setDeltaMovement(movement);
-    }
-
+    // region Geckolib
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation((new AnimationBuilder()).addAnimation("sleep", EDefaultLoopTypes.LOOP));
@@ -806,15 +836,12 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         data.addAnimationController(new AnimationController(this, "controller", 0.0F, this::predicate));
         data.addAnimationController(new AnimationController(this, "miscController", 0.0F, this::miscPredicate));
     }
+    // endregion
 
     public void tick() {
         super.tick();
         this.refreshDimensions();
         this.miscAnimationHandler();
-    }
-
-    public String getSyncedAnimation() {
-        return this.entityData.get(ANIMATION);
     }
 
     public void setAnimation(String animation) {
@@ -826,26 +853,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         return this.factory;
     }
 
-    public Gender getGender() {
-        return Gender.byId(this.entityData.get(GENDER));
-    }
 
-    public void setGender(int gender) {
-        this.entityData.set(GENDER, gender);
-        if (gender == 2 || gender == 1){
-            this.setMateGender(1);
-        } else {
-            this.setMateGender(0);
-        }
-    }
-
-    public void setMateGender(int gender){
-        this.entityData.set(GENDER_FOR_MATE, gender);
-    }
-
-    public int getMateGender(){
-        return this.entityData.get(GENDER_FOR_MATE);
-    }
 
     protected void hurtCurrentlyUsedShield(float damage) {
         if (this.useItem.canPerformAction(net.minecraftforge.common.ToolActions.SHIELD_BLOCK)) {

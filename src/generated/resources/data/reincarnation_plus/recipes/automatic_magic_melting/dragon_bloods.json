@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:automatic_magic_melting",
-  "input": {
-    "tag": "iceandfire:dragon_bloods"
-  },
-  "magicules": 3.0,
-  "magiculesId": "reincarnation_plus:magicules"
-}

@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:automatic_magic_melting",
-  "input": {
-    "item": "tensura:hihiirokane_katana"
-  },
-  "magicules": 60.0,
-  "magiculesId": "reincarnation_plus:magicules"
-}

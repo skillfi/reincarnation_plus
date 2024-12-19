@@ -1,8 +1,6 @@
 package com.github.skillfi.reincarnation_plus.libs.data.pack;
 
 import com.github.manasmods.manascore.api.datapack.CodecJsonDataManager;
-import com.github.manasmods.tensura.data.pack.KilnMoltenMaterial;
-import com.github.manasmods.tensura.network.play2client.SyncKilnMoltenColoringPacket;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.network.play2client.SyncMagicInfuserMoltenColoringPacket;
 import net.minecraftforge.event.AddReloadListenerEvent;

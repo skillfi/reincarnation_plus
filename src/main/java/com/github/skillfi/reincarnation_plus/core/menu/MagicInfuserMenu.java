@@ -65,12 +65,23 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
         return this.blockEntity.getInfusionTime() > 0;
     }
 
+    public boolean isInfusion(){
+        return this.blockEntity.getInfusionProgress() > 0;
+    }
+
     public int getMagiculesProgress() {
         int progress = (int) ((int) this.blockEntity.getMagicMaterialAmount());
         int maxmagicules = (int) this.blockEntity.getMaxMagicMaterialAmount();
         int addtionMagicules = (int) this.blockEntity.getAdditionalMagicMaterialAmount();
         int progressArrowSize = 74;
         return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
+    }
+
+    public int getMoltenProgress() {
+        int progress = this.blockEntity.getExistencePointsAmount();
+        int maxMolten =  35000;
+        int progressArrowSize = 74;
+        return progress != 0 ? progress * progressArrowSize / maxMolten : 0;
     }
 
     public int getScaledProgress() {
@@ -81,10 +92,10 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public int getInfuseProgress() {
-        int infuseProgress = this.blockEntity.getInfusionTime();
-        int maxInfusionProgress = this.blockEntity.getMaxInfusionTime();
-        int progressArrowSize = 74;
-        return maxInfusionProgress != 0 ? (int)((float)infuseProgress / (float)maxInfusionProgress * (float)progressArrowSize) : 0;
+        int progress = this.blockEntity.getInfusionProgress();
+        int maxProgress = 100;
+        int progressArrowSize = 64;
+        return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     public int getScaledFuelProgress() {

@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:automatic_magic_melting",
-  "input": {
-    "item": "tensura:mithril_long_sword"
-  },
-  "magicules": 10.0,
-  "magiculesId": "reincarnation_plus:magicules"
-}

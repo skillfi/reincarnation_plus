@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:magic_melting",
-  "input": {
-    "item": "tensura:medium_quality_magic_crystal_block"
-  },
-  "magicules": 45.0,
-  "magiculesId": "reincarnation_plus:magicules"
-}

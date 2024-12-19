@@ -5,7 +5,7 @@ import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.utils.RenderUtils;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfusionRecipe;
+import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfusionRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -24,7 +24,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.skillfi.reincarnation_plus.libs.data.gen.ReiMoltenMaterialProvider.INFUSION;
 import static com.github.skillfi.reincarnation_plus.libs.data.gen.ReiMoltenMaterialProvider.MOLTEN_MAGICULES;
 
 public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusionRecipe> {
@@ -43,9 +42,9 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
         ArrayList<Component> tooltip = new ArrayList();
 
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (this.isHovering(18, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
-                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getMagicules(), 250.0F));
-            } else if (this.isHovering(145, 6, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar()) {
+            if (this.isHovering(18, 78, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
+                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getMagicules(), 250000));
+            } else if (this.isHovering(88, 44, 4, 8, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar()) {
                 tooltip.add(RenderUtils.toolTipInfusionTime(moltenMaterial, recipe.getCookingTime(), recipe.getCookingTime()));
             }
         }
@@ -79,7 +78,6 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
     }
 
     public void draw(MagicInfusionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        RenderUtils.renderMoltenMaterial(stack, MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255)), recipe.getMagicules(), 250.0F);
-        RenderUtils.renderInfusion(stack, MagicInfuserMoltenMaterial.of(INFUSION, false, new Color(186, 85, 211)), recipe.getCookingTime(), recipe.getCookingTime());
+        RenderUtils.renderMoltenMaterial(stack, MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255), false), recipe.getMagicules(), 250000);
     }
 }

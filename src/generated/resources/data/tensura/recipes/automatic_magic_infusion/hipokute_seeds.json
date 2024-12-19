@@ -5,7 +5,7 @@
     "item": "minecraft:wheat_seeds"
   },
   "magicules": {
-    "amount": 2.5,
+    "amount": 2500.0,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

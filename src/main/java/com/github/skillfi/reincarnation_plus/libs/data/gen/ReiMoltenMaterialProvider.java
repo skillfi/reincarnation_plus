@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class ReiMoltenMaterialProvider extends CustomDataProvider {
     public static final ResourceLocation MOLTEN_MAGICULES = new ResourceLocation(ReiMod.MODID, "magicules");
-    public static final ResourceLocation INFUSION = new ResourceLocation(ReiMod.MODID, "infusion");
+    public static final ResourceLocation EP = new ResourceLocation(ReiMod.MODID, "existence_points");
 
     public ReiMoltenMaterialProvider(GatherDataEvent gatherDataEvent) {
         super("magic_infuser/materials", gatherDataEvent.getGenerator());
@@ -21,8 +21,8 @@ public class ReiMoltenMaterialProvider extends CustomDataProvider {
 
     @Override
     protected void run(BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
-        MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255)).buildJson(biConsumer);
-        MagicInfuserMoltenMaterial.of(INFUSION, false, new Color(186, 85, 211)).buildJson(biConsumer);
+        MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, false, new Color(0, 233, 255, 255), true).buildJson(biConsumer);
+        MagicInfuserMoltenMaterial.of(EP, true, Color.CYAN, false).buildJson(biConsumer);
     }
 
     public String getName() {

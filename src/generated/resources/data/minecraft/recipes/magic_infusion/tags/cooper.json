@@ -5,7 +5,7 @@
     "tag": "minecraft:copper_ores"
   },
   "magicules": {
-    "amount": 25.0,
+    "amount": 25000,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

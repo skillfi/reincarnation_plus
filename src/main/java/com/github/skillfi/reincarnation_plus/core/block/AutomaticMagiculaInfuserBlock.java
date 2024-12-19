@@ -197,8 +197,6 @@ public class AutomaticMagiculaInfuserBlock extends BaseEntityBlock implements Si
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if (blockEntity instanceof AutomaticMagiculaInfuserBlockEntity) {
             AutomaticMagiculaInfuserBlockEntity infuserBlock = (AutomaticMagiculaInfuserBlockEntity)blockEntity;
-            infuserBlock.use();
-            infuserBlock.setAutomatic(true);
         }
         return pLevel.isClientSide() ? InteractionResult.sidedSuccess(true) : this.openMenu((ServerPlayer)pPlayer, pLevel, ((AutomaticMagicInfuserPart)pState.getValue(PART)).equals(AutomaticMagicInfuserPart.BASE) ? pPos : pPos.below());
     }

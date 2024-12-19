@@ -5,8 +5,9 @@ import com.github.skillfi.reincarnation_plus.core.client.screen.AutomaticMagicIn
 import com.github.skillfi.reincarnation_plus.core.client.screen.MagicInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfuserMeltingRecipe;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.MagicInfusionRecipe;
+import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfuserMeltingRecipe;
+import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfuserRemeltingRecipe;
+import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfusionRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;

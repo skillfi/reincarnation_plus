@@ -5,7 +5,7 @@
     "tag": "minecraft:gold_ores"
   },
   "magicules": {
-    "amount": 10.0,
+    "amount": 10000,
     "id": "reincarnation_plus:magicules"
   },
   "result": {

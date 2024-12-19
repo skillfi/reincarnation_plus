@@ -5,7 +5,7 @@
     "item": "minecraft:green_wool"
   },
   "magicules": {
-    "amount": 1.0,
+    "amount": 1000.0,
     "id": "reincarnation_plus:magicules"
   },
   "result": {
