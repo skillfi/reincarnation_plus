@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "tag": "iceandfire:dragon_bloods"
+  },
+  "moltenAmount": 60000,
+  "moltenType": "reincarnation_plus:magicules"
+}

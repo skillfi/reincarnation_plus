@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.network;
 
-import com.github.skillfi.reincarnation_plus.libs.capability.subordinates.ISubordinateCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.subordinates.ISubordinateCapability;
 import com.github.skillfi.reincarnation_plus.core.network.play2client.ClientAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

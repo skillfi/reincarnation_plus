@@ -571,16 +571,16 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
     }
 
 
-    public EntityDimensions getDimensions(Pose pPose) {
-        EntityDimensions entitydimensions = super.getDimensions(pPose);
-        if (this.isSleeping()) {
-            return entitydimensions.scale(1.0F, 0.5F);
-        } else if (this.shouldSwim()) {
-            return entitydimensions.scale(1.0F, 0.25F);
-        } else {
-            return entitydimensions.scale(1.0F, 0.75F);
-        }
-    }
+//    public EntityDimensions getDimensions(Pose pPose) {
+//        EntityDimensions entitydimensions = super.getDimensions(pPose);
+//        if (this.isSleeping()) {
+//            return entitydimensions.scale(1.0F, 0.5F);
+//        } else if (this.shouldSwim()) {
+//            return entitydimensions.scale(1.0F, 0.25F);
+//        } else {
+//            return entitydimensions.scale(1.0F, 0.75F);
+//        }
+//    }
 
 
     public void evolving() {
@@ -840,14 +840,12 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
 
     public void tick() {
         super.tick();
-        this.refreshDimensions();
+        if (this.prevSwim != this.isInFluidType() && !this.isOnGround()) {
+            this.refreshDimensions();
+            this.prevSwim = this.isInFluidType() && !this.isOnGround();
+        }
         this.miscAnimationHandler();
     }
-
-    public void setAnimation(String animation) {
-        this.entityData.set(ANIMATION, animation);
-    }
-
 
     public AnimationFactory getFactory() {
         return this.factory;
@@ -913,7 +911,7 @@ public class OgreEntity extends HumanoidNPCEntity implements IRanking, IAnimatab
         if (skill.isEmpty()) {
             return null;
         } else {
-            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
+            return !skill.get().canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
         }
     }
 

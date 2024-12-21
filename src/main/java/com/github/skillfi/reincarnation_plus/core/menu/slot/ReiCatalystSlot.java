@@ -15,7 +15,7 @@ public class ReiCatalystSlot extends SlotItemHandler {
     }
 
     public boolean mayPlace(ItemStack stack) {
-        return this.menu.blockEntity.isInfuse(stack);
+        return this.menu.blockEntity.isInfuse(stack) || this.menu.blockEntity.isEvolve(stack);
     }
 
     public void onTake(Player pPlayer, ItemStack pStack) {

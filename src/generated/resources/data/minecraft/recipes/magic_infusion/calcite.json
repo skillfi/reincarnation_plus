@@ -1,12 +1,12 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 7400,
+  "infusionTime": 7400,
   "input": {
     "item": "minecraft:diorite"
   },
-  "magicules": {
-    "amount": 500,
-    "id": "reincarnation_plus:magicules"
+  "primary": {
+    "primaryAmount": 500,
+    "primaryType": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

@@ -1,11 +1,10 @@
 package com.github.skillfi.reincarnation_plus.core.client;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
-import com.github.skillfi.reincarnation_plus.core.client.screen.AutomaticMagicInfuserScreen;
+import com.github.skillfi.reincarnation_plus.core.client.screen.AutoInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.client.screen.MagicInfuserScreen;
 import com.github.skillfi.reincarnation_plus.core.registry.menu.ReiMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +26,6 @@ public class ReiClient {
 
     public static void menuRegister() {
         MenuScreens.register(ReiMenuTypes.MAGIC_INFUSER.get(), MagicInfuserScreen::new);
-        MenuScreens.register(ReiMenuTypes.AUTOMATIC_MAGIC_INFUSER.get(), AutomaticMagicInfuserScreen::new);
+        MenuScreens.register(ReiMenuTypes.AUTOMATIC_MAGIC_INFUSER.get(), AutoInfuserScreen::new);
     }
 }

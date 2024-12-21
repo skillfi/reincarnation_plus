@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:golden_hoe",
+  "gainEP": 0.015,
+  "item": "minecraft:iron_hoe",
+  "maxEP": 2000,
+  "minEP": 500
+}

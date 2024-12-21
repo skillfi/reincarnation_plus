@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:diamond_helmet",
+    "minecraft:diamond_chestplate",
+    "minecraft:diamond_leggings",
+    "minecraft:diamond_boots",
+    "minecraft:diamond_pickaxe",
+    "minecraft:diamond_axe",
+    "minecraft:diamond_shovel",
+    "minecraft:diamond_hoe",
+    "tensura:diamond_sickle",
+    "minecraft:diamond_sword",
+    "tensura:diamond_short_sword",
+    "tensura:diamond_long_sword",
+    "tensura:diamond_great_sword",
+    "tensura:diamond_katana",
+    "tensura:diamond_kodachi",
+    "tensura:diamond_tachi",
+    "tensura:diamond_odachi",
+    "tensura:diamond_spear"
+  ]
+}

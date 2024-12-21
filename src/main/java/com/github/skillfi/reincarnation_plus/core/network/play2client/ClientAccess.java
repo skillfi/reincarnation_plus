@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.network.play2client;
 
-import com.github.skillfi.reincarnation_plus.libs.capability.aura.AuraChunkCapabilityImpl;
-import com.github.skillfi.reincarnation_plus.libs.capability.subordinates.SubordinateCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.aura.AuraChunkCapabilityImpl;
+import com.github.skillfi.reincarnation_plus.core.capability.subordinates.SubordinateCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;

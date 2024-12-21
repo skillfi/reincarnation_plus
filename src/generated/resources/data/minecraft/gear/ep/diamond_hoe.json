@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:netherite_hoe",
+  "gainEP": 0.015,
+  "item": "minecraft:diamond_hoe",
+  "maxEP": 50000,
+  "minEP": 4000
+}

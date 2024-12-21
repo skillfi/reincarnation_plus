@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:netherite_sword",
+  "gainEP": 0.015,
+  "item": "minecraft:diamond_sword",
+  "maxEP": 50000,
+  "minEP": 4000
+}

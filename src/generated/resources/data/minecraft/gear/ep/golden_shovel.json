@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:silver_shovel",
+  "gainEP": 0.015,
+  "item": "minecraft:golden_shovel",
+  "maxEP": 5000,
+  "minEP": 2000
+}

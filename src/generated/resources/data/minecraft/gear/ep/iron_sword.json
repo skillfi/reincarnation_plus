@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:golden_sword",
+  "gainEP": 0.015,
+  "item": "minecraft:iron_sword",
+  "maxEP": 2000,
+  "minEP": 500
+}

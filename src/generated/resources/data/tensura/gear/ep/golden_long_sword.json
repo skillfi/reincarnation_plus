@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:silver_long_sword",
+  "gainEP": 0.015,
+  "item": "tensura:golden_long_sword",
+  "maxEP": 5000,
+  "minEP": 2000
+}

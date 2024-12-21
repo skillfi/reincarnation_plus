@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "item": "tensura:high_magisteel_nugget"
+  },
+  "moltenAmount": 20000,
+  "moltenType": "reincarnation_plus:magicules"
+}

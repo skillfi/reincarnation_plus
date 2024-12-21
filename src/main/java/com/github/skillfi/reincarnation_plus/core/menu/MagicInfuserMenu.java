@@ -1,14 +1,13 @@
 package com.github.skillfi.reincarnation_plus.core.menu;
 
 import com.github.manasmods.tensura.menu.TensuraMenuHelper;
-import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiCatalystSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiFuelSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiInfuseSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiMeltingSlot;
-import com.github.skillfi.reincarnation_plus.core.registry.ReiMenus;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
+import com.github.skillfi.reincarnation_plus.core.registry.menu.ReiMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +25,6 @@ import org.apache.logging.log4j.Logger;
 public class MagicInfuserMenu extends AbstractContainerMenu {
     private static final Logger log = LogManager.getLogger(MagicInfuserMenu.class);
     public final MagiculaInfuserBlockEntity blockEntity;
-    public final AutomaticMagiculaInfuserBlockEntity automaticblockEntity;
     private final Level level;
     private int fuelSlotIndex;
     private int meltingSlotIndex;
@@ -38,10 +36,9 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public MagicInfuserMenu(int id, Inventory inv, MagiculaInfuserBlockEntity entity) {
-        super((MenuType) ReiMenus.MAGIC_INFUSER_MENU.get(), id);
+        super((MenuType) ReiMenuTypes.MAGIC_INFUSER.get(), id);
         checkContainerSize(inv, 4);
         this.blockEntity = entity;
-        this.automaticblockEntity = null;
         this.level = inv.player.level;
         this.addPlayerInventory(inv);
         this.addPlayerHotbar(inv);
@@ -61,10 +58,6 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
         return this.blockEntity.getFuelTime() > 0;
     }
 
-    public boolean hasInfuse() {
-        return this.blockEntity.getInfusionTime() > 0;
-    }
-
     public boolean isInfusion(){
         return this.blockEntity.getInfusionProgress() > 0;
     }
@@ -78,7 +71,7 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public int getMoltenProgress() {
-        int progress = this.blockEntity.getExistencePointsAmount();
+        int progress = this.blockEntity.getMoltenAmount();
         int maxMolten =  35000;
         int progressArrowSize = 74;
         return progress != 0 ? progress * progressArrowSize / maxMolten : 0;
@@ -92,10 +85,13 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public int getInfuseProgress() {
-        int progress = this.blockEntity.getInfusionProgress();
-        int maxProgress = 100;
-        int progressArrowSize = 64;
-        return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        if (this.blockEntity.getMaxInfusionTime() > 0){
+            int fuelProgress = this.blockEntity.getInfusionTime();
+            int maxFuelProgress = this.blockEntity.getMaxInfusionTime();
+            int fuelProgressSize = 62;
+            return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
+        }
+        return 0;
     }
 
     public int getScaledFuelProgress() {

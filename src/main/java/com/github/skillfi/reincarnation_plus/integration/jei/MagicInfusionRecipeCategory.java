@@ -1,11 +1,14 @@
 package com.github.skillfi.reincarnation_plus.integration.jei;
 
+import com.github.manasmods.tensura.data.pack.KilnMoltenMaterial;
+import com.github.manasmods.tensura.data.pack.TensuraData;
+import com.github.manasmods.tensura.data.recipe.KilnMixingRecipe;
 import com.github.manasmods.tensura.registry.items.TensuraMaterialItems;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.utils.RenderUtils;
-import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
-import com.github.skillfi.reincarnation_plus.libs.data.pack.ReiData;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfusionRecipe;
+import com.github.skillfi.reincarnation_plus.core.data.pack.MagicInfuserMoltenMaterial;
+import com.github.skillfi.reincarnation_plus.core.data.pack.ReiData;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfusionRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -24,7 +27,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.skillfi.reincarnation_plus.libs.data.gen.ReiMoltenMaterialProvider.MOLTEN_MAGICULES;
+import static com.github.skillfi.reincarnation_plus.core.data.gen.ReiMoltenMaterialProvider.MOLTEN_MAGICULES;
 
 public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusionRecipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/jei_infusion.png");
@@ -42,10 +45,12 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
         ArrayList<Component> tooltip = new ArrayList();
 
         for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (this.isHovering(18, 78, 13, 74, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getMagiculesId())) {
-                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getMagicules(), 250000));
-            } else if (this.isHovering(88, 44, 4, 8, mouseX, mouseY) && !recipe.getMagiculesId().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar()) {
-                tooltip.add(RenderUtils.toolTipInfusionTime(moltenMaterial, recipe.getCookingTime(), recipe.getCookingTime()));
+            if (this.isHovering(18, 78, 13, 74, mouseX, mouseY) && !moltenMaterial.isRightBar() && !recipe.getPrimaryType().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.getMoltenType().equals(recipe.getPrimaryType())) {
+                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getPrimaryAmount(), 35000));
+            } else if (this.isHovering(59, 64, 62, 4, mouseX, mouseY) && !moltenMaterial.isLeftBar() && !moltenMaterial.isRightBar()) {
+                tooltip.add(RenderUtils.toolTipInfusionTime(moltenMaterial, recipe.getInfusionTime()));
+            } else if (this.isHovering(145, 78, 13, 74, mouseX, mouseY) && !recipe.getPrimaryType().equals(MagicInfusionRecipe.EMPTY) && !moltenMaterial.isLeftBar() && moltenMaterial.getMoltenType().equals(recipe.getPrimaryType())){
+                tooltip.add(RenderUtils.toolTipFromMoltenMaterial(moltenMaterial, recipe.getPrimaryAmount(), 250000));
             }
         }
 
@@ -74,10 +79,15 @@ public class MagicInfusionRecipeCategory implements IRecipeCategory<MagicInfusio
 
     public void setRecipe(IRecipeLayoutBuilder builder, MagicInfusionRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 36).addIngredients(recipe.getInput());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 36).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 98, 36).addItemStack(recipe.getResultItem());
     }
 
     public void draw(MagicInfusionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        RenderUtils.renderMoltenMaterial(stack, MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, true, new Color(0, 233, 255, 255), false), recipe.getMagicules(), 250000);
+        for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
+            if (!recipe.getPrimaryType().equals(MagicInfusionRecipe.EMPTY) && moltenMaterial.getMoltenType().equals(recipe.getPrimaryType())) {
+                RenderUtils.renderMoltenMaterial(stack, moltenMaterial, recipe.getPrimaryAmount(), moltenMaterial.isRightBar() ? 250000: 35000);
+            }
+        }
+
     }
 }

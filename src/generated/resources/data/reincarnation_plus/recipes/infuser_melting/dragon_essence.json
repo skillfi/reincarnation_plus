@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "item": "tensura:dragon_essence"
+  },
+  "moltenAmount": 25000,
+  "moltenType": "reincarnation_plus:magicules"
+}

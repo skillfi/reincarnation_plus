@@ -1,13 +1,13 @@
 package com.github.skillfi.reincarnation_plus.core.block.entity;
 
 import com.github.skillfi.reincarnation_plus.core.block.MagiculaInfuserBlock;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.InfuserEvolvingRecipe;
 import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
-import com.github.skillfi.reincarnation_plus.libs.block.state.properties.MagicInfuserPart;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfuserMeltingRecipe;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfuserRemeltingRecipe;
-import com.github.skillfi.reincarnation_plus.libs.data.recipe.infuser.MagicInfusionRecipe;
+import com.github.skillfi.reincarnation_plus.core.block.state.properties.MagicInfuserPart;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfuserMeltingRecipe;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfusionRecipe;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,6 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -65,6 +64,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfusionRecipe.INFUSION;
+
 @Slf4j
 public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, IAnimatable {
     public NonNullList<ItemStack> items;
@@ -80,11 +81,11 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     @Setter @Getter private double speedModifier;
     @Getter @Setter private int boostDuration;
     @Getter @Setter private Optional<ResourceLocation> rightBarId;
+    @Getter @Setter private Optional<ResourceLocation> InfusionBarId;
     @Getter @Setter public int miscAnimationTicks = 0;
     @Getter @Setter private int magicMaterialAmount;
     @Getter @Setter private int maxMagicMaterialAmount;
-    @Getter @Setter private int existencePointsAmount;
-    @Getter @Setter private int experienceAmount;
+    @Getter @Setter private int moltenAmount;
     @Getter @Setter private int additionalMagicMaterialAmount;
     @Setter @Getter private int meltingProgress;
     @Setter @Getter private int infusionProgress;
@@ -100,8 +101,8 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     @Getter private List possibleInfusionRecipes;
     @Getter private int selectedRecipeIndex;
     private MagicInfuserMeltingRecipe lastMeltingRecipe;
-    private MagicInfuserRemeltingRecipe lastRemeltingRecipe;
     private MagicInfusionRecipe lastInfusionRecipe;
+    private InfuserEvolvingRecipe lastEvolvingRecipe;
     private int totalPossibleRecipes;
     private boolean canHopperInfusing;
     private LazyOptional<? extends IItemHandler>[] handlers;
@@ -111,10 +112,10 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         this.items = NonNullList.withSize(4, ItemStack.EMPTY);
         this.leftBarId = Optional.of(MagicInfusionRecipe.EMPTY);
         this.rightBarId = Optional.of(MagicInfusionRecipe.EMPTY);
+        this.InfusionBarId = Optional.of(MagicInfusionRecipe.EMPTY);
         this.magicMaterialAmount = 0;
         this.maxMagicMaterialAmount = 35000;
-        this.existencePointsAmount = 0;
-        this.experienceAmount = 0;
+        this.moltenAmount = 0;
         this.additionalMagicMaterialAmount = 0;
         this.meltingProgress = 0;
         this.boostDuration = 0;
@@ -188,6 +189,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         ContainerHelper.saveAllItems(nbt, this.items);
         this.leftBarId.ifPresent((location) -> nbt.putString(NBT_KEY+".molten.leftBarId", location.toString()));
         this.rightBarId.ifPresent((location) -> nbt.putString(NBT_KEY+".rightBarId", location.toString()));
+        this.InfusionBarId.ifPresent((location) -> nbt.putString(NBT_KEY+".InfusionBarId", location.toString()));
         nbt.putInt(NBT_KEY+".magicules", this.magicMaterialAmount);
         nbt.putInt(NBT_KEY+".maxMagicules", this.maxMagicMaterialAmount);
         nbt.putInt(NBT_KEY+".addMolten", this.additionalMagicMaterialAmount);
@@ -201,8 +203,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         nbt.putInt(NBT_KEY+".possibleRecipes", this.possibleInfusionRecipes.size());
         nbt.putInt(NBT_KEY+".currentRecipe", this.selectedRecipeIndex);
         nbt.putInt(NBT_KEY+".boostduration", this.boostDuration);
-        nbt.putInt(NBT_KEY+".existencePointsAmount", this.existencePointsAmount);
-        nbt.putInt(NBT_KEY+".experienceAmount", this.experienceAmount);
+        nbt.putInt(NBT_KEY+".existencePointsAmount", this.moltenAmount);
     }
 
     public void load(CompoundTag nbt) {
@@ -211,6 +212,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         ContainerHelper.loadAllItems(nbt, this.items);
         this.leftBarId = nbt.contains(NBT_KEY+".molten.leftBarId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString(NBT_KEY+".molten.leftBarId"))) : Optional.of(MagicInfusionRecipe.EMPTY);
         this.rightBarId = nbt.contains(NBT_KEY+".rightBarId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString(NBT_KEY+".rightBarId"))) : Optional.of(MagicInfusionRecipe.EMPTY);
+        this.InfusionBarId = nbt.contains(NBT_KEY+".InfusionBarId") ? Optional.ofNullable(ResourceLocation.tryParse(nbt.getString(NBT_KEY+".InfusionBarId"))) : Optional.of(MagicInfusionRecipe.EMPTY);
         this.magicMaterialAmount = nbt.getInt(NBT_KEY+".magicules");
         this.maxMagicMaterialAmount = nbt.getInt(NBT_KEY+".maxMagicules");
         this.additionalMagicMaterialAmount = nbt.getInt(NBT_KEY+".addMolten");
@@ -224,8 +226,7 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         this.totalPossibleRecipes = nbt.getInt(NBT_KEY+".possibleRecipes");
         this.selectedRecipeIndex = nbt.getInt(NBT_KEY+".currentRecipe");
         this.boostDuration = nbt.getInt(NBT_KEY+".boostduration");
-        this.setExistencePointsAmount(nbt.getInt(NBT_KEY+".existencePointsAmount"));
-        this.setExperienceAmount(nbt.getInt(NBT_KEY+".experienceAmount"));
+        this.setMoltenAmount(nbt.getInt(NBT_KEY+".existencePointsAmount"));
     }
     // endregion
 
@@ -263,6 +264,17 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         // Перебираємо всі рецепти і перевіряємо, чи якийсь з них приймає ItemStack
         return this.level.getRecipeManager()
                 .getAllRecipesFor(ReiRecipeTypes.MAGIC_INFUSION.get())
+                .stream()
+                .anyMatch(magicInfusionRecipe ->
+                        magicInfusionRecipe.getInput().test(stack)
+                );
+    }
+
+    public boolean isEvolve(ItemStack stack){
+        assert this.level != null;
+        // Перебираємо всі рецепти і перевіряємо, чи якийсь з них приймає ItemStack
+        return this.level.getRecipeManager()
+                .getAllRecipesFor(ReiRecipeTypes.INFUSER_EVOLVING.get())
                 .stream()
                 .anyMatch(magicInfusionRecipe ->
                         magicInfusionRecipe.getInput().test(stack)
@@ -433,12 +445,14 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
             return true;
         } else if (magicMaterialAmount < (maxMagicMaterialAmount + additionalMagicMaterialAmount)) {
             return true;
-        } else if (existencePointsAmount < 35000){
+        } else if (moltenAmount < 35000){
             return true;
         } else {
             return false;
         }
     }
+
+
 
     public void reduceInfusionTimeByPercentage(float percentage){
         int reduction = Math.round(infusionTime * (percentage / 100));
@@ -476,6 +490,10 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
             // Оновлення стану інфузії та плавлення
             boolean infusionNeedsUpdate = pEntity.checkInfusingCache();
             boolean meltingNeedsUpdate = pEntity.checkMeltingCache();
+
+            if (pEntity.isEvolve(pEntity.getItem(2)) && pEntity.getMoltenAmount() >1){
+                pEntity.checkEvolvingRecipe();
+            }
 
             if (infusionNeedsUpdate || pEntity.infusionProgress > 0) {
                 pEntity.checkInfusionRecipe();
@@ -516,6 +534,12 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         performInfusion();
     }
 
+    private void checkEvolvingRecipe(){
+        if (isEvolve(this.getItem(INPUT_CATALYST_SLOT_INDEX))){
+            pervormEvolving();
+        }
+    }
+
     private void checkMeltingRecipe() {
         if (this.items.get(INPUT_SLOT_INDEX).isEmpty()) {
             resetMeltingProgress();
@@ -528,46 +552,60 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     // endregion
 
     // region perform
+    public void pervormEvolving(){
+        this.level.getRecipeManager().
+            getRecipeFor(ReiRecipeTypes.INFUSER_EVOLVING.get(), this, this.level).
+            ifPresentOrElse(
+                magicInfusionRecipe -> {
+                    if (getMoltenAmount() >= 1){
+                        magicInfusionRecipe.assemble(this);
+                    }
+
+                    needUpdate = true;
+                },
+                this::resetEvolve
+            );
+    }
 
     public void performInfusion() {
         if (this.level instanceof ServerLevel serverLevel) {
             if (!getItem(2).isEmpty()){
                 serverLevel.getRecipeManager().
-                        getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, serverLevel).
-                        ifPresentOrElse(
-                                magicInfusionRecipe -> {
-                                    rightBarId = Optional.of(MagicInfusionRecipe.INFUSION);
-                                    if (infusionTime == 0){
-                                        setInfusionTime(magicInfusionRecipe.getCookingTime());
-                                        setMaxInfusionTime(magicInfusionRecipe.getCookingTime());
-                                        this.getBlockState().
-                                                setValue(MagiculaInfuserBlock.INFUSION, Boolean.TRUE).
-                                                setValue(MagiculaInfuserBlock.LIT, Boolean.FALSE);
+                getRecipeFor(ReiRecipeTypes.MAGIC_INFUSION.get(), this, serverLevel).
+                ifPresentOrElse(
+                    magicInfusionRecipe -> {
+                        if (infusionTime == 0){
+                            setInfusionBarId(Optional.of(INFUSION));
+                            setInfusionTime(magicInfusionRecipe.getInfusionTime());
+                            setMaxInfusionTime(magicInfusionRecipe.getInfusionTime());
+                            this.getBlockState().
+                                    setValue(MagiculaInfuserBlock.INFUSION, Boolean.TRUE).
+                                    setValue(MagiculaInfuserBlock.LIT, Boolean.FALSE);
 
-                                    }
+                        }
 
-                                    if (!checkInfusion()) {
-                                        resetInfusionProgress();
-                                        return;
-                                    }
+                        if (!checkInfusion()) {
+                            resetInfusionProgress();
+                            return;
+                        }
 
-                                    if (lastInfusionRecipe == null || !lastInfusionRecipe.getId().equals(magicInfusionRecipe.getId())) {
-                                        lastInfusionRecipe = (MagicInfusionRecipe) magicInfusionRecipe;
-                                        resetInfusionProgress();
-                                    }
+                        if (lastInfusionRecipe == null || !lastInfusionRecipe.getId().equals(magicInfusionRecipe.getId())) {
+                            lastInfusionRecipe = (MagicInfusionRecipe) magicInfusionRecipe;
+                            resetInfusionProgress();
+                        }
 
-                                    if (infusionProgress >= 99) {
-                                        magicInfusionRecipe.assemble(this);
-                                        resetInfusionProgress();
-                                    } else {
-                                        infusionProgress = 100 * (this.maxInfusionTime - this.infusionTime) / this.maxInfusionTime;
-                                    }
+                        if (infusionProgress >= 99) {
+                            magicInfusionRecipe.assemble(this);
+                            resetInfusionProgress();
+                        } else {
+                            infusionProgress = 100 * (this.maxInfusionTime - this.infusionTime) / this.maxInfusionTime;
+                        }
 
 
-                                    needUpdate = true;
-                                },
-                                this::resetInfusionProgress
-                        );
+                        needUpdate = true;
+                    },
+                    this::resetInfusionProgress
+                );
             }
 
         }
@@ -689,9 +727,16 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
             this.infusionProgress = 0;
             this.maxInfusionTime = 0;
             this.infusionTime = 0;
+            setInfusionBarId(Optional.of(MagicInfusionRecipe.EMPTY));
             this.getBlockState().setValue(MagiculaInfuserBlock.INFUSION, Boolean.FALSE);
             this.lastCatalystStack = ItemStack.EMPTY;
             this.setBoostDuration(0);
+            this.needUpdate = true;
+        }
+    }
+
+    public void resetEvolve(){
+        if (this.getMoltenAmount() > 0) {
             this.needUpdate = true;
         }
     }
@@ -753,18 +798,13 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     // region Molten Amount
-    public void addMoltenMaterialAmount(float moltenAmount) {
+    public void addMagicMaterialAmount(float moltenAmount) {
         this.magicMaterialAmount += moltenAmount;
         this.needUpdate = true;
     }
 
-    public void addExistencePointsAmount(int points) {
-        this.existencePointsAmount += points;
-        this.needUpdate = true;
-    }
-
-    public void addExperiencePointsAmount(int points) {
-        this.experienceAmount += points;
+    public void addMoltenMaterialAmount(int points) {
+        this.moltenAmount += points;
         this.needUpdate = true;
     }
 
@@ -773,8 +813,13 @@ public class MagiculaInfuserBlockEntity extends BaseContainerBlockEntity impleme
         this.needUpdate = true;
     }
 
-    public void removeMoltenMaterialAmount(float moltenAmount) {
+    public void removeMagicMaterialAmount(int moltenAmount) {
         this.magicMaterialAmount -= moltenAmount;
+        this.needUpdate = true;
+    }
+
+    public void removeMoltenMaterialAmount(int moltenAmount) {
+        this.moltenAmount -= moltenAmount;
         this.needUpdate = true;
     }
     // endregion

@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:netherite_leggings",
+  "gainEP": 0.015,
+  "item": "minecraft:diamond_leggings",
+  "maxEP": 50000,
+  "minEP": 4000
+}

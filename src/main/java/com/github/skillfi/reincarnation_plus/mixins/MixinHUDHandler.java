@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.mixins;
 
 import com.github.manasmods.tensura.handler.client.HUDHandler;
-import com.github.skillfi.reincarnation_plus.libs.api.aura.AuraAPI;
+import com.github.skillfi.reincarnation_plus.core.api.aura.AuraAPI;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;

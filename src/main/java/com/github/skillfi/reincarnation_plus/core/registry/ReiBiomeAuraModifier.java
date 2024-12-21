@@ -1,7 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.registry;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
-import com.github.skillfi.reincarnation_plus.libs.data.pack.BiomeAuraModifier;
+import com.github.skillfi.reincarnation_plus.core.data.pack.BiomeAuraModifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

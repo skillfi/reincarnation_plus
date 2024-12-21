@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:iron_helmet",
+    "minecraft:iron_chestplate",
+    "minecraft:iron_leggings",
+    "minecraft:iron_boots",
+    "minecraft:iron_pickaxe",
+    "minecraft:iron_axe",
+    "minecraft:iron_shovel",
+    "minecraft:iron_hoe",
+    "tensura:iron_sickle",
+    "minecraft:iron_sword",
+    "tensura:iron_short_sword",
+    "tensura:iron_long_sword",
+    "tensura:iron_great_sword",
+    "tensura:iron_katana",
+    "tensura:iron_kodachi",
+    "tensura:iron_tachi",
+    "tensura:iron_odachi",
+    "tensura:iron_spear"
+  ]
+}

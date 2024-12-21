@@ -1,12 +1,12 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 4800,
+  "infusionTime": 4800,
   "input": {
     "tag": "minecraft:copper_ores"
   },
-  "magicules": {
-    "amount": 25000,
-    "id": "reincarnation_plus:magicules"
+  "primary": {
+    "primaryAmount": 25000,
+    "primaryType": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

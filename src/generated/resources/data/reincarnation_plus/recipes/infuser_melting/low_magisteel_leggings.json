@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "item": "tensura:low_magisteel_leggings"
+  },
+  "moltenAmount": 20000,
+  "moltenType": "reincarnation_plus:magicules",
+  "secondaryAmount": 378,
+  "secondaryType": "reincarnation_plus:existence_points"
+}

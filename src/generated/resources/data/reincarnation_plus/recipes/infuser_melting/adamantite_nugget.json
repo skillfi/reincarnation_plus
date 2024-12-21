@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "tag": "forge:nuggets/adamantite"
+  },
+  "moltenAmount": 3200000,
+  "moltenType": "reincarnation_plus:magicules"
+}

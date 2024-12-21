@@ -3,7 +3,6 @@ package com.github.skillfi.reincarnation_plus.core.procedures;
 import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
-import com.github.skillfi.reincarnation_plus.libs.api.aura.AuraAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -12,8 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-
-import java.util.Map;
 
 public class CopperOreMagiculeUpdate {
 

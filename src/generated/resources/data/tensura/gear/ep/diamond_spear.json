@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:netherite_spear",
+  "gainEP": 0.015,
+  "item": "tensura:diamond_spear",
+  "maxEP": 50000,
+  "minEP": 4000
+}

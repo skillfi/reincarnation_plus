@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "tag": "forge:nuggets/hihiirokane"
+  },
+  "moltenAmount": 4800000,
+  "moltenType": "reincarnation_plus:magicules"
+}

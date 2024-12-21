@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:netherite_pickaxe",
+  "gainEP": 0.015,
+  "item": "minecraft:diamond_pickaxe",
+  "maxEP": 50000,
+  "minEP": 4000
+}

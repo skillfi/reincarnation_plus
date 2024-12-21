@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:silver_boots",
+  "gainEP": 0.015,
+  "item": "minecraft:golden_boots",
+  "maxEP": 5000,
+  "minEP": 2000
+}

@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:netherite_shovel",
+  "gainEP": 0.015,
+  "item": "minecraft:diamond_shovel",
+  "maxEP": 50000,
+  "minEP": 4000
+}

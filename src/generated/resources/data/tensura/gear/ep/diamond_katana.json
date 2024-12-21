@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:netherite_katana",
+  "gainEP": 0.015,
+  "item": "tensura:diamond_katana",
+  "maxEP": 50000,
+  "minEP": 4000
+}

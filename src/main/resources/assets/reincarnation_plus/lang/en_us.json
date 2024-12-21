@@ -66,19 +66,18 @@
   "reincarnation_plus.magicula_infuser.smeltery_label": "Smeltery",
   "tooltip.reincarnation_plus.magicula_infuser.empty": "Empty",
   "reincarnation_plus.magicula_infuser.label": "Magicula Infuser",
-  "reincarnation_plus.automatic_magicula_infuser.label": "(A) M. Infuser",
+  "reincarnation_plus.automatic_magicula_infuser.label": "(A) Magicula Infuser",
   "tooltip.reincarnation_plus.magicula_infuser.infusion_right": "Next",
   "tooltip.reincarnation_plus.magicula_infuser.infusion_left": "Previous",
   "tooltip.reincarnation_plus.magicula_infuser.molten_item": "%s of %s",
   "tooltip.reincarnation_plus.magicula_infuser.molten_output": "Convert to Ingot/Nugget",
   "reincarnation_plus.molten.magicules.material": "Magicules",
   "reincarnation_plus.molten.existence_points.material": "EP",
-  "reincarnation_plus.molten.experience.material": "EXP",
-  "reincarnation_plus.molten.infusion.material": "Infusion",
-  "reincarnation_plus.molten.infusion.time": "%s Infusion Time",
+  "reincarnation_plus.infusion.time": "%s Infusion Time",
   "tooltip.reincarnation_plus.magicula_infuser.infusion": "Infusion",
 
   "_comment7": "Jei",
   "reincarnation_plus.jei.infusion.title": "Magic Infusion",
-  "reincarnation_plus.jei.melting.title": "Melting"
+  "reincarnation_plus.jei.melting.title": "Melting",
+  "reincarnation_plus.jei.evolve.title": "Evolve"
 }

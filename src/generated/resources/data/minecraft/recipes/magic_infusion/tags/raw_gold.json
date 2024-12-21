@@ -1,12 +1,12 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 2400,
+  "infusionTime": 2400,
   "input": {
     "item": "minecraft:raw_gold"
   },
-  "magicules": {
-    "amount": 5000,
-    "id": "reincarnation_plus:magicules"
+  "primary": {
+    "primaryAmount": 5000,
+    "primaryType": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

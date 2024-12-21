@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:golden_helmet",
+    "minecraft:golden_chestplate",
+    "minecraft:golden_leggings",
+    "minecraft:golden_boots",
+    "minecraft:golden_pickaxe",
+    "minecraft:golden_axe",
+    "minecraft:golden_shovel",
+    "minecraft:golden_hoe",
+    "tensura:golden_sickle",
+    "minecraft:golden_sword",
+    "tensura:golden_short_sword",
+    "tensura:golden_long_sword",
+    "tensura:golden_great_sword",
+    "tensura:golden_katana",
+    "tensura:golden_kodachi",
+    "tensura:golden_tachi",
+    "tensura:golden_odachi",
+    "tensura:golden_spear"
+  ]
+}

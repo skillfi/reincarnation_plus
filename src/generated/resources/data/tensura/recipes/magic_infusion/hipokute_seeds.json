@@ -1,12 +1,12 @@
 {
   "type": "reincarnation_plus:magic_infusion",
-  "cookingTime": 600,
+  "infusionTime": 600,
   "input": {
     "item": "minecraft:wheat_seeds"
   },
-  "magicules": {
-    "amount": 2500,
-    "id": "reincarnation_plus:magicules"
+  "primary": {
+    "primaryAmount": 2500,
+    "primaryType": "reincarnation_plus:magicules"
   },
   "result": {
     "Count": 1,

@@ -1,6 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.network.play2client;
 
-import com.github.skillfi.reincarnation_plus.libs.data.pack.MagicInfuserMoltenMaterial;
+import com.github.skillfi.reincarnation_plus.core.data.pack.MagicInfuserMoltenMaterial;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;

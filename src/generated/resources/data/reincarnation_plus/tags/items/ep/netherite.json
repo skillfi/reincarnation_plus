@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:netherite_helmet",
+    "minecraft:netherite_chestplate",
+    "minecraft:netherite_leggings",
+    "minecraft:netherite_boots",
+    "minecraft:netherite_pickaxe",
+    "minecraft:netherite_axe",
+    "minecraft:netherite_shovel",
+    "minecraft:netherite_hoe",
+    "tensura:netherite_sickle",
+    "minecraft:netherite_sword",
+    "tensura:netherite_short_sword",
+    "tensura:netherite_long_sword",
+    "tensura:netherite_great_sword",
+    "tensura:netherite_katana",
+    "tensura:netherite_kodachi",
+    "tensura:netherite_tachi",
+    "tensura:netherite_odachi",
+    "tensura:netherite_spear"
+  ]
+}

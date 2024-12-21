@@ -2,8 +2,8 @@ package com.github.skillfi.reincarnation_plus.core.block;
 
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
-import com.github.skillfi.reincarnation_plus.libs.block.state.properties.MagicInfuserPart;
-import com.github.skillfi.reincarnation_plus.libs.block.state.properties.ReiBlockStateProperties;
+import com.github.skillfi.reincarnation_plus.core.block.state.properties.MagicInfuserPart;
+import com.github.skillfi.reincarnation_plus.core.block.state.properties.ReiBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
