@@ -6,13 +6,14 @@ import com.github.manasmods.tensura.registry.items.TensuraArmorItems;
 import com.github.manasmods.tensura.registry.items.TensuraMaterialItems;
 import com.github.manasmods.tensura.registry.items.TensuraMobDropItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.auto.AutoInfuserEvolvingRecipe;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.auto.AutoInfuserMeltingRecipe;
+import com.github.skillfi.reincarnation_plus.core.data.recipe.auto.AutoMagicInfusionRecipe;
 import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.InfuserEvolvingRecipe;
 import com.github.skillfi.reincarnation_plus.core.data.recipe.materials.RecipeMaterials;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.registry.items.ReiItems;
 import com.github.skillfi.reincarnation_plus.core.data.ReiTags;
-import com.github.skillfi.reincarnation_plus.core.data.recipe.automatic.AutomaticMagicInfuserMeltingRecipe;
-import com.github.skillfi.reincarnation_plus.core.data.recipe.automatic.AutomaticMagicInfusionRecipe;
 import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfuserMeltingRecipe;
 import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfusionRecipe;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -28,9 +29,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.function.Consumer;
 
+import static com.github.skillfi.reincarnation_plus.core.data.GearSet.*;
 import static com.github.skillfi.reincarnation_plus.core.data.recipe.materials.RecipeMaterials.meltingMaterials;
 
 public class ReiRecipeProvider extends RecipeProvider {
@@ -230,42 +234,65 @@ public class ReiRecipeProvider extends RecipeProvider {
     }
 
     private void infuserEvolving(Consumer<FinishedRecipe> consumer){
-        infuserEvolve(consumer, ReiTags.Items.LOW_MAGISTEEL, "low_magisteel", ReiMoltenMaterialProvider.EP, 18000);
-        infuserEvolve(consumer, ReiTags.Items.HIGH_MAGISTEEL, "high_magisteel", ReiMoltenMaterialProvider.EP, 52000);
-        infuserEvolve(consumer, ReiTags.Items.PURE_MAGISTEEL, "pure_magisteel", ReiMoltenMaterialProvider.EP, 225000);
-        infuserEvolve(consumer, ReiTags.Items.MITHRIL, "mithril", ReiMoltenMaterialProvider.EP, 225000);
-        infuserEvolve(consumer, ReiTags.Items.CHARYBDIS, "charybdis", ReiMoltenMaterialProvider.EP, 1000000);
-        infuserEvolve(consumer, ReiTags.Items.ADAMANTITE, "adamantite", ReiMoltenMaterialProvider.EP, 750000);
-        infuserEvolve(consumer, ReiTags.Items.ORICHALCUM, "orichalcum", ReiMoltenMaterialProvider.EP, 750000);
-        infuserEvolve(consumer, ReiTags.Items.HIHIIROKANE, "hihiirokane", ReiMoltenMaterialProvider.EP, 1000000);
-        infuserEvolve(consumer, ReiTags.Items.GOLD, "gold", ReiMoltenMaterialProvider.EP, 5000);
-        infuserEvolve(consumer, ReiTags.Items.IRON, "iron", ReiMoltenMaterialProvider.EP, 2000);
-        infuserEvolve(consumer, ReiTags.Items.SILVER, "silver", ReiMoltenMaterialProvider.EP, 5000);
-        infuserEvolve(consumer, ReiTags.Items.NETHERITE, "netherite", ReiMoltenMaterialProvider.EP, 50000);
-        infuserEvolve(consumer, ReiTags.Items.DIAMOND, "diamond", ReiMoltenMaterialProvider.EP, 50000);
-        infuserEvolve(consumer, ReiTags.Items.MONSTER_LEATHER_D, "monster_leather_d", ReiMoltenMaterialProvider.EP, 2500);
-        infuserEvolve(consumer, ReiTags.Items.MONSTER_LEATHER_C, "monster_leather_c", ReiMoltenMaterialProvider.EP, 5000);
-        infuserEvolve(consumer, ReiTags.Items.MONSTER_LEATHER_B, "monster_leather_b", ReiMoltenMaterialProvider.EP, 8000);
-        infuserEvolve(consumer, ReiTags.Items.MONSTER_LEATHER_A, "monster_leather_a", ReiMoltenMaterialProvider.EP, 80000);
-        infuserEvolve(consumer, ReiTags.Items.MONSTER_LEATHER_SA, "monster_leather_sa", ReiMoltenMaterialProvider.EP, 80000);
+        for (Item item: pureMagisteel){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 225000);
+        }
+        for (Item item: HIGH_MAGISTEEL)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 52000);
+        for (Item item: lowMagisteel){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 18000);
+        }
+        for (Item item: ironGear){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 50000);
+        }
+        for (Item item: silverGear){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 25000);
+        }
+        for (Item item: MITHRIL){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 225000);
+        }
+        for (Item item: CHARYBDIS){
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 1000000);
+        }
+        for (Item item: ADAMANTITE)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 750000);
+        for (Item item: ORICHALCUM)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 750000);
+        for (Item item: HIHIIROKANE)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 1000000);
+        for (Item item: netheriteGear)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 50000);
+        for (Item item: MONSTER_LEATHER_D)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 2500);
+        for (Item item: MONSTER_LEATHER_C)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 5000);
+        for (Item item: MONSTER_LEATHER_B)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 8000);
+        for (Item item: MONSTER_LEATHER_A)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 80000);
+        for (Item item: MONSTER_LEATHER_SPECIAL_A)
+            infuserEvolve(consumer, item, ReiMoltenMaterialProvider.EP, 80000);
     }
 
     protected void infuserMelting(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, int amount, TagKey<Item> input, String path, boolean kiln){
         if (!kiln){
             MagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, path);
-            AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, path);
+            AutoInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, path);
         } else {
             MagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20).requires(Ingredient.of(input)).build(consumer, path);
-            AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20).requires(Ingredient.of(input)).build(consumer, path);
+            AutoInfuserMeltingRecipe.Builder.of(moltenType, amount*20).requires(Ingredient.of(input)).build(consumer, path);
         }
 
 
     }
 
-    protected static void infuserEvolve(Consumer<FinishedRecipe> consumer, TagKey<Item> input, String path, ResourceLocation moltenType, int amount){
+    protected void infuserEvolve(Consumer<FinishedRecipe> consumer, Item input, ResourceLocation moltenType, int amount){
         InfuserEvolvingRecipe.Builder.of(moltenType, amount)
                 .requires(Ingredient.of(input))
-                .build(consumer, path);
+                .build(consumer, this.rl(input).getPath());
+        AutoInfuserEvolvingRecipe.Builder.of(moltenType, amount)
+                .requires(Ingredient.of(input))
+                .build(consumer, this.rl(input).getPath());
     }
 
     protected static void infuserMeltingGears(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, ResourceLocation secondaryType, String filePrefix,
@@ -290,9 +317,17 @@ public class ReiRecipeProvider extends RecipeProvider {
                         .requires(Ingredient.of(armorItems[i]))
                         .secondary(secondaryType, 378)
                         .build(consumer, filePrefix + "_" + armorNames[i]);
+                AutoInfuserMeltingRecipe.Builder.of(moltenType, armorAmounts[i])
+                        .requires(Ingredient.of(armorItems[i]))
+                        .secondary(secondaryType, 378)
+                        .build(consumer, filePrefix + "_" + armorNames[i]);
             }
             for (int i = 0; i < toolItems.length; i++) {
                 MagicInfuserMeltingRecipe.Builder.of(moltenType, toolAmounts[i])
+                        .requires(Ingredient.of(toolItems[i]))
+                        .secondary(secondaryType, 378)
+                        .build(consumer, filePrefix + "_" + toolNames[i]);
+                AutoInfuserMeltingRecipe.Builder.of(moltenType, toolAmounts[i])
                         .requires(Ingredient.of(toolItems[i]))
                         .secondary(secondaryType, 378)
                         .build(consumer, filePrefix + "_" + toolNames[i]);
@@ -307,9 +342,17 @@ public class ReiRecipeProvider extends RecipeProvider {
                         .requires(Ingredient.of(armorItems[i]))
                         .secondary(secondaryType, 378)
                         .build(consumer, filePrefix + "_" + armorNames[i]);
+                AutoInfuserMeltingRecipe.Builder.of(moltenType, armorAmountMultiplied)
+                        .requires(Ingredient.of(armorItems[i]))
+                        .secondary(secondaryType, 378)
+                        .build(consumer, filePrefix + "_" + armorNames[i]);
             }
             for (int i = 0; i < toolItems.length; i++) {
                 MagicInfuserMeltingRecipe.Builder.of(moltenType, toolAmountMultiplied)
+                        .requires(Ingredient.of(toolItems[i]))
+                        .secondary(secondaryType, 378)
+                        .build(consumer, filePrefix + "_" + toolNames[i]);
+                AutoInfuserMeltingRecipe.Builder.of(moltenType, toolAmountMultiplied)
                         .requires(Ingredient.of(toolItems[i]))
                         .secondary(secondaryType, 378)
                         .build(consumer, filePrefix + "_" + toolNames[i]);
@@ -319,16 +362,17 @@ public class ReiRecipeProvider extends RecipeProvider {
     
     protected void infuserMelting(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, int amount, Item input){
         MagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
-        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
+        AutoInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
     }
 
     protected void magicRemelting(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, int amount, ResourceLocation secondaryType, int secondaryAmount, Item input){
         MagicInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).secondary(secondaryType, secondaryAmount).build(consumer, this.rl(input).getPath());
+        AutoInfuserMeltingRecipe.Builder.of(moltenType, amount).requires(Ingredient.of(input)).secondary(secondaryType, secondaryAmount).build(consumer, this.rl(input).getPath());
     }
 
     protected void magicMeltingx20(Consumer<FinishedRecipe> consumer, ResourceLocation moltenType, int amount, Item input){
         MagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
-        AutomaticMagicInfuserMeltingRecipe.Builder.of(moltenType, amount*20.0F).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
+        AutoInfuserMeltingRecipe.Builder.of(moltenType, amount*20).requires(Ingredient.of(input)).build(consumer, this.rl(input).getPath());
     }
 
     protected static void magicInfusionLeft(Consumer<FinishedRecipe> consumer, ItemStack output, ResourceLocation magiculesId, int magicules, int infusionTime, ItemStack input) {
@@ -337,7 +381,8 @@ public class ReiRecipeProvider extends RecipeProvider {
                 requires(Ingredient.of(input)).
                 time(infusionTime).
                 build(consumer);
-        AutomaticMagicInfusionRecipe.Builder.of(output).
+
+        AutoMagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, magicules).
                 requires(Ingredient.of(input)).
                 time(infusionTime).
@@ -360,17 +405,17 @@ public class ReiRecipeProvider extends RecipeProvider {
                 time(infusionTime).
                 build(consumer, "raw_gold");
 
-        AutomaticMagicInfusionRecipe.Builder.of(output).
+        AutoMagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, magicules).
                 requires(Ingredient.of(iron)).
                 time(infusionTime).
                 build(consumer, "raw_iron");
-        AutomaticMagicInfusionRecipe.Builder.of(output).
+        AutoMagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, cooper_amount).
                 requires(Ingredient.of(cooper)).
                 time(infusionTime).
                 build(consumer, "raw_cooper");
-        AutomaticMagicInfusionRecipe.Builder.of(output).
+        AutoMagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, gold_amount).
                 requires(Ingredient.of(gold)).
                 time(infusionTime).
@@ -384,7 +429,7 @@ public class ReiRecipeProvider extends RecipeProvider {
                 time(infusionTime).
                 build(consumer, path);
 
-        AutomaticMagicInfusionRecipe.Builder.of(output).
+        AutoMagicInfusionRecipe.Builder.of(output).
                 magicules(magiculesId, magicules).
                 requires(Ingredient.of(input)).
                 time(infusionTime).
@@ -393,6 +438,7 @@ public class ReiRecipeProvider extends RecipeProvider {
 
     protected static void magicInfusionOres(Consumer<FinishedRecipe> consumer, ItemStack input, ItemStack output, ResourceLocation magicules, int amount, int time, String path){
         MagicInfusionRecipe.Builder.of(output).requires(Ingredient.of(input)).magicules(magicules, amount).time(time).build(consumer, path);
+        AutoMagicInfusionRecipe.Builder.of(output).requires(Ingredient.of(input)).magicules(magicules, amount).time(time).build(consumer, path);
     }
 
 

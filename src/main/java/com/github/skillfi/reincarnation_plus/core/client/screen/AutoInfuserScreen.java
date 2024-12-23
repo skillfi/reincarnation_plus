@@ -1,10 +1,13 @@
 package com.github.skillfi.reincarnation_plus.core.client.screen;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
-import com.github.skillfi.reincarnation_plus.core.menu.AutoInfuserMenu;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.core.data.pack.ReiData;
 import com.github.skillfi.reincarnation_plus.core.data.recipe.infuser.MagicInfusionRecipe;
+import com.github.skillfi.reincarnation_plus.core.menu.AutoInfuserMenu;
+import com.github.skillfi.reincarnation_plus.core.menu.AutoInfuserMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -23,8 +26,10 @@ import java.util.Optional;
 public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/magic_infuser_gui.png");
     private static final ResourceLocation FLUID = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/molten.png");
+    private static final ResourceLocation INFUSION = new ResourceLocation(ReiMod.MODID, "textures/gui/magic_infuser/infusion.png");
     private Optional<MagicInfuserMoltenMaterial> leftBarMaterial;
     private Optional<MagicInfuserMoltenMaterial> rightBarMaterial;
+    private Optional<MagicInfuserMoltenMaterial> infusionBarMaterial;
 
 
     /**
@@ -36,10 +41,11 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
      */
     public AutoInfuserScreen(AutoInfuserMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
-
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
         // Ініціалізація матеріалів
-        this.leftBarMaterial = menu.blockEntity.getLeftBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
-        this.rightBarMaterial = menu.blockEntity.getRightBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.leftBarMaterial = capability.getLeftBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.rightBarMaterial = capability.getRightBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.infusionBarMaterial = capability.getInfusionBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
 
         this.imageWidth = 256;
         this.imageHeight = 145;
@@ -52,13 +58,16 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
     @Override
     protected void containerTick() {
         super.containerTick();
-
-        if (hasChanged((this.menu).blockEntity.getLeftBarId(), this.leftBarMaterial)) {
-            this.leftBarMaterial = materialOf((this.menu).blockEntity.getLeftBarId());
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
+        if (hasChanged(capability.getLeftBarId(), this.leftBarMaterial)) {
+            this.leftBarMaterial = materialOf(capability.getLeftBarId());
         }
 
-        if (hasChanged((this.menu).blockEntity.getRightBarId(), this.rightBarMaterial)) {
-            this.rightBarMaterial = materialOf((this.menu).blockEntity.getRightBarId());
+        if (hasChanged(capability.getRightBarId(), this.rightBarMaterial)) {
+            this.rightBarMaterial = materialOf(capability.getRightBarId());
+        }
+        if (hasChanged(capability.getInfusionBarId(), this.infusionBarMaterial)) {
+            this.infusionBarMaterial = materialOf(capability.getInfusionBarId());
         }
     }
 
@@ -100,9 +109,9 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
         this.blit(pPoseStack, x, y, 0, 0, 256, 168);
         this.renderProgress(pPoseStack, x, y);
         this.renderFire(pPoseStack, x, y);
+        this.renderInfusion(pPoseStack, x, y);
         this.renderMolten(pPoseStack, x, y);
         this.renderMagic(pPoseStack, x, y);
-        this.renderInfusion(pPoseStack, x, y);
     }
 
     /**
@@ -122,15 +131,29 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
     /**
      * Візуалізує процес насичення магією предмета.
      *
-     * @param pPoseStack стек для малювання позицій
+     * @param stack стек для малювання позицій
      * @param x координата x де починається малювання
      * @param y координата y де починається малювання
      */
-    private void renderInfusion(PoseStack pPoseStack, int x, int y) {
-        if (this.menu.isInfusion()) {
-            this.blit(pPoseStack, x + 137 - this.menu.getInfuseProgress(), y + 64 , 96 - this.menu.getInfuseProgress(), 180 , this.menu.getInfuseProgress(), 4);
-        }
+    private void renderInfusion(PoseStack stack, int x, int y) {
+        this.infusionBarMaterial.ifPresent((moltenMaterial) -> {
+            int progress = this.menu.getInfuseProgress(); // Отримання прогресу
+            if (progress > 0 && progress < 1) {
+                progress = 1; // Мінімальна ширина
+            }
+
+            int renderWidth = progress; // Ширина, яка відповідає прогресу
+            int renderX = x + 137; // Початкова координата X
+            int renderY = y + 61; // Фіксована координата Y
+
+            // Рендеримо текстуру з урахуванням ширини
+            RenderSystem.setShaderTexture(0, INFUSION);
+            this.blit(stack, renderX, renderY, 0, 0, renderWidth, 4, 62, 4);
+            RenderSystem.disableBlend();
+        });
     }
+
+
 
     /**
      * Відображає кількість магікулів.
@@ -245,20 +268,22 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
      * @param pMouseY координата Y положення миші
      */
     protected void renderTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
         // Перевіряє, чи не несе меню об'єкт (або предмет в слоті), та якщо курсор знаходиться на слоті з предметом.
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             // Відображає підказку для предмету в слоті, на якому знаходиться курсор миші.
             this.renderTooltip(pPoseStack, this.hoveredSlot.getItem(), pMouseX, pMouseY);
         }
-        if (this.isHovering(95, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
+        if (this.isHovering(220, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
             // Перевіряє, чи лівий бар переповнений і містить матеріал.
-            if (!this.menu.blockEntity.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && this.menu.blockEntity.getMagicMaterialAmount() > 0) {
+            int magicAmount = this.menu.getMagicules();
+            int maxMagicAmount = this.menu.getMaxMagicules();
+            if (!capability.getRightBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && magicAmount > 0) {
                 // Формує текстове значення для відображення рівня матеріалу.
-                float magicAmount = this.menu.blockEntity.getMagicMaterialAmount();
-                String valueText = magicAmount + "/" + (this.menu.blockEntity.getMaxMagicMaterialAmount()+this.menu.blockEntity.getAdditionalMagicMaterialAmount());
+                String valueText = magicAmount + "/" + (maxMagicAmount);
                 // Відображає інструментальну підказку з інформацією про матеріал у лівій смузі.
-                this.leftBarMaterial.ifPresent((moltenMaterial) ->
+                this.rightBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderMaterialTooltip(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
             } else {
                 // Відображає підказку, коли лівий бар порожній.
@@ -267,15 +292,33 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
         }
 
         // Перевіряє, чи курсор миші знаходиться в області правої смуги інфузії.
-        if (this.isHovering(220, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
+        if (this.isHovering(95, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
+            int existencePointsAmount = this.menu.getMoltenAmount();
+            int maxExistencePointsAmount = this.menu.getMaxMoltenAmount();
             // Перевіряє, чи правий бар переповнений і містить матеріал.
-            if (!((AutoInfuserMenu)this.menu).blockEntity.getRightBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && ((AutoInfuserMenu)this.menu).blockEntity.getInfusionTime() > 0) {
+            if (!capability.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && existencePointsAmount > 0) {
                 // Формує текстове значення для відображення рівня магічного матеріалу.
-                float infusionTime = (float)((AutoInfuserMenu)this.menu).blockEntity.getInfusionTime();
-                String valueText = infusionTime + "/" + this.menu.blockEntity.getMaxInfusionTime();
+                String valueText = existencePointsAmount + "/" + maxExistencePointsAmount;
                 // Відображає інструментальну підказку з інформацією про матеріал у правій смузі.
-                this.rightBarMaterial.ifPresent((moltenMaterial) ->
+                this.leftBarMaterial.ifPresent((moltenMaterial) ->
+                        this.renderMaterialTooltip(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
+            } else {
+                // Відображає підказку, коли правий бар порожній.
+                this.renderEmptyMaterialToolTip(pPoseStack, pMouseX, pMouseY);
+            }
+        }
+        // Перевіряє, чи курсор миші знаходиться в області правої смуги інфузії.
+        if (this.isHovering(137, 64, 62, 4, (double)pMouseX, (double)pMouseY)) {
+            // Перевіряє, чи правий бар переповнений і містить матеріал.
+            if (!capability.getInfusionBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && capability.getInfusionTime() > 0) {
+                // Формує текстове значення для відображення рівня магічного матеріалу.
+                int existencePointsAmount = capability.getInfusionTime();
+                int maxInfusionTime = capability.getMaxInfusionTime();
+                String valueText = existencePointsAmount + "/" + maxInfusionTime;
+                // Відображає інструментальну підказку з інформацією про матеріал у правій смузі.
+                this.infusionBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderInfusionTime(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
             } else {
                 // Відображає підказку, коли правий бар порожній.
@@ -294,7 +337,7 @@ public class AutoInfuserScreen extends AbstractContainerScreen<AutoInfuserMenu> 
         this.renderTooltip(poseStack, component, mouseX, mouseY);
     }
     private void renderInfusionTime(PoseStack poseStack, int mouseX, int mouseY, MagicInfuserMoltenMaterial material, String valueText) {
-        MutableComponent component = Component.translatable("reincarnation_plus.molten.infusion.time", new Object[]{valueText}).withStyle(emtpyStyleWithMaterialColor(material));
+        MutableComponent component = Component.translatable("reincarnation_plus.infusion.time", new Object[]{valueText}).withStyle(emtpyStyleWithMaterialColor(material));
         this.renderTooltip(poseStack, component, mouseX, mouseY);
     }
 

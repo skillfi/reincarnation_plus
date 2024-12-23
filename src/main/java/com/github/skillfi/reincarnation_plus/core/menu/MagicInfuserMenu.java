@@ -1,7 +1,11 @@
 package com.github.skillfi.reincarnation_plus.core.menu;
 
 import com.github.manasmods.tensura.menu.TensuraMenuHelper;
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagicAmplifierBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiCatalystSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiFuelSlot;
 import com.github.skillfi.reincarnation_plus.core.menu.slot.ReiInfuseSlot;
@@ -18,6 +22,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,43 +56,58 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public boolean isSmelting() {
-        return this.blockEntity.getMeltingProgress() > 0;
+        return this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getMeltingProgress).orElse(0) > 0;
     }
 
     public boolean hasFuel() {
-        return this.blockEntity.getFuelTime() > 0;
+        return this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getFuelTime).orElse(0) > 0;
     }
 
     public boolean isInfusion(){
-        return this.blockEntity.getInfusionProgress() > 0;
+        return this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getInfusionProgress).orElse(0) > 0;
     }
 
     public int getMagiculesProgress() {
-        int progress = (int) ((int) this.blockEntity.getMagicMaterialAmount());
-        int maxmagicules = (int) this.blockEntity.getMaxMagicMaterialAmount();
-        int addtionMagicules = (int) this.blockEntity.getAdditionalMagicMaterialAmount();
+        int progress = this.blockEntity.getMagicMaterialAmount();
+        int maxmagicules = this.blockEntity.getMaxMagicMaterialAmount();
         int progressArrowSize = 74;
-        return progress != 0 ? progress * progressArrowSize / (maxmagicules+addtionMagicules) : 0;
+        return progress != 0 ? progress * progressArrowSize / (maxmagicules) : 0;
+    }
+
+    public int getMagicules(){
+        return this.blockEntity.getMagicMaterialAmount();
+    }
+
+    public int getMaxMagicules(){
+        return this.blockEntity.getMaxMagicMaterialAmount();
     }
 
     public int getMoltenProgress() {
         int progress = this.blockEntity.getMoltenAmount();
-        int maxMolten =  35000;
+        int maxMolten =  this.blockEntity.getMaxMoltenAmount();
         int progressArrowSize = 74;
         return progress != 0 ? progress * progressArrowSize / maxMolten : 0;
     }
 
+    public int getMoltenAmount(){
+        return this.blockEntity.getMoltenAmount();
+    }
+
+    public int getMaxMoltenAmount(){
+        return this.blockEntity.getMaxMoltenAmount();
+    }
+
     public int getScaledProgress() {
-        int progress = this.blockEntity.getMeltingProgress();
+        int progress = this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getMeltingProgress).orElse(0);
         int maxProgress = 100;
         int progressArrowSize = 25;
         return progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     public int getInfuseProgress() {
-        if (this.blockEntity.getMaxInfusionTime() > 0){
-            int fuelProgress = this.blockEntity.getInfusionTime();
-            int maxFuelProgress = this.blockEntity.getMaxInfusionTime();
+        if (this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getMaxInfusionTime).orElse(0) > 0){
+            int fuelProgress = this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getInfusionTime).orElse(0);
+            int maxFuelProgress = this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getMaxInfusionTime).orElse(0);
             int fuelProgressSize = 62;
             return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
         }
@@ -95,8 +115,8 @@ public class MagicInfuserMenu extends AbstractContainerMenu {
     }
 
     public int getScaledFuelProgress() {
-        int fuelProgress = this.blockEntity.getFuelTime();
-        int maxFuelProgress = this.blockEntity.getMaxFuelTime();
+        int fuelProgress = this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getFuelTime).orElse(0);
+        int maxFuelProgress = this.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getMaxFuelTime).orElse(0);
         int fuelProgressSize = 13;
         return maxFuelProgress != 0 ? (int)((float)fuelProgress / (float)maxFuelProgress * (float)fuelProgressSize) : 0;
     }

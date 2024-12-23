@@ -2,14 +2,11 @@ package com.github.skillfi.reincarnation_plus.core.data.recipe.infuser;
 
 import com.github.manasmods.tensura.data.pack.GearEPCount;
 import com.github.manasmods.tensura.data.pack.TensuraData;
-import com.github.manasmods.tensura.data.recipe.KilnMixingRecipe;
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.data.pack.ReiData;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.JsonOps;
 import lombok.Getter;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.nbt.CompoundTag;
@@ -28,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class InfuserEvolvingRecipe extends MagicInfuserRecipe implements Comparable<InfuserEvolvingRecipe> {
     private static final Logger log = LogManager.getLogger(InfuserEvolvingRecipe.class);
@@ -40,30 +37,32 @@ public class InfuserEvolvingRecipe extends MagicInfuserRecipe implements Compara
     @Getter private final Ingredient input;
 
     public boolean matches(MagiculaInfuserBlockEntity pContainer, Level level) {
-        // Перевірка, чи вхідний слот має потрібний ItemStack
         ItemStack inputStack = pContainer.getItem(2).copy();
 
-
+        // Перевірка вхідного предмета
         if (!this.input.test(inputStack)) {
             return false;
         }
 
-        if (!this.primaryType.equals(EMPTY)) {
-            if (pContainer.getLeftBarId().isEmpty() || ((ResourceLocation)pContainer.getLeftBarId().get()).equals(EMPTY)) {
-                return false;
+        // Перевірка лівого слоту (primaryType)
+        return pContainer.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(cap -> {
+            Optional<ResourceLocation> leftBarId = cap.getLeftBarId();
+
+            if (this.primaryType.equals(EMPTY)) {
+                return true; // Якщо primaryType порожній, перевірка успішна
             }
 
-            if (!((ResourceLocation)pContainer.getLeftBarId().get()).equals(this.primaryType)) {
-                return false;
+            if (leftBarId.isEmpty() || leftBarId.get().equals(EMPTY)) {
+                return false; // Якщо leftBarId порожній або EMPTY, рецепт не підходить
             }
 
-            if (pContainer.getMoltenAmount() < this.primaryAmount) {
-                return false;
+            if (!leftBarId.get().equals(this.primaryType)) {
+                return false; // Якщо тип у leftBarId не відповідає primaryType, рецепт не підходить
             }
-        }
 
-        // Якщо лівий вхід порожній, рецепт завжди підходить
-        return true;
+            // Перевірка, чи достатньо moltenAmount
+            return true;
+        }).orElse(false); // Якщо capability недоступний, повертаємо false
     }
 
 
@@ -82,23 +81,21 @@ public class InfuserEvolvingRecipe extends MagicInfuserRecipe implements Compara
                     ItemStack itemStack = pContainer.getItem(2);
                     pContainer.removeMoltenMaterialAmount(1);
 
-                    if (itemStack.hasTag()){
-                        CompoundTag tag = itemStack.getTag();
-                        assert tag != null;
-                        if (tag.getDouble("EP") <= amount)
-                            tag.putDouble("EP", tag.getDouble("EP") + (double) 1);
-                        else{
-                            pContainer.setItem(3, getResultItem());
-                            pContainer.removeItem(2, 1);
-                        }
-
+                    CompoundTag tag = itemStack.getOrCreateTag();
+                    if (tag.getDouble("EP") <= (double) amount)
+                        tag.putDouble("EP", tag.getDouble("EP") + (double) 1);
+                    else{
+                        ItemStack output = itemStack.copy();
+                        output = initiateItemEP(output);
+                        pContainer.setItem(3, output);
+                        pContainer.removeItem(2, 1);
                     }
 
                 }, () -> log.error("Could not assemble InfuserEvolvingRecipe: {}", this));
         }
     }
 
-    private static void initiateItemEP(ItemStack stack) {
+    private static ItemStack initiateItemEP(ItemStack stack) {
         for(GearEPCount gearEPCount : TensuraData.getGearEP()) {
             if (Objects.equals(ForgeRegistries.ITEMS.getKey(stack.getItem()), gearEPCount.getItem())) {
                 CompoundTag tag = stack.getOrCreateTag();
@@ -109,9 +106,19 @@ public class InfuserEvolvingRecipe extends MagicInfuserRecipe implements Compara
                 if (tag.getDouble("MaxEP") < (double)gearEPCount.getMaxEP()) {
                     tag.putDouble("MaxEP", (double)gearEPCount.getMaxEP());
                 }
-                break;
+                ItemStack output = ((Item)Objects.requireNonNull((Item)ForgeRegistries.ITEMS.getValue(gearEPCount.getEvolvingItem()))).getDefaultInstance();
+                CompoundTag outputTag = output.getOrCreateTag();
+                if (outputTag.getDouble("EP") <= (double)gearEPCount.getMinEP()) {
+                    outputTag.putDouble("EP", (double)gearEPCount.getMinEP());
+                }
+
+                if (outputTag.getDouble("MaxEP") < (double)gearEPCount.getMaxEP()) {
+                    outputTag.putDouble("MaxEP", (double)gearEPCount.getMaxEP());
+                }
+                return output;
             }
         }
+        return ItemStack.EMPTY;
     }
 
 

@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_evolving",
+  "input": {
+    "item": "tensura:iron_tachi"
+  },
+  "primary": {
+    "primaryAmount": 50000,
+    "primaryType": "reincarnation_plus:existence_points"
+  }
+}

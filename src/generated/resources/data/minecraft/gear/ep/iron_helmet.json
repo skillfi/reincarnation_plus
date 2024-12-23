@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "minecraft:golden_helmet",
+  "evolvingItem": "tensura:low_magisteel_helmet",
   "gainEP": 0.015,
   "item": "minecraft:iron_helmet",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

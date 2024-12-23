@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_evolving",
+  "input": {
+    "item": "tensura:monster_leather_boots_special_a"
+  },
+  "primary": {
+    "primaryAmount": 80000,
+    "primaryType": "reincarnation_plus:existence_points"
+  }
+}

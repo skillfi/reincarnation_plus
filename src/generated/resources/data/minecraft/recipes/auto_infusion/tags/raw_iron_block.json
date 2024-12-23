@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "infusionTime": 4800,
+  "input": {
+    "item": "minecraft:raw_iron_block"
+  },
+  "primary": {
+    "primaryAmount": 135000,
+    "primaryType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "tensura:block_of_magic_ore"
+  }
+}

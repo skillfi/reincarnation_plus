@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "tensura:golden_long_sword",
+  "evolvingItem": "tensura:low_magisteel_long_sword",
   "gainEP": 0.015,
   "item": "tensura:iron_long_sword",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

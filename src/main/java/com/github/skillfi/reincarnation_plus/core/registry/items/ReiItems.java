@@ -26,7 +26,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ReiItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ReiMod.MODID);
 	public static final RegistryObject<Item> SUPER_CHARGER = ITEMS.register("super_charger", SuperCharger::new);
-	public static final RegistryObject<Item> SIPHON = ITEMS.register("siphon", Siphon::new);
+	public static final RegistryObject<Item> SIPHON = ITEMS.register(ReiBlockEntities.ReiBlocks.SIPHON_BLOCK.getId().getPath(), () -> new SiphonItem(ReiBlockEntities.ReiBlocks.SIPHON_BLOCK.get(), new Item.Properties().tab(ReiCreativeTab.BLOCKS)));
 	public static final RegistryObject<Item> CRYSTALIZED_WATER_BUCKET = ITEMS.register("crystalized_water_bucket", CrystalizedWaterItem::new);
 	public static final RegistryObject<Item> HAKAMA_CHESTPLATE_D = ITEMS.register("leather_chestplate",
 			() -> new LeatherArmorItem(TensuraArmourMaterials.MONSTER_LEATHER_D, EquipmentSlot.CHEST,

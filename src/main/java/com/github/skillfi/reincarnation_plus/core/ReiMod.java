@@ -3,6 +3,8 @@ package com.github.skillfi.reincarnation_plus.core;
 import com.github.skillfi.reincarnation_plus.core.block.client.automatic_infuser.AutomaticMagiculaInfuserRenderer;
 import com.github.skillfi.reincarnation_plus.core.block.client.magic_infuser.MagiculaInfuserRenderer;
 import com.github.skillfi.reincarnation_plus.core.block.client.infusion_bellows.InfusionBellowsRenderer;
+import com.github.skillfi.reincarnation_plus.core.block.client.siphon.SiphonBlockRenderer;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.client.ClientProxy;
 import com.github.skillfi.reincarnation_plus.core.config.EntityConfig;
 import com.github.skillfi.reincarnation_plus.core.config.SpawnRateConfig;
@@ -35,6 +37,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -61,6 +66,7 @@ public class ReiMod {
     public static final String MODID = "reincarnation_plus";
     @Getter
     public static final Logger LOGGER = LogManager.getLogger(MODID);
+    public static final Capability<IMagiculaInfuserCapability> MAGICULA_INFUSER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
     private static final CommonProxy PROXY = DistExecutor.safeRunForDist(()->ClientProxy::new, ()->CommonProxy::new);
 
@@ -152,6 +158,7 @@ public class ReiMod {
         event.registerBlockEntityRenderer(ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), MagiculaInfuserRenderer::new);
         event.registerBlockEntityRenderer(ReiBlockEntities.AUTOMATIC_MAGICAL_INFUSER_ENTITY.get(), AutomaticMagiculaInfuserRenderer::new);
         event.registerBlockEntityRenderer(ReiBlockEntities.INFUSION_BELLOWS.get(), InfusionBellowsRenderer::new);
+        event.registerBlockEntityRenderer(ReiBlockEntities.SIPHON.get(), SiphonBlockRenderer::new);
     }
 
     @OnlyIn(Dist.CLIENT)

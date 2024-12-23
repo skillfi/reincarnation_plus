@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "infusionTime": 4800,
+  "input": {
+    "tag": "minecraft:copper_ores"
+  },
+  "primary": {
+    "primaryAmount": 25000,
+    "primaryType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "tensura:magic_ore"
+  }
+}

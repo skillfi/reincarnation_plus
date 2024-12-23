@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:iron_helmet",
+  "gainEP": 0.015,
+  "item": "tensura:silver_helmet",
+  "maxEP": 25000,
+  "minEP": 5000
+}

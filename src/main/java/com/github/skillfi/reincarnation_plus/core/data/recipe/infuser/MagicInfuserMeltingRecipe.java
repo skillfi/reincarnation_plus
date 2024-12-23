@@ -1,5 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.data.recipe.infuser;
 
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagicAmplifierBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
 import com.github.skillfi.reincarnation_plus.core.data.pack.MagicInfuserMoltenMaterial;
@@ -12,12 +14,14 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -52,41 +56,60 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     }
 
     public ItemStack getResultItem() {
-        if (input.getItems()[0] == Items.ENCHANTED_BOOK.getDefaultInstance()){
-            return Items.BOOK.getDefaultInstance();
-        }
-        return input.getItems()[0];
-    }
-
-    private boolean sameOrEmpty(MagiculaInfuserBlockEntity container, ResourceLocation type, float amount) {
-        for(MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
-            if (moltenMaterial.getMoltenType().equals(type)) {
-                Optional<ResourceLocation> containerMaterial = moltenMaterial.isRightBar() ? container.getRightBarId() : container.getLeftBarId();
-                if (containerMaterial.isEmpty()) {
-                    return true;
-                }
-
-                if (((ResourceLocation)containerMaterial.get()).equals(MagicInfusionRecipe.EMPTY)) {
-                    return true;
-                }
-
-                if (!((ResourceLocation)containerMaterial.get()).equals(type)) {
-                    return false;
-                }
-
-                int existingAmount = moltenMaterial.isRightBar() ? container.getMagicMaterialAmount() : container.getMoltenAmount();
-                if (amount >= (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) - existingAmount && moltenMaterial.isRightBar())
-                    return true;
-                else if (existingAmount == (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) && moltenMaterial.isRightBar())
-                    return false;
+        for (ItemStack stack : input.getItems()) {
+            if (stack.getItem() == Items.ENCHANTED_BOOK) {
+                return new ItemStack(Items.BOOK);
             }
         }
-
-        return false;
+        return input.getItems().length > 0 ? input.getItems()[0] : ItemStack.EMPTY;
     }
 
+
+    private boolean sameOrEmpty(MagiculaInfuserBlockEntity container, ResourceLocation type, float amount) {
+        // Отримуємо capability контейнера
+        return container.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(cap -> {
+            // Проходимо по всіх матеріалах
+            for (MagicInfuserMoltenMaterial moltenMaterial : ReiData.getMagicInfuserMoltenMaterials()) {
+                if (moltenMaterial.getMoltenType().equals(type)) {
+                    Optional<ResourceLocation> containerMaterial = moltenMaterial.isRightBar() ? cap.getRightBarId() : cap.getLeftBarId();
+
+                    // Якщо слот порожній або тип збігається з рецептом
+                    if (containerMaterial.isEmpty() || containerMaterial.get().equals(MagicInfusionRecipe.EMPTY)) {
+                        return true;
+                    }
+                    if (!containerMaterial.get().equals(type)) {
+                        return false;
+                    }
+                    if (container.getItem(1).isDamageableItem()){
+                        if (container.getItem(1).isEnchanted() || amount > 0){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    int existingAmount = moltenMaterial.isRightBar() ? cap.getMagicMaterialAmount() : cap.getMoltenAmount();
+                    int maxAmount = cap.getMaxMagicMaterialAmount() + cap.getAdditionalMagicMaterialAmount();
+
+                    // Перевірка кількості
+                    if (moltenMaterial.isRightBar()) {
+                        if (amount >= maxAmount - existingAmount) {
+                            return true;
+                        }
+                        if (existingAmount == maxAmount) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }).orElse(false);
+    }
+
+
     public ItemStack assemble(MagiculaInfuserBlockEntity pContainer) {
-        if (pContainer.getItem(1).isEnchanted() || pContainer.getItem(1) == Items.ENCHANTED_BOOK.getDefaultInstance()){
+        Item item = pContainer.getItem(1).getItem();
+        if (pContainer.getItem(1).isEnchanted() || item == Items.ENCHANTED_BOOK){
             this.melt(pContainer, this.secondaryType, this.secondaryAmount);
             pContainer.setItem(3, getResultItem());
             pContainer.removeItem(1, 1);
@@ -98,25 +121,39 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
     }
 
     public int calculateEpFromEnchantments(ItemStack itemStack, int amount) {
-        // Перевірка на наявність чарів]
-        if (!itemStack.hasTag() || !itemStack.getTag().contains("Enchantments", 9)) {
-            return 0; // Якщо немає чарів, досвід дорівнює 0
+        // Перевірка на наявність тегу
+        if (!itemStack.hasTag()) {
+            return 0; // Якщо тег відсутній, досвід дорівнює 0
         }
 
-        // Отримуємо список чарів
-        ListTag enchantments = itemStack.getTag().getList("Enchantments", 10);
+        ListTag enchantments;
+
+        // Якщо це зачарована книга, перевіряємо "StoredEnchantments"
+        if (itemStack.getItem() == Items.ENCHANTED_BOOK) {
+            if (!itemStack.getTag().contains("StoredEnchantments", 9)) {
+                return 0; // Якщо немає чарів у книзі, досвід дорівнює 0
+            }
+            enchantments = itemStack.getTag().getList("StoredEnchantments", 10);
+        }
+        // Для інших предметів перевіряємо "Enchantments"
+        else {
+            if (!itemStack.getTag().contains("Enchantments", 9)) {
+                return 0; // Якщо немає чарів, досвід дорівнює 0
+            }
+            enchantments = itemStack.getTag().getList("Enchantments", 10);
+        }
 
         int totalXp = amount;
-        int totalLVl = 0;
+        int totalLevel = 0;
 
         // Розрахунок досвіду для кожного зачарування
         for (int i = 0; i < enchantments.size(); i++) {
             CompoundTag enchantment = enchantments.getCompound(i);
             int level = enchantment.getInt("lvl"); // Рівень зачарування
-            totalLVl += level;
+            totalLevel += level;
         }
 
-        return totalXp * totalLVl;
+        return totalXp * totalLevel;
     }
 
     private void melt(MagiculaInfuserBlockEntity container, ResourceLocation type, int amount) {
@@ -126,16 +163,20 @@ public class MagicInfuserMeltingRecipe extends MagicInfuserRecipe {
                     findFirst().ifPresentOrElse((moltenMaterial) -> {
                         if (moltenMaterial.isRightBar()) {
                             container.setRightBarId(Optional.of(moltenMaterial.getMoltenType()));
-                            if (container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount() < amount)
-                                container.addMagicMaterialAmount((container.getMaxMagicMaterialAmount() + container.getAdditionalMagicMaterialAmount()) - container.getMagicMaterialAmount());
-                            else
+                            int maxMagicAmount = container.getMaxMagicMaterialAmount();
+                            int currentMagicAmount = container.getMagicMaterialAmount();
+                            if (maxMagicAmount < amount){
+                                container.addMagicMaterialAmount((maxMagicAmount)-currentMagicAmount);
+                            }
+                            else {
                                 container.addMagicMaterialAmount(amount);
+                            }
                         } else {
                             ItemStack stack = container.getItem(1);
                             container.setLeftBarId(Optional.of(moltenMaterial.getMoltenType()));
                             container.addMoltenMaterialAmount(calculateEpFromEnchantments(stack, amount));
-
                         }
+
 
             }, () -> log.error("Could not assemble MeltingRecipe: {}", this));
         }

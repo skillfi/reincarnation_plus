@@ -1,6 +1,8 @@
 package com.github.skillfi.reincarnation_plus.core.block.entity;
 
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.InfusionBellowsBlock;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,15 +43,24 @@ import java.util.stream.IntStream;
 
 
 public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer, IAnimatable {
-    private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(0, ItemStack.EMPTY);
     private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    @Getter @Setter public boolean boost;
-    @Getter @Setter private int state;
-    @Getter public double speedModifier;
-    @Getter @Setter private int boostduration;
+    @Getter
+    @Setter
+    public boolean boost;
+    @Getter
+    public double speedModifier;
     public boolean needUpdate;
-    @Getter @Setter public int miscAnimationTicks = 0;
+    @Getter
+    @Setter
+    public int miscAnimationTicks = 0;
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(0, ItemStack.EMPTY);
+    @Getter
+    @Setter
+    private int state;
+    @Getter
+    @Setter
+    private int boostduration;
 
 
     public InfusionBellowsBlockEntity(BlockPos position, BlockState state) {
@@ -58,6 +69,31 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
         this.boostduration = 0;
         this.speedModifier = 0.5;
         this.needUpdate = false;
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, InfusionBellowsBlockEntity pEntity) {
+        if (!level.isClientSide()) {
+
+            // Отримання блоку MagicInfuser поруч
+            Direction[] directions = Direction.values();
+            for (Direction direction : directions) {
+                BlockPos neighborPos = pos.relative(direction);
+                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+
+                if (neighborEntity instanceof MagiculaInfuserBlockEntity infuser) {
+                    if (infuser.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getBoostDuration).orElse(0) == 0) {
+                        pEntity.resetBoost();
+                    }
+                    pEntity.updateBoost(infuser.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(IMagiculaInfuserCapability::getBoostDuration).orElse(0));
+                }
+            }
+
+            if (pEntity.needUpdate) {
+                pEntity.setChanged();
+            }
+        }
+
+        pEntity.miscAnimationHandler();
     }
 
     @Override
@@ -162,13 +198,13 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
         return super.getCapability(capability, facing);
     }
 
-    private void updateBoost(int boostduration){
+    private void updateBoost(int boostduration) {
         setBoostduration(boostduration);
         this.getBlockState().setValue(InfusionBellowsBlock.USE, true);
         this.needUpdate = true;
     }
 
-    private void resetBoost(){
+    private void resetBoost() {
         setBoostduration(0);
         this.getBlockState().setValue(InfusionBellowsBlock.USE, false);
         this.needUpdate = true;
@@ -190,34 +226,9 @@ public class InfusionBellowsBlockEntity extends RandomizableContainerBlockEntity
         }
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, InfusionBellowsBlockEntity pEntity) {
-        if (!level.isClientSide()) {
-
-            // Отримання блоку MagicInfuser поруч
-            Direction[] directions = Direction.values();
-            for (Direction direction : directions) {
-                BlockPos neighborPos = pos.relative(direction);
-                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
-
-                if (neighborEntity instanceof MagiculaInfuserBlockEntity infuser) {
-                    if (infuser.getBoostDuration() == 0){
-                        pEntity.resetBoost();
-                    }
-                    pEntity.updateBoost(infuser.getBoostDuration());
-                }
-            }
-
-            if (pEntity.needUpdate) {
-                pEntity.setChanged();
-            }
-        }
-
-        pEntity.miscAnimationHandler();
-    }
-
     // region Geckolib
     private <E extends BlockEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!((BlockEntity)event.getAnimatable()).getBlockState().getValue(InfusionBellowsBlock.USE)) {
+        if (!event.getAnimatable().getBlockState().getValue(InfusionBellowsBlock.USE)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
         }
         return PlayState.CONTINUE;

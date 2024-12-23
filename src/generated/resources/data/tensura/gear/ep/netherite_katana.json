@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:pure_magisteel_katana",
+  "gainEP": 0.015,
+  "item": "tensura:netherite_katana",
+  "maxEP": 50000,
+  "minEP": 10000
+}

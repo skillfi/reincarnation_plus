@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:iron_odachi",
+  "gainEP": 0.015,
+  "item": "tensura:silver_odachi",
+  "maxEP": 25000,
+  "minEP": 5000
+}

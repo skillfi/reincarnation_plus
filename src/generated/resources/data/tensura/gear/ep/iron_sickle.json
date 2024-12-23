@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "tensura:golden_sickle",
+  "evolvingItem": "tensura:low_magisteel_sickle",
   "gainEP": 0.015,
   "item": "tensura:iron_sickle",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

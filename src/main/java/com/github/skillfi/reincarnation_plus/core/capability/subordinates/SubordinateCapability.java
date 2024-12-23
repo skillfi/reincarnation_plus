@@ -55,7 +55,6 @@ public class SubordinateCapability implements ISubordinateCapability{
         if (e.getObject() instanceof Player) {
             e.addCapability(ID, new SubordinatesCapabilityProvider());
         }
-
     }
 
     public static LazyOptional<ISubordinateCapability> getFrom(Player player) {

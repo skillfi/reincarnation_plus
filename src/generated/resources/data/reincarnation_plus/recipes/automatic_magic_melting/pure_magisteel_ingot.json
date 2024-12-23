@@ -1,8 +1,0 @@
-{
-  "type": "reincarnation_plus:automatic_infuser_melting",
-  "input": {
-    "item": "tensura:pure_magisteel_ingot"
-  },
-  "magicules": 720000.0,
-  "magiculesId": "reincarnation_plus:magicules"
-}

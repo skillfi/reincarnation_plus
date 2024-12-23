@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "infusionTime": 6000,
+  "input": {
+    "item": "minecraft:flint"
+  },
+  "primary": {
+    "primaryAmount": 1000,
+    "primaryType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:gunpowder"
+  }
+}

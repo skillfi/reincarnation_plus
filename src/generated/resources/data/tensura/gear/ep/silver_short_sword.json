@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:iron_short_sword",
+  "gainEP": 0.015,
+  "item": "tensura:silver_short_sword",
+  "maxEP": 25000,
+  "minEP": 5000
+}

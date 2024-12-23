@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_evolving",
+  "input": {
+    "item": "minecraft:iron_sword"
+  },
+  "primary": {
+    "primaryAmount": 50000,
+    "primaryType": "reincarnation_plus:existence_points"
+  }
+}

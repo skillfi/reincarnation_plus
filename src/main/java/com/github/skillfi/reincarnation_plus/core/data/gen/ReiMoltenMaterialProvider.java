@@ -23,7 +23,7 @@ public class ReiMoltenMaterialProvider extends CustomDataProvider {
     @Override
     protected void run(BiConsumer<ResourceLocation, Supplier<JsonElement>> biConsumer) {
         MagicInfuserMoltenMaterial.of(MOLTEN_MAGICULES, false, new Color(0, 233, 255, 255), true).buildJson(biConsumer);
-        MagicInfuserMoltenMaterial.of(EP, true, Color.BLUE, false).buildJson(biConsumer);
+        MagicInfuserMoltenMaterial.of(EP, true, Color.ORANGE, false).buildJson(biConsumer);
         MagicInfuserMoltenMaterial.of(INFUSION, false, Color.MAGENTA, false).buildJson(biConsumer);
     }
 

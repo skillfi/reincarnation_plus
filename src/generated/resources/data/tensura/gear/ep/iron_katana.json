@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "tensura:golden_katana",
+  "evolvingItem": "tensura:low_magisteel_katana",
   "gainEP": 0.015,
   "item": "tensura:iron_katana",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

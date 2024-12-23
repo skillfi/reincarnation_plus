@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "infusionTime": 5000,
+  "input": {
+    "item": "tensura:mithril_ingot"
+  },
+  "primary": {
+    "primaryAmount": 225000,
+    "primaryType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "tensura:adamantite_ingot"
+  }
+}

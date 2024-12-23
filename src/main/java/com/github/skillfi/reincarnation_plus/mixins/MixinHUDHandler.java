@@ -1,7 +1,12 @@
 package com.github.skillfi.reincarnation_plus.mixins;
 
 import com.github.manasmods.tensura.handler.client.HUDHandler;
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.api.aura.AuraAPI;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagicAmplifierBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
@@ -69,10 +74,23 @@ public class MixinHUDHandler {
         BlockEntity entity = level.getBlockEntity(blockPos);
         // Отримання значення Aura
         double auraValue = AuraAPI.getAura(level, blockPos);
-
+        if (entity instanceof MagicAmplifierBlockEntity || entity instanceof MagiculaInfuserBlockEntity){
+            IMagiculaInfuserCapability capability = entity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
+            text.set(Component.translatable("reincarantion_plus.attribute.magic").getString());
+            font.draw(poseStack, text.get(), (float) (left + 7), (float) textY.get(), Color.CYAN.getRGB());
+            textY.addAndGet(10);
+            text.set("-> " + capability.getMagicMaterialAmount());
+            font.draw(poseStack, text.get(), (float) (left + 7), (float) textY.get(), Color.CYAN.getRGB());
+            textY.addAndGet(10);
+            text.set(Component.translatable("reincarantion_plus.attribute.EP").getString());
+            font.draw(poseStack, text.get(), (float) (left + 7), (float) textY.get(), Color.ORANGE.getRGB());
+            textY.addAndGet(10);
+            text.set("-> " + capability.getMoltenAmount());
+            font.draw(poseStack, text.get(), (float) (left + 7), (float) textY.get(), Color.ORANGE.getRGB());
+        }
         // Округлення значення до 1000
         double roundedAuraValue = Math.round(auraValue / 1000.0);
-        if (maxAge == -1 && age == -1){
+        if (maxAge == -1 && age == -1 && !(entity instanceof MagicAmplifierBlockEntity) && !(entity instanceof MagiculaInfuserBlockEntity)){
             text.set(Component.translatable("reincarantion_plus.attribute.in_chunk").getString());
             font.draw(poseStack, text.get(), (float) (left + 7), (float) textY.get(), Color.ORANGE.getRGB());
             textY.addAndGet(10);

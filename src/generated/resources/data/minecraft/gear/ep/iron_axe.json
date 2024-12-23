@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "minecraft:golden_axe",
+  "evolvingItem": "tensura:low_magisteel_axe",
   "gainEP": 0.015,
   "item": "minecraft:iron_axe",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

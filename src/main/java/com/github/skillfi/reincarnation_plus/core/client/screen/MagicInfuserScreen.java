@@ -1,6 +1,8 @@
 package com.github.skillfi.reincarnation_plus.core.client.screen;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.menu.MagicInfuserMenu;
 import com.github.skillfi.reincarnation_plus.core.data.pack.MagicInfuserMoltenMaterial;
 import com.github.skillfi.reincarnation_plus.core.data.pack.ReiData;
@@ -38,11 +40,11 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
      */
     public MagicInfuserScreen(MagicInfuserMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
-
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
         // Ініціалізація матеріалів
-        this.leftBarMaterial = menu.blockEntity.getLeftBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
-        this.rightBarMaterial = menu.blockEntity.getRightBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
-        this.infusionBarMaterial = menu.blockEntity.getInfusionBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.leftBarMaterial = capability.getLeftBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.rightBarMaterial = capability.getRightBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
+        this.infusionBarMaterial = capability.getInfusionBarId().flatMap((location) -> ReiData.getMagicInfuserMoltenMaterials().stream().filter((moltenMaterial) -> moltenMaterial.getMoltenType().equals(location)).findFirst());
 
         this.imageWidth = 256;
         this.imageHeight = 145;
@@ -55,16 +57,16 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
     @Override
     protected void containerTick() {
         super.containerTick();
-
-        if (hasChanged((this.menu).blockEntity.getLeftBarId(), this.leftBarMaterial)) {
-            this.leftBarMaterial = materialOf((this.menu).blockEntity.getLeftBarId());
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
+        if (hasChanged(capability.getLeftBarId(), this.leftBarMaterial)) {
+            this.leftBarMaterial = materialOf(capability.getLeftBarId());
         }
 
-        if (hasChanged((this.menu).blockEntity.getRightBarId(), this.rightBarMaterial)) {
-            this.rightBarMaterial = materialOf((this.menu).blockEntity.getRightBarId());
+        if (hasChanged(capability.getRightBarId(), this.rightBarMaterial)) {
+            this.rightBarMaterial = materialOf(capability.getRightBarId());
         }
-        if (hasChanged((this.menu).blockEntity.getInfusionBarId(), this.infusionBarMaterial)) {
-            this.infusionBarMaterial = materialOf((this.menu).blockEntity.getInfusionBarId());
+        if (hasChanged(capability.getInfusionBarId(), this.infusionBarMaterial)) {
+            this.infusionBarMaterial = materialOf(capability.getInfusionBarId());
         }
     }
 
@@ -265,6 +267,7 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
      * @param pMouseY координата Y положення миші
      */
     protected void renderTooltip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+        IMagiculaInfuserCapability capability = menu.blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
         // Перевіряє, чи не несе меню об'єкт (або предмет в слоті), та якщо курсор знаходиться на слоті з предметом.
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             // Відображає підказку для предмету в слоті, на якому знаходиться курсор миші.
@@ -272,11 +275,12 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
         }
         if (this.isHovering(220, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
             // Перевіряє, чи лівий бар переповнений і містить матеріал.
-            if (!this.menu.blockEntity.getRightBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && this.menu.blockEntity.getMagicMaterialAmount() > 0) {
+            int magicAmount = this.menu.getMagicules();
+            int maxMagicAmount = this.menu.getMaxMagicules();
+            if (!capability.getRightBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && magicAmount > 0) {
                 // Формує текстове значення для відображення рівня матеріалу.
-                int magicAmount = this.menu.blockEntity.getMagicMaterialAmount();
-                String valueText = magicAmount + "/" + (this.menu.blockEntity.getMaxMagicMaterialAmount()+this.menu.blockEntity.getAdditionalMagicMaterialAmount());
+                String valueText = magicAmount + "/" + (maxMagicAmount);
                 // Відображає інструментальну підказку з інформацією про матеріал у лівій смузі.
                 this.rightBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderMaterialTooltip(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
@@ -288,12 +292,13 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
 
         // Перевіряє, чи курсор миші знаходиться в області правої смуги інфузії.
         if (this.isHovering(95, 5, 15, 76, (double)pMouseX, (double)pMouseY)) {
+            int existencePointsAmount = this.menu.getMoltenAmount();
+            int maxExistencePointsAmount = this.menu.getMaxMoltenAmount();
             // Перевіряє, чи правий бар переповнений і містить матеріал.
-            if (!((MagicInfuserMenu)this.menu).blockEntity.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && ((MagicInfuserMenu)this.menu).blockEntity.getMoltenAmount() > 0) {
+            if (!capability.getLeftBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && existencePointsAmount > 0) {
                 // Формує текстове значення для відображення рівня магічного матеріалу.
-                int existencePointsAmount = this.menu.blockEntity.getMoltenAmount();
-                String valueText = existencePointsAmount + "/" + 35000;
+                String valueText = existencePointsAmount + "/" + maxExistencePointsAmount;
                 // Відображає інструментальну підказку з інформацією про матеріал у правій смузі.
                 this.leftBarMaterial.ifPresent((moltenMaterial) ->
                         this.renderMaterialTooltip(pPoseStack, pMouseX, pMouseY, moltenMaterial, valueText));
@@ -305,11 +310,11 @@ public class MagicInfuserScreen extends AbstractContainerScreen<MagicInfuserMenu
         // Перевіряє, чи курсор миші знаходиться в області правої смуги інфузії.
         if (this.isHovering(137, 64, 62, 4, (double)pMouseX, (double)pMouseY)) {
             // Перевіряє, чи правий бар переповнений і містить матеріал.
-            if (!((MagicInfuserMenu)this.menu).blockEntity.getInfusionBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
-                    && ((MagicInfuserMenu)this.menu).blockEntity.getInfusionTime() > 0) {
+            if (!capability.getInfusionBarId().equals(Optional.of(MagicInfusionRecipe.EMPTY))
+                    && capability.getInfusionTime() > 0) {
                 // Формує текстове значення для відображення рівня магічного матеріалу.
-                int existencePointsAmount = this.menu.blockEntity.getInfusionTime();
-                int maxInfusionTime = this.menu.blockEntity.getMaxInfusionTime();
+                int existencePointsAmount = capability.getInfusionTime();
+                int maxInfusionTime = capability.getMaxInfusionTime();
                 String valueText = existencePointsAmount + "/" + maxInfusionTime;
                 // Відображає інструментальну підказку з інформацією про матеріал у правій смузі.
                 this.infusionBarMaterial.ifPresent((moltenMaterial) ->

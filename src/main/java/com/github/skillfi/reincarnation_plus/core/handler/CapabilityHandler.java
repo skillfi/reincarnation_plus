@@ -2,6 +2,7 @@ package com.github.skillfi.reincarnation_plus.core.handler;
 
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.capability.aura.AuraChunkCapabilityImpl;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.capability.magicule.IBlockEPStorage;
 import com.github.skillfi.reincarnation_plus.core.capability.subordinates.ISubordinateCapability;
 import com.github.skillfi.reincarnation_plus.core.capability.subordinates.SubordinateCapability;
@@ -29,6 +30,7 @@ public class CapabilityHandler {
         e.register(ISubordinateCapability.class);
         e.register(IBlockEPStorage.class);
         e.register(AuraChunkCapabilityImpl.class);
+        e.register(IMagiculaInfuserCapability.class);
     }
 
     @SubscribeEvent

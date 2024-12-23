@@ -1,0 +1,15 @@
+{
+  "type": "reincarnation_plus:magic_infusion",
+  "infusionTime": 120000,
+  "input": {
+    "item": "minecraft:iron_block"
+  },
+  "primary": {
+    "primaryAmount": 40000,
+    "primaryType": "reincarnation_plus:magicules"
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:ancient_debris"
+  }
+}

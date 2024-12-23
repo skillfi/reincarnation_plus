@@ -1,7 +1,7 @@
 {
-  "evolvingItem": "minecraft:golden_shovel",
+  "evolvingItem": "tensura:low_magisteel_shovel",
   "gainEP": 0.015,
   "item": "minecraft:iron_shovel",
-  "maxEP": 2000,
-  "minEP": 500
+  "maxEP": 50000,
+  "minEP": 10000
 }

@@ -1,16 +1,22 @@
 package com.github.skillfi.reincarnation_plus.core.block;
 
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagicAmplifierBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
-import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import com.github.skillfi.reincarnation_plus.core.block.state.properties.MagicInfuserPart;
 import com.github.skillfi.reincarnation_plus.core.block.state.properties.ReiBlockStateProperties;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +34,10 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
@@ -50,6 +59,15 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     private static final VoxelShape TOP_SHAPE;
     private static final VoxelShape BASE_SHAPE;
 
+    static {
+        FACING = BlockStateProperties.HORIZONTAL_FACING;
+        LIT = BlockStateProperties.LIT;
+        INFUSION = BooleanProperty.create("infuse");
+        WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        PART = ReiBlockStateProperties.MAGIC_INFUSER_PART;
+        TOP_SHAPE = Shapes.or(box(3.0F, 0.0F, 3.0F, 13.0F, 2.0F, 13.0F), box(4.0F, 2.0F, 4.0F, 12.0F, 12.0F, 12.0F), box(3.0F, 12.0F, 3.0F, 13.0F, 13.0F, 13.0F), box(2.0F, 13.0F, 2.0F, 14.0F, 15.0F, 14.0F), box(3.0F, 15.0F, 3.0F, 13.0F, 16.0F, 13.0F));
+        BASE_SHAPE = Shapes.or(box(0.0F, 0.0F, 0.0F, 16.0F, 12.0F, 16.0F), box(1.0F, 12.0F, 1.0F, 15.0F, 14.0F, 15.0F), box(2.0F, 14.0F, 2.0F, 14.0F, 16.0F, 14.0F));
+    }
 
     public MagiculaInfuserBlock() {
         super(Properties.of(Material.METAL, MaterialColor.DEEPSLATE).strength(50.0F, 1200.0F).sound(SoundType.STONE).noOcclusion().lightLevel(litBlockEmission(13)));
@@ -61,19 +79,13 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
                 setValue(WATERLOGGED, Boolean.FALSE));
     }
 
+    public static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
+        return (state) -> (Boolean) state.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
+    }
+
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         return 15;
-    }
-
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        if (!pLevel.isClientSide()) {
-            BlockPos blockpos = this.getOtherPartPosition(pPos, pState.getValue(PART));
-            pLevel.setBlock(blockpos, pState.setValue(PART, MagicInfuserPart.TOP).setValue(WATERLOGGED, this.isWaterAtPosition(pLevel, blockpos)), 3);
-            pLevel.blockUpdated(pPos, Blocks.AIR);
-            pState.updateNeighbourShapes(pLevel, pPos, 3);
-        }
     }
 
     private BlockPos getOtherPartPosition(BlockPos sourcePos, MagicInfuserPart part) {
@@ -87,7 +99,7 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         if (!pLevel.isClientSide()) {
-            BlockPos blockpos = this.getOtherPartPosition(pPos, (MagicInfuserPart) pState.getValue(PART));
+            BlockPos blockpos = this.getOtherPartPosition(pPos, pState.getValue(PART));
             pLevel.setBlockAndUpdate(blockpos, Blocks.AIR.defaultBlockState());
         }
     }
@@ -95,7 +107,7 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
         if (!pLevel.isClientSide()) {
             BlockState pState = pLevel.getBlockState(pPos);
-            BlockPos blockpos = this.getOtherPartPosition(pPos, (MagicInfuserPart) pState.getValue(PART));
+            BlockPos blockpos = this.getOtherPartPosition(pPos, pState.getValue(PART));
             pLevel.setBlockAndUpdate(blockpos, Blocks.AIR.defaultBlockState());
         }
     }
@@ -103,11 +115,11 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
         Level level = pContext.getLevel();
-        return blockpos.getY() <= level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(pContext) ? (BlockState)((BlockState)this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())).setValue(WATERLOGGED, this.isWaterAtPosition(level, blockpos)) : null;
+        return blockpos.getY() <= level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(pContext) ? this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, this.isWaterAtPosition(level, blockpos)) : null;
     }
 
     public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
-        if ((Boolean)pState.getValue(WATERLOGGED)) {
+        if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
@@ -118,54 +130,49 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
         return level.getFluidState(blockPos).is(Fluids.WATER);
     }
 
-
-
     public BlockState rotate(BlockState pState, Rotation pRotation) {
-        return (BlockState)pState.setValue(FACING, pRotation.rotate((Direction)pState.getValue(FACING)));
+        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
 
     public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation((Direction)pState.getValue(FACING)));
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if ((Boolean)pState.getValue(LIT) && ((MagicInfuserPart)pState.getValue(PART)).equals(MagicInfuserPart.BASE)) {
-            double d0 = (double)pPos.getX() + (double)0.5F;
-            double d1 = (double)pPos.getY();
-            double d2 = (double)pPos.getZ() + (double)0.5F;
+        if (pState.getValue(LIT) && pState.getValue(PART).equals(MagicInfuserPart.BASE)) {
+            double d0 = (double) pPos.getX() + (double) 0.5F;
+            double d1 = pPos.getY();
+            double d2 = (double) pPos.getZ() + (double) 0.5F;
             if (pRandom.nextDouble() < 0.1) {
                 pLevel.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
             }
 
-            Direction direction = (Direction)pState.getValue(FACING);
+            Direction direction = pState.getValue(FACING);
             Direction.Axis direction$axis = direction.getAxis();
             double d3 = pRandom.nextDouble() * 0.6 - 0.3;
-            double d4 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52 : d3;
-            double d5 = pRandom.nextDouble() * (double)6.0F / (double)16.0F;
-            double d6 = direction$axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.52 : d3;
-            pLevel.addParticle(ParticleTypes.SMOKE, d0 + d4, d1 + d5, d2 + d6, (double)0.0F, (double)0.0F, (double)0.0F);
-            pLevel.addParticle(ParticleTypes.FLAME, d0 + d4, d1 + d5, d2 + d6, (double)0.0F, (double)0.0F, (double)0.0F);
-        } else if ((Boolean)pState.getValue(INFUSION) && ((MagicInfuserPart)pState.getValue(PART)).equals(MagicInfuserPart.BASE)) {
-            double d0 = (double)pPos.getX() + (double)0.5F;
-            double d1 = (double)pPos.getY();
-            double d2 = (double)pPos.getZ() + (double)0.5F;
+            double d4 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52 : d3;
+            double d5 = pRandom.nextDouble() * (double) 6.0F / (double) 16.0F;
+            double d6 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52 : d3;
+            pLevel.addParticle(ParticleTypes.SMOKE, d0 + d4, d1 + d5, d2 + d6, 0.0F, 0.0F, 0.0F);
+            pLevel.addParticle(ParticleTypes.FLAME, d0 + d4, d1 + d5, d2 + d6, 0.0F, 0.0F, 0.0F);
+        } else if (pState.getValue(INFUSION) && pState.getValue(PART).equals(MagicInfuserPart.BASE)) {
+            double d0 = (double) pPos.getX() + (double) 0.5F;
+            double d1 = pPos.getY();
+            double d2 = (double) pPos.getZ() + (double) 0.5F;
             if (pRandom.nextDouble() < 0.1) {
                 pLevel.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
             }
 
-            Direction direction = (Direction)pState.getValue(FACING);
+            Direction direction = pState.getValue(FACING);
             Direction.Axis direction$axis = direction.getAxis();
             double d3 = pRandom.nextDouble() * 0.6 - 0.3;
-            double d4 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52 : d3;
-            double d5 = pRandom.nextDouble() * (double)6.0F / (double)16.0F;
-            double d6 = direction$axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.52 : d3;
-            pLevel.addParticle(ParticleTypes.SMOKE, d0 + d4, d1 + d5, d2 + d6, (double)0.0F, (double)0.0F, (double)0.0F);
-            pLevel.addParticle(ParticleTypes.FLAME, d0 + d4, d1 + d5, d2 + d6, (double)0.0F, (double)0.0F, (double)0.0F);}
+            double d4 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52 : d3;
+            double d5 = pRandom.nextDouble() * (double) 6.0F / (double) 16.0F;
+            double d6 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52 : d3;
+            pLevel.addParticle(ParticleTypes.SMOKE, d0 + d4, d1 + d5, d2 + d6, 0.0F, 0.0F, 0.0F);
+            pLevel.addParticle(ParticleTypes.FLAME, d0 + d4, d1 + d5, d2 + d6, 0.0F, 0.0F, 0.0F);
+        }
 
-    }
-
-    public static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
-        return (state) -> (Boolean)state.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
     }
 
     public FluidState getFluidState(BlockState pState) {
@@ -173,19 +180,51 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state){
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+        if (!pLevel.isClientSide()) {
+            BlockPos blockpos = this.getOtherPartPosition(pPos, pState.getValue(PART));
+            pLevel.setBlock(blockpos, pState.setValue(PART, MagicInfuserPart.TOP).setValue(WATERLOGGED, this.isWaterAtPosition(pLevel, blockpos)), 3);
+            pLevel.blockUpdated(pPos, Blocks.AIR);
+            pState.updateNeighbourShapes(pLevel, pPos, 3);
+        }
+        if (blockEntity instanceof MagiculaInfuserBlockEntity infuserBlock) {
+            CompoundTag tag = pStack.getTagElement("BlockEntityTag");
+            if (tag != null) {
+                infuserBlock.load(tag);
+            }
+        }
+        BlockEntity conteinerBlockEntity = pLevel.getBlockEntity(pPos.below());
+        if (conteinerBlockEntity instanceof MagicAmplifierBlockEntity conteiner) {
+            IMagiculaInfuserCapability capability = blockEntity.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
+            if (capability.getMagicMaterialAmount() > capability.getMaxMagicMaterialAmount()) {
+                int amount = capability.getMagicMaterialAmount() - capability.getMaxMagicMaterialAmount();
+                conteiner.addMagicMaterialAmount(amount);
+                capability.decreseMagicAmount(amount);
+            }
+        }
+    }
+
+    @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof MagiculaInfuserBlockEntity) {
-                MagiculaInfuserBlockEntity infuserBlock = (MagiculaInfuserBlockEntity)blockEntity;
-                infuserBlock.drops();
+            if (blockEntity instanceof MagiculaInfuserBlockEntity infuserBlock) {
+                // Зберігаємо NBT дані у випадаючий предмет
+                ItemStack stack = new ItemStack(this);
+                CompoundTag tag = infuserBlock.saveWithFullMetadata();
+                if (!tag.isEmpty()) {
+                    stack.getOrCreateTag().put("BlockEntityTag", tag);
+                }
+                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), stack);
             }
         }
-
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
@@ -197,7 +236,7 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     }
 
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return pLevel.isClientSide() ? InteractionResult.sidedSuccess(true) : this.openMenu((ServerPlayer)pPlayer, pLevel, ((MagicInfuserPart)pState.getValue(PART)).equals(MagicInfuserPart.BASE) ? pPos : pPos.below());
+        return pLevel.isClientSide() ? InteractionResult.sidedSuccess(true) : this.openMenu((ServerPlayer) pPlayer, pLevel, pState.getValue(PART).equals(MagicInfuserPart.BASE) ? pPos : pPos.below());
     }
 
     private InteractionResult openMenu(ServerPlayer player, Level level, BlockPos pos) {
@@ -215,16 +254,6 @@ public class MagiculaInfuserBlock extends BaseEntityBlock implements SimpleWater
     }
 
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return state.getValue(PART) == MagicInfuserPart.BASE ? createTickerHelper(type, (BlockEntityType) ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), MagiculaInfuserBlockEntity::tick) : null;
-    }
-
-    static {
-        FACING = BlockStateProperties.HORIZONTAL_FACING;
-        LIT = BlockStateProperties.LIT;
-        INFUSION = BooleanProperty.create("infuse");
-        WATERLOGGED = BlockStateProperties.WATERLOGGED;
-        PART = ReiBlockStateProperties.MAGIC_INFUSER_PART;
-        TOP_SHAPE = Shapes.or(box((double)3.0F, (double)0.0F, (double)3.0F, (double)13.0F, (double)2.0F, (double)13.0F), new VoxelShape[]{box((double)4.0F, (double)2.0F, (double)4.0F, (double)12.0F, (double)12.0F, (double)12.0F), box((double)3.0F, (double)12.0F, (double)3.0F, (double)13.0F, (double)13.0F, (double)13.0F), box((double)2.0F, (double)13.0F, (double)2.0F, (double)14.0F, (double)15.0F, (double)14.0F), box((double)3.0F, (double)15.0F, (double)3.0F, (double)13.0F, (double)16.0F, (double)13.0F)});
-        BASE_SHAPE = Shapes.or(box((double)0.0F, (double)0.0F, (double)0.0F, (double)16.0F, (double)12.0F, (double)16.0F), new VoxelShape[]{box((double)1.0F, (double)12.0F, (double)1.0F, (double)15.0F, (double)14.0F, (double)15.0F), box((double)2.0F, (double)14.0F, (double)2.0F, (double)14.0F, (double)16.0F, (double)14.0F)});
+        return state.getValue(PART) == MagicInfuserPart.BASE ? createTickerHelper(type, ReiBlockEntities.MAGICAL_INFUSER_ENTITY.get(), MagiculaInfuserBlockEntity::tick) : null;
     }
 }

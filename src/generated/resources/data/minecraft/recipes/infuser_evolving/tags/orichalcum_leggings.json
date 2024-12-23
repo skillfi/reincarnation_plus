@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_evolving",
+  "input": {
+    "item": "tensura:orichalcum_leggings"
+  },
+  "primary": {
+    "primaryAmount": 750000,
+    "primaryType": "reincarnation_plus:existence_points"
+  }
+}

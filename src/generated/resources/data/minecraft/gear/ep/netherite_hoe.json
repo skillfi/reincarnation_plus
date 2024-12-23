@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:pure_magisteel_hoe",
+  "gainEP": 0.015,
+  "item": "minecraft:netherite_hoe",
+  "maxEP": 50000,
+  "minEP": 10000
+}

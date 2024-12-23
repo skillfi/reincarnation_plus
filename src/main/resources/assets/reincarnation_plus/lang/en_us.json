@@ -48,7 +48,7 @@
   "block.reincarnation_plus.infusion_bellows": "Infusion Bellows",
   "block.reincarnation_plus.magic_pipe": "Magic Pipe",
   "item.reincarnation_plus.super_charger": "SuperCharger",
-  "item.reincarnation_plus.siphon": "Siphon",
+  "block.reincarnation_plus.siphon": "Siphon",
   "block.reincarnation_plus.ore_iron": "Iron Ore",
   "block.reincarnation_plus.ore_gold": "Gold Ore",
   "block.reincarnation_plus.ore_copper": "Copper Ore",
@@ -57,6 +57,8 @@
   "reincarantion_plus.attribute.ep_storage": "EP Storage",
   "reincarantion_plus.attribute.max_ep": "Max EP",
   "reincarantion_plus.attribute.in_chunk": "In chunk",
+  "reincarantion_plus.attribute.magic": "Magic",
+  "reincarantion_plus.attribute.EP": "EP",
 
   "_comment5": "Tabs",
   "itemGroup.reincarnation_plus_items": "REI: Items",

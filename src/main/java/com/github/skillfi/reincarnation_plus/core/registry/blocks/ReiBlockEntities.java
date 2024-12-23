@@ -18,6 +18,7 @@ import com.github.skillfi.reincarnation_plus.core.block.ores.iron.*;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -50,9 +51,10 @@ public class ReiBlockEntities {
 	public static final RegistryObject<BlockEntityType<?>> GOLD_MAGIC_ORE_AGE3;
 	
 	public static final RegistryObject<BlockEntityType<MagiculaInfuserBlockEntity>> MAGICAL_INFUSER_ENTITY;
-	public static final RegistryObject<BlockEntityType<AutomaticMagiculaInfuserBlockEntity>> AUTOMATIC_MAGICAL_INFUSER_ENTITY;
+	public static final RegistryObject<BlockEntityType<AutoInfuserBlockEntity>> AUTOMATIC_MAGICAL_INFUSER_ENTITY;
 	public static final RegistryObject<BlockEntityType<MagicAmplifierBlockEntity>> MAGIC_AMPLIFIER;
 	public static final RegistryObject<BlockEntityType<InfusionBellowsBlockEntity>> INFUSION_BELLOWS;
+	public static final RegistryObject<BlockEntityType<SiphonBlockEntity>> SIPHON;
 
 	// Ore block entities
 	private static final String[] METALS = {"iron", "copper", "gold"};
@@ -110,9 +112,10 @@ public class ReiBlockEntities {
 
 
 		MAGICAL_INFUSER_ENTITY  = REGISTRY.register("magicula_infuser", ()->BlockEntityType.Builder.of(MagiculaInfuserBlockEntity::new, ReiBlocks.MAGICAL_INFUSER.get()).build((Type)null));
-		AUTOMATIC_MAGICAL_INFUSER_ENTITY = REGISTRY.register("automatic_magicula_infuser", ()->BlockEntityType.Builder.of(AutomaticMagiculaInfuserBlockEntity::new, ReiBlocks.AUTOMATIC_MAGICAL_INFUSER.get()).build((Type)null));
+		AUTOMATIC_MAGICAL_INFUSER_ENTITY = REGISTRY.register("automatic_magicula_infuser", ()->BlockEntityType.Builder.of(AutoInfuserBlockEntity::new, ReiBlocks.AUTOMATIC_MAGICAL_INFUSER.get()).build((Type)null));
 		MAGIC_AMPLIFIER = REGISTRY.register("magic_amplifier", () -> BlockEntityType.Builder.of(MagicAmplifierBlockEntity::new, ReiBlocks.MAGIC_AMPLIFIER.get()).build((Type)null));
 		INFUSION_BELLOWS = REGISTRY.register("infusion_bellows", () -> BlockEntityType.Builder.of(InfusionBellowsBlockEntity::new, ReiBlocks.INFUSION_BELLOWS_BLOCK_REGISTRY_OBJECT.get()).build((Type)null));
+		SIPHON = REGISTRY.register("siphon", () -> BlockEntityType.Builder.of(SiphonBlockEntity::new, ReiBlocks.SIPHON_BLOCK.get()).build((Type)null));
 	}
 
 	public static void init(IEventBus modEventBus) {
@@ -132,6 +135,8 @@ public class ReiBlockEntities {
 		public static final RegistryObject<AutomaticMagiculaInfuserBlock> AUTOMATIC_MAGICAL_INFUSER;
 		@GenerateBlockLoot.SelfDrop
 		public static final RegistryObject<InfusionBellowsBlock> INFUSION_BELLOWS_BLOCK_REGISTRY_OBJECT;
+		@GenerateBlockLoot.SelfDrop
+		public static final RegistryObject<SiphonBlock> SIPHON_BLOCK;
 		@GenerateBlockLoot.OreDrop("minecraft:raw_iron")
 		@GenerateItemModels.SingleTextureModel
 		public static final RegistryObject<Block> IRON_MAGIC_ORE;
@@ -282,7 +287,7 @@ public class ReiBlockEntities {
 			MAGICAL_INFUSER = registry.register("magicula_infuser", MagiculaInfuserBlock::new);
 			AUTOMATIC_MAGICAL_INFUSER = registry.register("automatic_magicula_infuser", AutomaticMagiculaInfuserBlock::new);
 			INFUSION_BELLOWS_BLOCK_REGISTRY_OBJECT = registry.register("infusion_bellows", InfusionBellowsBlock::new);
-		
+			SIPHON_BLOCK = registry.register("siphon", SiphonBlock::new);
 //			Iron Ore
 			IRON_MAGIC_ORE_AGE1 = registry.register("ore_iron_age1", () -> new IronOreStage1Block(IronOreStage1Block.stoneProperties()));
 			IRON_MAGIC_ORE_AGE2 = registry.register("ore_iron_age2", () -> new IronOreStage2Block(IronOreStage1Block.stoneProperties()));

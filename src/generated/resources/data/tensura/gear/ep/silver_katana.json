@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:iron_katana",
+  "gainEP": 0.015,
+  "item": "tensura:silver_katana",
+  "maxEP": 25000,
+  "minEP": 5000
+}

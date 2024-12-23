@@ -1,0 +1,10 @@
+{
+  "type": "reincarnation_plus:infuser_evolving",
+  "input": {
+    "item": "tensura:pure_magisteel_long_sword"
+  },
+  "primary": {
+    "primaryAmount": 225000,
+    "primaryType": "reincarnation_plus:existence_points"
+  }
+}

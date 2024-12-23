@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "tensura:pure_magisteel_helmet",
+  "gainEP": 0.015,
+  "item": "minecraft:netherite_helmet",
+  "maxEP": 50000,
+  "minEP": 10000
+}

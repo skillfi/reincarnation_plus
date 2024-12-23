@@ -1,0 +1,7 @@
+{
+  "evolvingItem": "minecraft:iron_sword",
+  "gainEP": 0.015,
+  "item": "tensura:silver_sword",
+  "maxEP": 25000,
+  "minEP": 5000
+}

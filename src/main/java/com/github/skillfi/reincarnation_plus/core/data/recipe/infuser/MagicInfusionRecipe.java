@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -42,52 +43,46 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
     @Getter private final ItemStack output;
 
     public boolean matches(MagiculaInfuserBlockEntity pContainer, Level level) {
-        // Перевірка, чи вхідний слот має потрібний ItemStack
         ItemStack inputStack = pContainer.getItem(2).copy();
-
-
-        // Перевірка вихідного слоту
         ItemStack outputStack = pContainer.getItem(3);
 
-        // Перевірка кількості вихідного предмета (не перевищує максимум)
+        // Перевірка вихідного слоту
         if (!outputStack.isEmpty() && outputStack.getCount() + this.output.getCount() > outputStack.getMaxStackSize()) {
             return false;
         }
 
+        // Перевірка відповідності вхідного предмета
         if (!this.input.test(inputStack)) {
             return false;
         }
 
-        if (!this.secondaryType.equals(EMPTY)) {
-            if (pContainer.getLeftBarId().isEmpty() || ((ResourceLocation)pContainer.getLeftBarId().get()).equals(EMPTY)) {
-                return false;
-            }
+        // Перевірка лівого слоту (secondaryType)
+        boolean isSecondaryValid = pContainer.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(cap -> {
+            Optional<ResourceLocation> leftBarId = cap.getLeftBarId();
+            if (this.secondaryType.equals(EMPTY)) return true;
 
-            if (!((ResourceLocation)pContainer.getLeftBarId().get()).equals(this.secondaryType)) {
-                return false;
-            }
+            if (leftBarId.isEmpty() || leftBarId.get().equals(EMPTY)) return false;
+            if (!leftBarId.get().equals(this.secondaryType)) return false;
+            return cap.getMoltenAmount() >= this.secondaryAmount;
+        }).orElse(false);
 
-            if (pContainer.getMoltenAmount() < this.secondaryAmount) {
-                return false;
-            }
+        if (!isSecondaryValid) {
+            return false;
         }
 
-        // Перевірка для лівого входу
-        if (!this.primaryType.equals(EMPTY)) {
-            if (!pContainer.getRightBarId().isEmpty() && !((ResourceLocation)pContainer.getRightBarId().get()).equals(EMPTY)) {
-                if (!((ResourceLocation)pContainer.getRightBarId().get()).equals(this.primaryType)) {
-                    return false;
-                } else {
-                    return pContainer.getMagicMaterialAmount() >= this.primaryAmount;
-                }
-            } else {
-                return false;
-            }
-        }
+        // Перевірка правого слоту (primaryType)
+        boolean isPrimaryValid = pContainer.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).map(cap -> {
+            Optional<ResourceLocation> rightBarId = cap.getRightBarId();
+            if (this.primaryType.equals(EMPTY)) return true;
 
-        // Якщо лівий вхід порожній, рецепт завжди підходить
-        return true;
+            if (rightBarId.isEmpty() || rightBarId.get().equals(EMPTY)) return false;
+            if (!rightBarId.get().equals(this.primaryType)) return false;
+            return cap.getMagicMaterialAmount() >= this.primaryAmount;
+        }).orElse(false);
+
+        return isPrimaryValid;
     }
+
 
 
     public ItemStack assemble(MagiculaInfuserBlockEntity pContainer) {

@@ -92,9 +92,7 @@ public class InfusionEvolveRecipeCategory implements IRecipeCategory<InfuserEvol
 
     public void setRecipe(IRecipeLayoutBuilder builder, InfuserEvolvingRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 36).addIngredients(recipe.getInput());
-        ItemStack output = recipe.getInput().getItems()[0];
-        initiateItemEP(output);
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 98, 36).addItemStack(output);
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 98, 36).addItemStack(recipe.getResultItem());
     }
 
     public void draw(InfuserEvolvingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {

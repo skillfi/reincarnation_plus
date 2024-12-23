@@ -1,9 +1,7 @@
 package com.github.skillfi.reincarnation_plus.core.block.client.automatic_infuser;
 
 import com.github.skillfi.reincarnation_plus.core.block.AutomaticMagiculaInfuserBlock;
-import com.github.skillfi.reincarnation_plus.core.block.MagiculaInfuserBlock;
-import com.github.skillfi.reincarnation_plus.core.block.entity.AutomaticMagiculaInfuserBlockEntity;
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.AutoInfuserBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -22,17 +20,17 @@ import net.minecraft.world.level.LightLayer;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
-public class AutomaticMagiculaInfuserRenderer extends GeoBlockRenderer<AutomaticMagiculaInfuserBlockEntity> {
+public class AutomaticMagiculaInfuserRenderer extends GeoBlockRenderer<AutoInfuserBlockEntity> {
     public AutomaticMagiculaInfuserRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {
         super(rendererDispatcherIn, new AutomaticMagiculaInfuserBlockModel());
     }
 
     @Override
-    public RenderType getRenderType(AutomaticMagiculaInfuserBlockEntity animatable, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, ResourceLocation texture) {
+    public RenderType getRenderType(AutoInfuserBlockEntity animatable, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, ResourceLocation texture) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 
-    public void renderEarly(AutomaticMagiculaInfuserBlockEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderEarly(AutoInfuserBlockEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         super.renderEarly(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         // Знаходимо кістку Infusion
         IBone infusion = this.getGeoModelProvider().getBone("Infusion");

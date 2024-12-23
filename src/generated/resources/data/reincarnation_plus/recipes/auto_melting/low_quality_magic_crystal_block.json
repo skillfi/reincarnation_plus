@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "item": "tensura:low_quality_magic_crystal_block"
+  },
+  "moltenAmount": 22500,
+  "moltenType": "reincarnation_plus:magicules"
+}

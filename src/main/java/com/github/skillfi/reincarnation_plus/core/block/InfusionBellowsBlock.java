@@ -1,7 +1,10 @@
 package com.github.skillfi.reincarnation_plus.core.block;
 
-import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.entity.InfusionBellowsBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
+import com.github.skillfi.reincarnation_plus.core.capability.block.IMagiculaInfuserCapability;
+import com.github.skillfi.reincarnation_plus.core.capability.block.MagiculaInfuserCapability;
 import com.github.skillfi.reincarnation_plus.core.registry.blocks.ReiBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +14,10 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -34,6 +40,12 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
     public static BooleanProperty IDLE;
     public static BooleanProperty USE;
     public static BooleanProperty BOOST;
+
+    static {
+        IDLE = BooleanProperty.create("idle");
+        USE = BooleanProperty.create("use");
+        BOOST = BooleanProperty.create("boost");
+    }
 
     public InfusionBellowsBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL)
@@ -97,9 +109,10 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
                     BlockPos neighborPos = pos.relative(direction);
                     BlockEntity neighborEntity = world.getBlockEntity(neighborPos);
                     if (neighborEntity instanceof MagiculaInfuserBlockEntity infuser) {
-                        if (infuser.getInfusionProgress() < 90 && infuser.getInfusionProgress() >= 0) {
+                        IMagiculaInfuserCapability capability = infuser.getCapability(ReiMod.MAGICULA_INFUSER_CAPABILITY).orElse(new MagiculaInfuserCapability());
+                        if (capability.getInfusionProgress() < 90 && capability.getInfusionProgress() >= 0) {
                             infuser.boost(mehBlockEntity.speedModifier);
-                            infuser.setBoostDuration(40);
+                            capability.setBoostDuration(40);
                             BlockState newstate = blockstate.setValue(USE, true);
                             world.sendBlockUpdated(pos, newstate, newstate, 2);
                         }
@@ -112,8 +125,6 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
 
         return InteractionResult.SUCCESS;
     }
-
-
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
@@ -130,17 +141,11 @@ public class InfusionBellowsBlock extends BaseEntityBlock {
     public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
+        return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state){
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
-
-    static {
-        IDLE = BooleanProperty.create("idle");
-        USE = BooleanProperty.create("use");
-        BOOST = BooleanProperty.create("boost");
     }
 }

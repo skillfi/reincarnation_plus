@@ -1,0 +1,8 @@
+{
+  "type": "reincarnation_plus:infuser_melting",
+  "input": {
+    "item": "tensura:kanabo"
+  },
+  "moltenAmount": 20000,
+  "moltenType": "reincarnation_plus:magicules"
+}
