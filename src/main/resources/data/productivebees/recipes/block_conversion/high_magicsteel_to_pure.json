@@ -1,0 +1,17 @@
+{
+    "type": "productivebees:block_conversion",
+    "bee": "productivebees:magic",
+    "from": {
+        "Name": "tensura:block_of_high_magisteel"
+    },
+    "to": {
+        "Name": "tensura:block_of_pure_magisteel"
+    },
+    "chance": 4,
+    "conditions": [
+        {
+            "type": "productivebees:bee_exists",
+            "bee": "productivebees:magic"
+        }
+    ]
+}

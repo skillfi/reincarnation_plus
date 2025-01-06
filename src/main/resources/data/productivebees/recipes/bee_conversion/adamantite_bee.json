@@ -1,0 +1,22 @@
+{
+  "type": "productivebees:bee_conversion",
+  "source": "productivebees:pure_magic_steel",
+  "result": "productivebees:adamantite",
+  "item": {
+    "item": "tensura:block_of_adamantite"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:pure_magic_steel"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:adamantite"
+    }
+  ]
+}

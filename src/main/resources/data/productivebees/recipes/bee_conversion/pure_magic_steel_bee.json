@@ -1,0 +1,22 @@
+{
+  "type": "productivebees:bee_conversion",
+  "source": "productivebees:high_magic_steel",
+  "result": "productivebees:pure_magic_steel",
+  "item": {
+    "item": "tensura:block_of_pure_magisteel"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:high_magic_steel"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:pure_magic_steel"
+    }
+  ]
+}

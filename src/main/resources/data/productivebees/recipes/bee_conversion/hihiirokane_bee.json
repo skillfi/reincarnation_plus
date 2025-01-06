@@ -1,0 +1,22 @@
+{
+  "type": "productivebees:bee_conversion",
+  "source": "productivebees:orichalcum",
+  "result": "productivebees:hihiirokane",
+  "item": {
+    "item": "tensura:block_of_hihiirokane"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:orichalcum"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:hihiirokane"
+    }
+  ]
+}

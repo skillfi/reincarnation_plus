@@ -1,5 +1,6 @@
 package com.github.skillfi.reincarnation_plus.core.data.recipe.infuser;
 
+import com.github.alexthe666.citadel.client.model.container.JsonUtils;
 import com.github.skillfi.reincarnation_plus.core.ReiMod;
 import com.github.skillfi.reincarnation_plus.core.block.entity.MagiculaInfuserBlockEntity;
 import com.github.skillfi.reincarnation_plus.core.registry.recipe.ReiRecipeTypes;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
@@ -29,18 +31,19 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Getter
 public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparable<MagicInfusionRecipe> {
     private static final Logger log = LogManager.getLogger(MagicInfusionRecipe.class);
     public static final ResourceLocation EMPTY = new ResourceLocation("minecraft:air");
     public static final ResourceLocation INFUSION = new ResourceLocation(ReiMod.MODID, "infusion");
-    @Getter private final ResourceLocation id;
-    @Getter private final ResourceLocation primaryType;
-    @Getter private final int primaryAmount;
-    @Getter private final ResourceLocation secondaryType;
-    @Getter private final int secondaryAmount;
-    @Getter private final Ingredient input;
-    @Getter private final int infusionTime;
-    @Getter private final ItemStack output;
+    private final ResourceLocation id;
+    private final ResourceLocation primaryType;
+    private final int primaryAmount;
+    private final ResourceLocation secondaryType;
+    private final int secondaryAmount;
+    private final Ingredient input;
+    private final int infusionTime;
+    private final ItemStack output;
 
     public boolean matches(MagiculaInfuserBlockEntity pContainer, Level level) {
         ItemStack inputStack = pContainer.getItem(2).copy();
@@ -238,7 +241,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         public Serializer() {
         }
 
-        public MagicInfusionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+        public @NotNull MagicInfusionRecipe fromJson(@NotNull ResourceLocation pRecipeId, @NotNull JsonObject pSerializedRecipe) {
             ResourceLocation inputRight = MagicInfusionRecipe.EMPTY;
             int inputRightAmount = 0;
             if (pSerializedRecipe.has("primary")) {
@@ -257,11 +260,11 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             Ingredient input = Ingredient.fromJson(pSerializedRecipe.getAsJsonObject("input"));
 
             int infusionTime = pSerializedRecipe.get("infusionTime").getAsInt();
-            ItemStack output = (ItemStack)((Pair)ItemStack.CODEC.decode(JsonOps.INSTANCE, pSerializedRecipe.get("result")).result().orElseThrow(() -> new IllegalArgumentException("Could not load result ItemStack from: " + pRecipeId))).getFirst();
+            ItemStack output = ShapedRecipe.itemStackFromJson(JsonUtils.getJsonObject(pSerializedRecipe, "result"));
             return new MagicInfusionRecipe(pRecipeId, inputRight, inputRightAmount, input, infusionTime, output, inputLeft, inputLeftAmount);
         }
 
-        public @Nullable MagicInfusionRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+        public @Nullable MagicInfusionRecipe fromNetwork(@NotNull ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
             return new MagicInfusionRecipe(pRecipeId, pBuffer.readResourceLocation(), pBuffer.readInt(), Ingredient.fromNetwork(pBuffer), pBuffer.readInt(), pBuffer.readItem(), pBuffer.readResourceLocation(), pBuffer.readInt());
         }
 
@@ -272,7 +275,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
             pBuffer.writeFloat(pRecipe.secondaryAmount);
             pRecipe.input.toNetwork(pBuffer);
             pBuffer.writeInt(pRecipe.infusionTime);
-            pBuffer.writeItemStack(pRecipe.output, false);
+            pBuffer.writeItemStack(pRecipe.output, true);
         }
     }
 
@@ -313,7 +316,7 @@ public class MagicInfusionRecipe extends MagicInfuserRecipe implements Comparabl
         }
 
         public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-            consumer.accept((new MagicInfusionRecipe(new ResourceLocation(id.getNamespace(), "magic_infusion/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output, this.secondaryType, this.secondaryAmount)).finishRecipe());
+            consumer.accept((new MagicInfusionRecipe(new ResourceLocation(ReiMod.MODID, "magic_infusion/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output, this.secondaryType, this.secondaryAmount)).finishRecipe());
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {

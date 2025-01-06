@@ -314,7 +314,7 @@ public class AutoMagicInfusionRecipe extends AutoMagicInfuserRecipe implements C
         }
 
         public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-            consumer.accept((new AutoMagicInfusionRecipe(new ResourceLocation(id.getNamespace(), "auto_infusion/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output, this.secondaryType, this.secondaryAmount)).finishRecipe());
+            consumer.accept((new AutoMagicInfusionRecipe(new ResourceLocation(ReiMod.MODID, "auto_infusion/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input, this.infusionTime, this.output, this.secondaryType, this.secondaryAmount)).finishRecipe());
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {

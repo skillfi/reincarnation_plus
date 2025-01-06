@@ -1,0 +1,21 @@
+{
+  "primaryColor": "#B7FFD9",
+  "secondaryColor": "#7EDECE",
+  "tertiaryColor": "#494960",
+  "particleColor": "#494960",
+  "renderer": "default_crystal",
+  "size": 1.0,
+  "attributes": {
+    "productivity": 3,
+    "temper": 0,
+    "endurance": 2,
+    "weather_tolerance": 2
+  },
+  "flowerBlock": "tensura:block_of_adamantite",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

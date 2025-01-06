@@ -1,0 +1,21 @@
+{
+  "primaryColor": "#89B4D0",
+  "secondaryColor": "#89B4D0",
+  "particleColor": "#9474A2",
+  "tertiaryColor": "#9474A2",
+  "renderer": "default_crystal",
+  "attributes": {
+    "productivity": 2,
+    "temper": 0,
+    "endurance": 2,
+    "weather_tolerance": 2
+  },
+  "size": 1.0,
+  "flowerBlock": "tensura:block_of_low_magisteel",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "productivebees:bee_conversion",
+  "source": "productivebees:adamantite",
+  "result": "productivebees:orichalcum",
+  "item": {
+    "item": "tensura:block_of_orichalcum"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:adamantite"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:orichalcum"
+    }
+  ]
+}

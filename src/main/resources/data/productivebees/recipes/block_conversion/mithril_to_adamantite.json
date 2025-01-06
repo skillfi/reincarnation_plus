@@ -1,0 +1,17 @@
+{
+    "type": "productivebees:block_conversion",
+    "bee": "productivebees:magic",
+    "from": {
+        "Name": "tensura:block_of_mithril"
+    },
+    "to": {
+        "Name": "tensura:block_of_adamantite"
+    },
+    "chance": 3,
+    "conditions": [
+        {
+            "type": "productivebees:bee_exists",
+            "bee": "productivebees:magic"
+        }
+    ]
+}

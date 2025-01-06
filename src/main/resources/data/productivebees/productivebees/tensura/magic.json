@@ -1,0 +1,15 @@
+{
+  "primaryColor": "#83D6B7",
+  "secondaryColor": "#CAC394",
+  "tertiaryColor": "#7CC9D4",
+  "particleColor": "#7CC9D4",
+  "renderer": "default_crystal",
+  "size": 1.0,
+  "flowerBlock": "tensura:magic_ore",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

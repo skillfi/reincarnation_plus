@@ -1,0 +1,38 @@
+{
+  "type": "productivebees:centrifuge",
+  "ingredient": {
+    "type": "forge:nbt",
+    "item": "productivebees:configurable_honeycomb",
+    "nbt": {
+      "EntityTag": {
+        "type": "productivebees:magic"
+      }
+    }
+  },
+  "outputs": [
+    {
+      "item": {
+        "item": "tensura:magic_ore_shard"
+      },
+      "chance": 20
+    },
+    {
+      "item": {
+        "item": "tensura:low_quality_magic_crystal"
+      },
+      "chance": 50
+    },
+    {
+      "fluid": {
+        "fluid": "productivebees:honey"
+      },
+      "amount": 100
+    }
+  ],
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

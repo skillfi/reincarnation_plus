@@ -5,6 +5,14 @@
   "entity.reincarnation_plus.oni": "Oni",
   "entity.reincarnation_plus.divine_oni": "Divine Oni",
   "entity.reincarnation_plus.divine_fighter": "Divine Fighter",
+  "entity.productivebees.magic_bee": "Magic Bee",
+  "entity.productivebees.low_magic_steel_bee": "Low Magisteel Bee",
+  "entity.productivebees.high_magic_steel_bee": "High Magisteel Bee",
+  "entity.productivebees.pure_magic_steel_bee": "Pure Magisteel Bee",
+  "entity.productivebees.orichalcum_bee": "Orichalcum Bee",
+  "entity.productivebees.adamantite_bee": "Adamantite Bee",
+  "entity.productivebees.hihiirokane_bee": "Hihi`irokane Bee",
+  "entity.productivebees.mithril_bee": "Mithril Bee",
 
 
   "_comment1": "Items",

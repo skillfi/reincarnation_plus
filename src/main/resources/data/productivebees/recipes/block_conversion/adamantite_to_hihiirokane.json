@@ -1,0 +1,17 @@
+{
+    "type": "productivebees:block_conversion",
+    "bee": "productivebees:magic",
+    "from": {
+        "Name": "tensura:block_of_adamantite"
+    },
+    "to": {
+        "Name": "tensura:block_of_hihiirokane"
+    },
+    "chance": 2,
+    "conditions": [
+        {
+            "type": "productivebees:bee_exists",
+            "bee": "productivebees:magic"
+        }
+    ]
+}

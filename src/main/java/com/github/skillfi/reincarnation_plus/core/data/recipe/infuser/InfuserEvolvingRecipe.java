@@ -262,7 +262,7 @@ public class InfuserEvolvingRecipe extends MagicInfuserRecipe implements Compara
         }
 
         public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-            consumer.accept((new InfuserEvolvingRecipe(new ResourceLocation(id.getNamespace(), "infuser_evolving/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input)).finishRecipe());
+            consumer.accept((new InfuserEvolvingRecipe(new ResourceLocation(ReiMod.MODID, "infuser_evolving/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input)).finishRecipe());
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {

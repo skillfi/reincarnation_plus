@@ -1,0 +1,21 @@
+{
+  "primaryColor": "#7693FF",
+  "secondaryColor": "#A665F9",
+  "tertiaryColor": "#C65AE7",
+  "particleColor": "#C65AE7",
+  "renderer": "default_crystal",
+  "attributes": {
+    "productivity": 3,
+    "temper": 0,
+    "endurance": 2,
+    "weather_tolerance": 2
+  },
+  "size": 0.8,
+  "flowerBlock": "tensura:block_of_mithril",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

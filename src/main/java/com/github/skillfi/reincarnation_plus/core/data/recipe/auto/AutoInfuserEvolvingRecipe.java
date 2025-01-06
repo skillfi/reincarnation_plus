@@ -254,7 +254,7 @@ public class AutoInfuserEvolvingRecipe extends AutoMagicInfuserRecipe implements
         }
 
         public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-            consumer.accept((new AutoInfuserEvolvingRecipe(new ResourceLocation(id.getNamespace(), "auto_evolving/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input)).finishRecipe());
+            consumer.accept((new AutoInfuserEvolvingRecipe(new ResourceLocation(ReiMod.MODID, "auto_evolving/" + id.getPath()), this.primaryType, this.primaryAmount, this.input == null ? Ingredient.EMPTY : this.input)).finishRecipe());
         }
 
         public void build(Consumer<FinishedRecipe> consumer, String fileName) {

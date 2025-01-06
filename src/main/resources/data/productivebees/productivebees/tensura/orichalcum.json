@@ -1,0 +1,21 @@
+{
+  "primaryColor": "#BFA015",
+  "secondaryColor": "#AFEC6B",
+  "tertiaryColor": "#AFEC6B",
+  "particleColor": "#AFEC6B",
+  "renderer": "default_crystal",
+  "attributes": {
+    "productivity": 3,
+    "temper": 0,
+    "endurance": 2,
+    "weather_tolerance": 2
+  },
+  "size": 1.0,
+  "flowerBlock": "tensura:block_of_orichalcum",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}

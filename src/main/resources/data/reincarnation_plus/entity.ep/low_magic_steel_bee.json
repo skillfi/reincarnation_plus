@@ -1,0 +1,7 @@
+{
+  "entity": "productivebees.low_magic_steel_bee",
+  "evolution": "productivebees.high_magic_steel_bee",
+  "maxEP": 18000,
+  "minEP": 6000,
+  "skills": []
+}

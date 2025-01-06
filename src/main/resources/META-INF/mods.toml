@@ -46,4 +46,10 @@ authors="skillfi"
     versionRange="${iafVersionCheck}"
     ordering="NONE"
     side="BOTH"
+[[dependencies.reincarnation_plus]]
+    modId = "productivebees"
+    mandatory = true
+    versionRange="${pbVersionCheck}"
+    ordering="NONE"
+    side="BOTH"
 

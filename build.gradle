@@ -110,7 +110,7 @@ repositories {
     maven {url = "https://maven.blamejared.com/"} //JEI
 
     flatDir {
-        dirs 'lib'
+        dirs 'libs'
     }
 }
 
@@ -139,6 +139,8 @@ dependencies {
     implementation fg.deobf("blank:tensura:${minecraftVersion}-${tensuraVersionCheck}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraftVersion}-${terraBlenderVersionCheck}")
 
+    // Productive Bees
+    implementation fg.deobf("blank:productivebees:${minecraftVersion}-${pbVersionCheck}")
     // Ice and Fire
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
     implementation fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037952")
@@ -182,6 +184,7 @@ def replaceResources = tasks.register("replaceResources", Copy) {
         def geckolibVersionCheck = "[3.1,)"
         def tensuraVersionCheck = "[1.0.0.0,)"
         def manasCoreVersionCheck = "[${manasCoreVersionCheck},)"
+        def pbVersionCheck = "[${pbVersionCheck},)"
 
         include "META-INF/mods.toml"
         expand 'modVersion': "${modVersion}",
@@ -190,7 +193,8 @@ def replaceResources = tasks.register("replaceResources", Copy) {
                 'iafVersionCheck': "${iafVersionCheck}",
                 'geckolibVersionCheck': "${geckolibVersionCheck}",
                 'tensuraVersionCheck': "${tensuraVersionCheck}",
-                'manasCoreVersionCheck': "${manasCoreVersionCheck}"
+                'manasCoreVersionCheck': "${manasCoreVersionCheck}",
+                'pbVersionCheck': "${pbVersionCheck}"
 
     }
     it.into "$buildDir/resources/main/"

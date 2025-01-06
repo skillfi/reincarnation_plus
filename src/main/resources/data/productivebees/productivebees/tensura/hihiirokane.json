@@ -1,0 +1,21 @@
+{
+  "primaryColor": "#E2F3EF",
+  "secondaryColor": "#A97990",
+  "tertiaryColor": "#4E8BB0",
+  "particleColor": "#4E8BB0",
+  "renderer": "default_crystal",
+  "attributes": {
+    "productivity": 3,
+    "temper": 0,
+    "endurance": 2,
+    "weather_tolerance": 2
+  },
+  "size": 1.0,
+  "flowerBlock": "tensura:block_of_hihiirokane",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tensura"
+    }
+  ]
+}
