@@ -36,6 +36,8 @@ minecraft {
             property 'mixin.debug.export', 'true'
             arg "-mixin.config=${modId}.mixins.json"
 
+            arg '--username=Solus'
+
             mods {
                 reincarnation_plus {
                     source sourceSets.main

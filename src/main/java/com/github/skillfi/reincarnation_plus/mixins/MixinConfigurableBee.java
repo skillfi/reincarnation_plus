@@ -36,19 +36,19 @@ public class MixinConfigurableBee extends ProductiveBee implements IRanking {
     }
 
     // Дефініція нових синхронізованих даних
-    @Inject(method = "defineSynchedData", at = @At("TAIL"), remap = false)
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
     private void define(CallbackInfo ci) {
         this.entityData.define(EVOLVING, 0);
     }
 
     // Збереження даних до NBT
-    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), remap = false)
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void addAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
         compound.putInt("EvoState", this.getCurrentEvolutionState());
     }
 
     // Завантаження даних з NBT
-    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), remap = false)
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void readAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
         this.setCurrentEvolutionState(compound.getInt("EvoState"));
     }
@@ -59,7 +59,7 @@ public class MixinConfigurableBee extends ProductiveBee implements IRanking {
         this.entityData.set(EVOLVING, state);
     }
 
-    @Inject(method = "tick", at = @At("HEAD"), remap = false)
+    @Inject(method = "tick", at = @At("HEAD"))
     private void ticking(CallbackInfo ci){
         CompoundTag tag = this.serializeNBT();
         ResourceLocation type = new ResourceLocation(tag.getString("type"));

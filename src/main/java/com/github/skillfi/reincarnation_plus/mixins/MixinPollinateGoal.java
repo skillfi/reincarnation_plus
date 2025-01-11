@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 @Mixin(value = ProductiveBee.PollinateGoal.class)
 public abstract class MixinPollinateGoal {
 
-    @Inject(method = "stop", at = @At("TAIL"), remap = false)
+    @Inject(method = "stop", at = @At("TAIL"))
     private void injectConsumeMagicule(CallbackInfo ci) {
         try {
             // Використання reflection для отримання зовнішнього класу
